@@ -76,14 +76,14 @@ export function CareersPage() {
               transition={{ duration: 0.6 }}
             >
               <Badge variant="outline" className="mb-6 rounded-full px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-primary/60 border-primary/10 bg-primary/5">
-                Join our world-class team
+                Open Positions
               </Badge>
               <h1 className="text-balance text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl text-primary mb-8">
-                Build the future of <span className="text-primary/40">talent acquisition.</span>
+                Build the future <span className="text-primary/40">with us.</span>
               </h1>
               <p className="mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-muted-foreground mb-12">
-                We're on a mission to revolutionize how companies find and hire the best talent. 
-                Join a fast-growing team of innovators, thinkers, and builders.
+                Explore open roles and find your next opportunity.
+                We're looking for talented people to join our growing team.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest text-muted-foreground/60">
                 <div className="flex items-center gap-2">
