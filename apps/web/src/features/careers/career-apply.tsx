@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { demoJobs } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 
 export function CareerApply() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +39,8 @@ Jamie Anderson`,
     heardFrom: 'LinkedIn',
   });
 
-  const job = demoJobs.find((j) => j.id === id);
+  const jobs = useDataStore((s) => s.jobs);
+  const job = jobs.find((j) => j.id === id);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isApplicantLoggedIn') === 'true';

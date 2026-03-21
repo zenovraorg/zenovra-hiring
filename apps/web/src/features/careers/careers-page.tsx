@@ -7,15 +7,16 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
-import { demoJobs, demoOrg } from '@/lib/demo-data';
 import { formatCurrency } from '@/lib/utils';
+import { useDataStore } from '@/stores/data-store';
 
 export function CareersPage() {
   const navigate = useNavigate();
+  const jobs = useDataStore((s) => s.jobs);
   const [search, setSearch] = useState('');
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
 
-  const publishedJobs = demoJobs.filter((j) => j.is_published && j.status === 'open');
+  const publishedJobs = jobs.filter((j) => j.is_published && j.status === 'open');
 
   const departments = [...new Set(publishedJobs.map((j) => j.department?.name).filter(Boolean))];
 

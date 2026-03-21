@@ -30,14 +30,16 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-import { demoDashboardStats, demoActivity, demoJobs } from '@/lib/demo-data';
+import { demoDashboardStats, demoActivity } from '@/lib/demo-data';
 import { getInitials, formatRelativeTime, formatNumber } from '@/lib/utils';
+import { useDataStore } from '@/stores/data-store';
 
 const CHART_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#06b6d4', '#10b981', '#f59e0b'];
 const PIE_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b'];
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const demoJobs = useDataStore((s) => s.jobs);
   const stats = demoDashboardStats;
 
   return (
