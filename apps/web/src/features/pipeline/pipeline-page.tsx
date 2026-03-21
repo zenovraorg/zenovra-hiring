@@ -14,16 +14,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { AddCandidateDialog } from '@/features/candidates/add-candidate-dialog';
-import { demoJobs, demoApplications } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
 import type { Application } from '@/types';
 
 export function PipelinePage() {
   const navigate = useNavigate();
-  const [selectedJob, setSelectedJob] = useState(demoJobs[0]);
+  const jobs = useDataStore((s) => s.jobs);
+  const storeApplications = useDataStore((s) => s.applications);
+  const [selectedJob, setSelectedJob] = useState(jobs[0]);
   const [view, setView] = useState<'board' | 'table'>('board');
   const [applications, setApplications] = useState<Application[]>(
-    () => demoApplications.filter((a) => a.job_id === demoJobs[0].id)
+    () => storeApplications.filter((a) => a.job_id === jobs[0]?.id)
   );
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null);
   const [draggingAppId, setDraggingAppId] = useState<string | null>(null);
@@ -31,9 +33,9 @@ export function PipelinePage() {
 
   const stages = selectedJob.pipeline_stages;
 
-  const handleJobChange = (job: typeof demoJobs[0]) => {
+  const handleJobChange = (job: typeof jobs[0]) => {
     setSelectedJob(job);
-    setApplications(demoApplications.filter((a) => a.job_id === job.id));
+    setApplications(storeApplications.filter((a) => a.job_id === job.id));
   };
 
   const getApplicationsForStage = useCallback(
@@ -128,7 +130,7 @@ export function PipelinePage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
-              {demoJobs
+              {jobs
                 .filter((j) => j.status === 'open')
                 .map((job) => (
                   <DropdownMenuItem key={job.id} onClick={() => handleJobChange(job)}>

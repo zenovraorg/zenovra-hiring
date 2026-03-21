@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { demoCandidates } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 
 const benefitOptions = [
   'Health/Dental/Vision',
@@ -32,7 +32,8 @@ interface CreateOfferDialogProps {
 }
 
 export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
-  const [candidateId, setCandidateId] = useState(demoCandidates[0]?.id ?? '');
+  const candidates = useDataStore((s) => s.candidates);
+  const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? '');
   const [jobTitle, setJobTitle] = useState('Senior Frontend Engineer');
   const [department, setDepartment] = useState('Engineering');
   const [baseSalary, setBaseSalary] = useState('200000');
@@ -64,7 +65,7 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
               onChange={(e) => setCandidateId(e.target.value)}
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
-              {demoCandidates.map((c) => (
+              {candidates.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.first_name} {c.last_name}
                 </option>
@@ -134,7 +135,18 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={onClose}>Create Offer</Button>
+          <Button onClick={() => {
+            useDataStore.getState().addOffer({
+              title: jobTitle,
+              department,
+              base_salary: Number(baseSalary) || 0,
+              bonus: bonus ? Number(bonus) : undefined,
+              equity: equity || undefined,
+              start_date: startDate,
+              benefits,
+            });
+            onClose();
+          }}>Create Offer</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

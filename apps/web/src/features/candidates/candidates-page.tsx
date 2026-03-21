@@ -25,15 +25,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { AddCandidateDialog } from '@/features/candidates/add-candidate-dialog';
-import { demoCandidates } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
 
 export function CandidatesPage() {
   const navigate = useNavigate();
+  const candidates = useDataStore((s) => s.candidates);
   const [search, setSearch] = useState('');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
-  const filtered = demoCandidates.filter((c) => {
+  const filtered = candidates.filter((c) => {
     if (!search) return true;
     const q = search.toLowerCase();
     return (
@@ -49,7 +50,7 @@ export function CandidatesPage() {
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
         title="Candidates"
-        description={`${demoCandidates.length} candidates in your talent pool`}
+        description={`${candidates.length} candidates in your talent pool`}
         actions={
           <Button onClick={() => setAddDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />

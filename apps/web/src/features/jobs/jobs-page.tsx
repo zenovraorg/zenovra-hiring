@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cardHover } from '@/lib/motion';
-import { demoJobs } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 import { formatDate, formatCurrency } from '@/lib/utils';
 import type { JobStatus } from '@/types';
 
@@ -41,10 +41,11 @@ const statusTabs: { label: string; value: JobStatus | 'all' }[] = [
 
 export function JobsPage() {
   const navigate = useNavigate();
+  const jobs = useDataStore((s) => s.jobs);
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState<JobStatus | 'all'>('all');
 
-  const filteredJobs = demoJobs.filter((job) => {
+  const filteredJobs = jobs.filter((job) => {
     if (activeTab !== 'all' && job.status !== activeTab) return false;
     if (search && !job.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -54,7 +55,7 @@ export function JobsPage() {
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
         title="Jobs"
-        description={`${demoJobs.length} job requisitions`}
+        description={`${jobs.length} job requisitions`}
         actions={
           <Button onClick={() => navigate('/jobs/new')}>
             <Plus className="mr-2 h-4 w-4" />

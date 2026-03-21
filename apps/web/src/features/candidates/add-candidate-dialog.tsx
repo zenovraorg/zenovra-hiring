@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useDataStore } from '@/stores/data-store';
 
 const sourceOptions = ['LinkedIn', 'Referral', 'Careers Page', 'Direct', 'Agency'];
 
@@ -101,7 +102,28 @@ export function AddCandidateDialog({ open, onClose }: AddCandidateDialogProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={onClose}>Add Candidate</Button>
+          <Button onClick={() => {
+            const sourceMap: Record<string, string> = {
+              'LinkedIn': 'linkedin',
+              'Referral': 'referral',
+              'Careers Page': 'careers_page',
+              'Direct': 'direct',
+              'Agency': 'agency',
+            };
+            useDataStore.getState().addCandidate({
+              first_name: firstName,
+              last_name: lastName,
+              email,
+              phone: phone || undefined,
+              linkedin_url: linkedinUrl || undefined,
+              current_company: currentCompany || undefined,
+              current_title: currentTitle || undefined,
+              experience_years: experienceYears ? Number(experienceYears) : undefined,
+              source: (sourceMap[source] || 'direct') as any,
+              skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
+            });
+            onClose();
+          }}>Add Candidate</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

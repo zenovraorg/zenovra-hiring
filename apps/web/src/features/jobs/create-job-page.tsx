@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { demoDepartments, demoLocations, demoUsers } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 
 const employmentTypes = [
   { value: 'full_time', label: 'Full Time' },
@@ -70,7 +71,26 @@ export function CreateJobPage() {
   };
 
   const handleSubmit = () => {
-    // Demo: just navigate back to jobs
+    useDataStore.getState().addJob({
+      title: form.title,
+      department_id: form.department_id,
+      location_id: form.location_id,
+      hiring_manager_id: form.hiring_manager_id,
+      recruiter_id: form.recruiter_id,
+      employment_type: form.employment_type as any,
+      experience_level: form.experience_level as any,
+      is_remote: form.is_remote,
+      description: form.description,
+      requirements: form.requirements.filter(Boolean),
+      nice_to_haves: form.nice_to_haves.filter(Boolean),
+      compensation: {
+        min_salary: Number(form.min_salary) || 0,
+        max_salary: Number(form.max_salary) || 0,
+        currency: 'USD',
+        equity: form.equity || undefined,
+      },
+      headcount: Number(form.headcount) || 1,
+    });
     navigate('/jobs');
   };
 

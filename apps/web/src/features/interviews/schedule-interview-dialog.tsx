@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-import { demoCandidates, demoJobs, demoUsers } from '@/lib/demo-data';
+import { demoUsers } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 
 const interviewTypes = ['Phone Screen', 'Technical', 'Behavioral', 'Culture Fit', 'Panel', 'Final'];
 const durationOptions = ['30', '45', '60', '90'];
@@ -28,9 +29,11 @@ interface ScheduleInterviewDialogProps {
 }
 
 export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDialogProps) {
+  const candidates = useDataStore((s) => s.candidates);
+  const jobs = useDataStore((s) => s.jobs);
   const [title, setTitle] = useState('Technical Interview \u2014 Frontend');
-  const [candidateId, setCandidateId] = useState(demoCandidates[0]?.id ?? '');
-  const [jobId, setJobId] = useState(demoJobs[0]?.id ?? '');
+  const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? '');
+  const [jobId, setJobId] = useState(jobs[0]?.id ?? '');
   const [interviewType, setInterviewType] = useState('Technical');
   const [date, setDate] = useState(getTomorrow);
   const [time, setTime] = useState('14:00');
@@ -67,7 +70,7 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
                 onChange={(e) => setCandidateId(e.target.value)}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
-                {demoCandidates.map((c) => (
+                {candidates.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.first_name} {c.last_name}
                   </option>
@@ -81,7 +84,7 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
                 onChange={(e) => setJobId(e.target.value)}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
-                {demoJobs.filter((j) => j.status === 'open').map((j) => (
+                {jobs.filter((j) => j.status === 'open').map((j) => (
                   <option key={j.id} value={j.id}>{j.title}</option>
                 ))}
               </select>
@@ -168,7 +171,30 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={onClose}>Schedule</Button>
+          <Button onClick={() => {
+            const typeMap: Record<string, string> = {
+              'Phone Screen': 'phone_screen',
+              'Technical': 'technical',
+              'Behavioral': 'behavioral',
+              'Culture Fit': 'culture_fit',
+              'Panel': 'panel',
+              'Final': 'final',
+            };
+            useDataStore.getState().addInterview({
+              title,
+              type: (typeMap[interviewType] || 'other') as any,
+              scheduled_at: new Date(`${date}T${time}`).toISOString(),
+              duration_minutes: Number(duration),
+              meeting_link: meetingLink || undefined,
+              interviewers: selectedInterviewers.map((uid) => ({
+                user_id: uid,
+                user: demoUsers.find((u) => u.id === uid),
+                role: 'participant' as const,
+                feedback_submitted: false,
+              })),
+            });
+            onClose();
+          }}>Schedule</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

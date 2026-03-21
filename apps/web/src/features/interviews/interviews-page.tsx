@@ -9,20 +9,22 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
 import { ScheduleInterviewDialog } from '@/features/interviews/schedule-interview-dialog';
-import { demoInterviews, demoApplications, demoCandidates } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 import { getInitials, formatDate } from '@/lib/utils';
 
 export function InterviewsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
-  const today = demoInterviews.filter((i) => i.status === 'scheduled');
-  const completed = demoInterviews.filter((i) => i.status === 'completed');
+  const interviews = useDataStore((s) => s.interviews);
+  const applications = useDataStore((s) => s.applications);
+  const today = interviews.filter((i) => i.status === 'scheduled');
+  const completed = interviews.filter((i) => i.status === 'completed');
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
         title="Interviews"
-        description={`${demoInterviews.length} total interviews`}
+        description={`${interviews.length} total interviews`}
         actions={
           <Button onClick={() => setScheduleDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
@@ -38,7 +40,7 @@ export function InterviewsPage() {
         </h2>
         <div className="space-y-3">
           {today.map((interview, index) => {
-            const app = demoApplications.find((a) => a.id === interview.application_id);
+            const app = applications.find((a) => a.id === interview.application_id);
             const candidate = app?.candidate;
 
             return (
@@ -125,7 +127,7 @@ export function InterviewsPage() {
           </h2>
           <div className="space-y-3">
             {completed.map((interview, index) => {
-              const app = demoApplications.find((a) => a.id === interview.application_id);
+              const app = applications.find((a) => a.id === interview.application_id);
               const candidate = app?.candidate;
 
               return (

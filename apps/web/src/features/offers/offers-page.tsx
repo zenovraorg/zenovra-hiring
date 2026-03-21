@@ -10,12 +10,14 @@ import { Badge } from '@/components/ui/badge';
 import { StatCard } from '@/components/shared/stat-card';
 
 import { CreateOfferDialog } from '@/features/offers/create-offer-dialog';
-import { demoOffers, demoApplications, demoCandidates } from '@/lib/demo-data';
+import { useDataStore } from '@/stores/data-store';
 import { getInitials, formatCurrency, formatDate } from '@/lib/utils';
 
 export function OffersPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [offerDialogOpen, setOfferDialogOpen] = useState(false);
+  const offers = useDataStore((s) => s.offers);
+  const applications = useDataStore((s) => s.applications);
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
@@ -39,8 +41,8 @@ export function OffersPage() {
 
       {/* Offer List */}
       <div className="space-y-3">
-        {demoOffers.map((offer, index) => {
-          const app = demoApplications.find((a) => a.id === offer.application_id);
+        {offers.map((offer, index) => {
+          const app = applications.find((a) => a.id === offer.application_id);
           const candidate = app?.candidate;
 
           return (
