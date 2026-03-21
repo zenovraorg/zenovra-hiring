@@ -48,7 +48,7 @@ export function CareersPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
               <Zap className="h-5 w-5 fill-current" />
             </div>
-            <span className="text-xl font-bold tracking-tight">HireFlow</span>
+            <span className="text-xl font-bold tracking-tight">Zenovra Tech</span>
           </div>
           <div className="flex items-center gap-6">
             <Link to="/careers/login" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">
@@ -262,10 +262,10 @@ export function CareersPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <Zap className="h-4 w-4 fill-current" />
               </div>
-              <span className="text-lg font-bold tracking-tight">HireFlow</span>
+              <span className="text-lg font-bold tracking-tight">Zenovra Tech</span>
             </div>
             <p className="text-sm font-medium text-muted-foreground">
-              © 2026 HireFlow Enterprise. All rights reserved.
+              © 2026 Zenovra Tech Enterprise. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-sm font-bold uppercase tracking-widest text-muted-foreground">
               <a href="#" className="hover:text-primary transition-colors">Twitter</a>

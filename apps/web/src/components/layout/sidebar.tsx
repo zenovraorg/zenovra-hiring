@@ -74,8 +74,8 @@ export function Sidebar() {
                 className="overflow-hidden"
               >
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold tracking-tight leading-none text-primary">HireFlow</span>
-                  <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-0.5">Enterprise</span>
+                  <span className="text-lg font-bold tracking-tight leading-none text-primary">Zenovra Tech</span>
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-0.5">Part of Zenovra Org</span>
                 </div>
               </motion.div>
             )}
