@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,25 +28,30 @@ export function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-primary relative overflow-hidden">
         <div className="gradient-mesh absolute inset-0 opacity-50" />
         <div className="relative z-10 flex flex-col justify-between p-12 text-primary-foreground">
-          <div className="flex items-center gap-3">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3"
+          >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
               <Zap className="h-5 w-5" />
             </div>
             <span className="text-xl font-semibold">Zenovra Tech</span>
-          </div>
+          </motion.div>
           <div className="max-w-md">
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="text-4xl font-bold leading-tight mb-4"
             >
               The modern hiring platform built for scale
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="text-lg text-primary-foreground/80"
             >
               Streamline your recruiting workflow, from sourcing to onboarding. Enterprise-grade ATS designed for modern teams.
@@ -59,9 +64,9 @@ export function LoginPage() {
       {/* Right Panel - Login Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="w-full max-w-sm"
         >
           {/* Mobile Logo */}
@@ -72,11 +77,26 @@ export function LoginPage() {
             <span className="text-lg font-semibold">Zenovra Tech</span>
           </div>
 
-          <h2 className="text-2xl font-semibold mb-1">Welcome back</h2>
-          <p className="text-sm text-muted-foreground mb-6">Sign in to your account to continue</p>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-2xl font-semibold mb-1"
+          >Welcome back</motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="text-sm text-muted-foreground mb-6"
+          >Sign in to your account to continue</motion.p>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-2"
+            >
               <label className="text-sm font-medium">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -88,9 +108,14 @@ export function LoginPage() {
                   className="pl-9"
                 />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="space-y-2">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-2"
+            >
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium">Password</label>
                 <a href="#" className="text-xs text-primary hover:underline">Forgot password?</a>
@@ -112,12 +137,20 @@ export function LoginPage() {
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-            </div>
+            </motion.div>
 
-            <Button type="submit" className="w-full" size="lg">
-              Sign In
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button type="submit" className="w-full" size="lg">
+                  Sign In
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </motion.div>
+            </motion.div>
           </form>
 
           <div className="relative my-6">
@@ -127,15 +160,23 @@ export function LoginPage() {
             </span>
           </div>
 
-          <Button
-            variant="outline"
-            className="w-full"
-            size="lg"
-            onClick={handleDemoLogin}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Zap className="mr-2 h-4 w-4 text-primary" />
-            Continue with Demo Account
-          </Button>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button
+                variant="outline"
+                className="w-full"
+                size="lg"
+                onClick={handleDemoLogin}
+              >
+                <Zap className="mr-2 h-4 w-4 text-primary" />
+                Continue with Demo Account
+              </Button>
+            </motion.div>
+          </motion.div>
 
           <p className="text-center text-xs text-muted-foreground mt-6">
             Looking for jobs?{' '}

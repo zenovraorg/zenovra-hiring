@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { Calendar, Clock, MapPin, Video, User, Plus, Filter } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -19,6 +19,8 @@ export function InterviewsPage() {
   const applications = demoApplications;
   const today = interviews.filter((i) => i.status === 'scheduled');
   const completed = interviews.filter((i) => i.status === 'completed');
+  const completedRef = useRef(null);
+  const completedInView = useInView(completedRef, { once: true, margin: '-50px' });
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
@@ -35,16 +37,28 @@ export function InterviewsPage() {
 
       {/* Upcoming Section */}
       <div className="space-y-3">
-        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+        <motion.h2
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="text-sm font-semibold text-muted-foreground uppercase tracking-wider"
+        >
           Upcoming
-        </h2>
+        </motion.h2>
         <div className="space-y-3">
           {today.map((interview, index) => {
             const app = applications.find((a) => a.id === interview.application_id);
             const candidate = app?.candidate;
 
             return (
-              <motion.div key={interview.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
+              <motion.div
+                key={interview.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ scale: 1.01, y: -2 }}
+                whileTap={{ scale: 0.99 }}
+              >
                 <Card className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">
@@ -121,17 +135,29 @@ export function InterviewsPage() {
 
       {/* Completed Section */}
       {completed.length > 0 && (
-        <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+        <div ref={completedRef} className="space-y-3">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={completedInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="text-sm font-semibold text-muted-foreground uppercase tracking-wider"
+          >
             Completed
-          </h2>
+          </motion.h2>
           <div className="space-y-3">
             {completed.map((interview, index) => {
               const app = applications.find((a) => a.id === interview.application_id);
               const candidate = app?.candidate;
 
               return (
-                <motion.div key={interview.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
+                <motion.div
+                  key={interview.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={completedInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ scale: 1.01, y: -2 }}
+                  whileTap={{ scale: 0.99 }}
+                >
                   <Card className={`p-4 opacity-75 hover:opacity-100 transition-opacity cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-primary opacity-100' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4">

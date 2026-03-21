@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './sidebar';
 import { Topbar } from './topbar';
 import { CommandPalette } from '@/components/shared/command-palette';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export function AppShell() {
   return (
@@ -21,9 +21,9 @@ export function AppShell() {
         <main className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth scrollbar-none">
           <div className="mx-auto h-full w-full max-w-[1600px] p-6 lg:p-8">
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="h-full"
             >
               <Outlet />

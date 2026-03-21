@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { 
   Search, 
   MapPin, 
@@ -23,12 +23,20 @@ import { formatCurrency } from '@/lib/utils';
 import { useJobs } from '@/hooks/use-api';
 import { demoJobs } from '@/lib/demo-data';
 
+const smoothEase = [0.22, 1, 0.36, 1] as const;
+
 export function CareersPage() {
   const navigate = useNavigate();
   const { data } = useJobs();
   const jobs = data?.items || demoJobs;
   const [search, setSearch] = useState('');
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
+  const cultureRef = useRef(null);
+  const cultureInView = useInView(cultureRef, { once: true, margin: '-50px' });
+  const footerRef = useRef(null);
+  const footerInView = useInView(footerRef, { once: true, margin: '-50px' });
+  const jobsSectionRef = useRef(null);
+  const jobsSectionInView = useInView(jobsSectionRef, { once: true, margin: '-50px' });
 
   const publishedJobs = jobs.filter((j) => j.is_published && j.status === 'open');
   const departments = [...new Set(publishedJobs.map((j) => j.department?.name).filter(Boolean))];
@@ -71,68 +79,108 @@ export function CareersPage() {
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, ease: smoothEase }}
             >
               <Badge variant="outline" className="mb-6 rounded-full px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-primary/60 border-primary/10 bg-primary/5">
                 Open Positions
               </Badge>
-              <h1 className="text-balance text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl text-primary mb-8">
-                Build the future <span className="text-primary/40">with us.</span>
-              </h1>
-              <p className="mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-muted-foreground mb-12">
-                Explore open roles and find your next opportunity.
-                We're looking for talented people to join our growing team.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest text-muted-foreground/60">
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4" />
-                  <span>Remote First</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4" />
-                  <span>Premium Benefits</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Star className="h-4 w-4" />
-                  <span>Equity Options</span>
-                </div>
-              </div>
             </motion.div>
+            <h1 className="text-balance text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl text-primary mb-8">
+              {['Build', 'the', 'future'].map((word, i) => (
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.1, ease: smoothEase }}
+                  className="inline-block mr-[0.3em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: smoothEase }}
+                className="text-primary/40 inline-block"
+              >
+                with us.
+              </motion.span>
+            </h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6, ease: smoothEase }}
+              className="mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-muted-foreground mb-12"
+            >
+              Explore open roles and find your next opportunity.
+              We're looking for talented people to join our growing team.
+            </motion.p>
+            <div className="flex flex-wrap items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest text-muted-foreground/60">
+              {[
+                { icon: Globe, label: 'Remote First' },
+                { icon: ShieldCheck, label: 'Premium Benefits' },
+                { icon: Star, label: 'Equity Options' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 + i * 0.1, ease: smoothEase }}
+                  className="flex items-center gap-2"
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Jobs Section */}
       <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-32">
-        <div className="rounded-[2rem] bg-white p-8 lg:p-12 shadow-2xl shadow-primary/5 border border-primary/5">
+        <motion.div
+          ref={jobsSectionRef}
+          initial={{ opacity: 0, y: 40 }}
+          animate={jobsSectionInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: smoothEase }}
+          className="rounded-[2rem] bg-white p-8 lg:p-12 shadow-2xl shadow-primary/5 border border-primary/5"
+        >
           <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Open Positions</h2>
               <div className="flex flex-wrap gap-2">
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedDept(null)}
                   className={`rounded-full px-5 py-2 text-sm font-bold transition-all ${
-                    !selectedDept 
-                      ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                    !selectedDept
+                      ? 'bg-primary text-white shadow-lg shadow-primary/20'
                       : 'bg-muted/50 text-muted-foreground hover:bg-muted'
                   }`}
                 >
                   All Roles
-                </button>
-                {departments.map((dept) => (
-                  <button
+                </motion.button>
+                {departments.map((dept, i) => (
+                  <motion.button
                     key={dept}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={jobsSectionInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.4, delay: 0.2 + i * 0.06, ease: smoothEase }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedDept(dept === selectedDept ? null : dept!)}
                     className={`rounded-full px-5 py-2 text-sm font-bold transition-all ${
-                      selectedDept === dept 
-                        ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                      selectedDept === dept
+                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
                         : 'bg-muted/50 text-muted-foreground hover:bg-muted'
                     }`}
                   >
                     {dept}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -156,9 +204,11 @@ export function CareersPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  transition={{ duration: 0.4, delay: index * 0.08, ease: smoothEase }}
+                  whileHover={{ scale: 1.01, y: -2 }}
+                  whileTap={{ scale: 0.99 }}
                 >
-                  <div 
+                  <div
                     onClick={() => navigate(`/careers/${job.id}`)}
                     className="group relative flex flex-col gap-6 rounded-3xl border border-primary/5 bg-white p-8 transition-all hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 cursor-pointer lg:flex-row lg:items-center lg:justify-between"
                   >
@@ -191,10 +241,12 @@ export function CareersPage() {
                         )}
                       </div>
                     </div>
-                    <Button className="h-14 rounded-2xl px-8 font-bold shadow-lg shadow-primary/10 group-hover:shadow-primary/20 transition-all">
-                      View Position
-                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                      <Button className="h-14 rounded-2xl px-8 font-bold shadow-lg shadow-primary/10 group-hover:shadow-primary/20 transition-all">
+                        View Position
+                        <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                      </Button>
+                    </motion.div>
                   </div>
                 </motion.div>
               ))}
@@ -210,7 +262,7 @@ export function CareersPage() {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Culture Section */}
@@ -218,9 +270,14 @@ export function CareersPage() {
         <div className="absolute inset-0 z-0 opacity-10">
           <div className="absolute top-0 left-0 h-full w-full bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:40px_40px]" />
         </div>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+        <div ref={cultureRef} className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={cultureInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, ease: smoothEase }}
+              className="space-y-8"
+            >
               <h2 className="text-4xl font-bold tracking-tight sm:text-6xl">A culture built on <span className="text-white/40">trust and innovation.</span></h2>
               <p className="text-xl text-white/70 leading-relaxed">
                 We believe that great work happens when talented people are given the freedom to excel. 
@@ -232,31 +289,48 @@ export function CareersPage() {
                   { title: "Growth", desc: "Continuous learning and professional development." },
                   { title: "Balance", desc: "Flexible work arrangements for a healthy life." },
                   { title: "Impact", desc: "Work on projects that matter to millions." }
-                ].map((item) => (
-                  <div key={item.title} className="space-y-2">
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={cultureInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.3 + i * 0.1, ease: smoothEase }}
+                    className="space-y-2"
+                  >
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="h-5 w-5 text-white" />
                       <h4 className="font-bold uppercase tracking-widest text-sm">{item.title}</h4>
                     </div>
                     <p className="text-sm text-white/60">{item.desc}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-            <div className="relative">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={cultureInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2, ease: smoothEase }}
+              className="relative"
+            >
               <div className="aspect-square rounded-[3rem] bg-white/10 backdrop-blur-3xl p-8 border border-white/20">
                 <div className="h-full w-full rounded-[2rem] bg-gradient-to-br from-white/20 to-transparent flex items-center justify-center">
                   <Zap className="h-32 w-32 text-white animate-float" />
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="border-t bg-white py-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <motion.div
+          ref={footerRef}
+          initial={{ opacity: 0, y: 30 }}
+          animate={footerInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: smoothEase }}
+          className="mx-auto max-w-7xl px-6 lg:px-8"
+        >
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -273,7 +347,7 @@ export function CareersPage() {
               <a href="#" className="hover:text-primary transition-colors">GitHub</a>
             </div>
           </div>
-        </div>
+        </motion.div>
       </footer>
     </div>
   );

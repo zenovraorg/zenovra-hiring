@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   ChevronDown, 
   MoreHorizontal, 
@@ -121,7 +121,12 @@ export function PipelinePage() {
   return (
     <div className="h-full flex flex-col space-y-8 max-w-[1800px] mx-auto">
       {/* Header Section */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between shrink-0">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between shrink-0"
+      >
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-1">
             <Briefcase className="h-4 w-4" />
@@ -180,12 +185,14 @@ export function PipelinePage() {
                 ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button onClick={() => setAddDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20 h-10">
-            <Plus className="mr-2 h-4 w-4" />
-            Add Candidate
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button onClick={() => setAddDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20 h-10">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Candidate
+            </Button>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Toolbar Section */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between shrink-0">
@@ -221,9 +228,9 @@ export function PipelinePage() {
             return (
               <motion.div
                 key={stage.id}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
+                transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 className="flex flex-col w-[320px] shrink-0"
               >
                 {/* Column Header */}
@@ -305,11 +312,13 @@ function CandidateCard({
     <motion.div
       layout
       initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      animate={{ opacity: isDragging ? 0.4 : 1, scale: isDragging ? 0.95 : 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className={`group bg-white rounded-xl border border-muted/30 cursor-grab active:cursor-grabbing transition-all shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 ${
-        isDragging ? 'opacity-40 scale-95 shadow-none' : ''
+      whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 1.05 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className={`group bg-white rounded-xl border border-muted/30 cursor-grab active:cursor-grabbing transition-shadow shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 ${
+        isDragging ? 'shadow-none' : ''
       }`}
     >
       <div 

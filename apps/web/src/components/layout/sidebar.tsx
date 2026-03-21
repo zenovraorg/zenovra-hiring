@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   LayoutDashboard,
   Briefcase,
@@ -169,6 +169,11 @@ function SidebarSection({
         return (
           <Tooltip key={item.href}>
             <TooltipTrigger asChild>
+              <motion.div
+                whileHover={!isActive ? { x: 2 } : {}}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.15 }}
+              >
               <NavLink
                 to={item.href}
                 className={cn(
@@ -200,6 +205,7 @@ function SidebarSection({
                   />
                 )}
               </NavLink>
+              </motion.div>
             </TooltipTrigger>
             {collapsed && <TooltipContent side="right" className="font-medium">{item.label}</TooltipContent>}
           </Tooltip>

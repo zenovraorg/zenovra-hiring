@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Plus, DollarSign, Calendar, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -24,10 +24,12 @@ export function OffersPage() {
         title="Offers"
         description="Manage compensation offers and approvals"
         actions={
-          <Button onClick={() => setOfferDialogOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Offer
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button onClick={() => setOfferDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Create Offer
+            </Button>
+          </motion.div>
         }
       />
 
@@ -46,7 +48,14 @@ export function OffersPage() {
           const candidate = app?.candidate;
 
           return (
-            <motion.div key={offer.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
+            <motion.div
+              key={offer.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.01, y: -2 }}
+              whileTap={{ scale: 0.99 }}
+            >
               <Card className={`hover:shadow-md transition-shadow cursor-pointer ${selectedId === offer.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedId(selectedId === offer.id ? null : offer.id)}>
                 <div className="p-5">
                   <div className="flex items-start justify-between">

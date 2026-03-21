@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Plus,
   Search,
@@ -55,22 +55,31 @@ export function JobsPage() {
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto">
       {/* Header Section */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+      >
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight text-primary">Job Requisitions</h1>
           <p className="text-muted-foreground">Manage and track your organization's open positions and hiring pipeline.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl shadow-sm bg-white/50 backdrop-blur-sm">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-          <Button onClick={() => navigate('/jobs/new')} className="rounded-xl shadow-lg shadow-primary/20">
-            <Plus className="mr-2 h-4 w-4" />
-            Create Requisition
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button variant="outline" className="rounded-xl shadow-sm bg-white/50 backdrop-blur-sm">
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button onClick={() => navigate('/jobs/new')} className="rounded-xl shadow-lg shadow-primary/20">
+              <Plus className="mr-2 h-4 w-4" />
+              Create Requisition
+            </Button>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Stats Overview */}
       <div className="grid gap-4 md:grid-cols-4">
@@ -81,7 +90,12 @@ export function JobsPage() {
       </div>
 
       {/* Filters & Tabs */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+      >
         <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-xl backdrop-blur-sm">
           {statusTabs.map((tab) => (
             <button
@@ -119,7 +133,7 @@ export function JobsPage() {
             <Filter className="h-4 w-4" />
           </Button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Jobs Grid */}
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -128,10 +142,10 @@ export function JobsPage() {
             <motion.div
               key={job.id}
               layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2, delay: index * 0.05 }}
+              transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
             >
               <JobCard job={job} onClick={() => navigate(`/jobs/${job.id}`)} />
             </motion.div>

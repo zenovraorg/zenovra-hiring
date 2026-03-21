@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import {
   ArrowLeft, MapPin, Briefcase, Building2, Clock, DollarSign,
   Share2, Users, Zap, CheckCircle2, Star, Globe, Heart, Coffee,

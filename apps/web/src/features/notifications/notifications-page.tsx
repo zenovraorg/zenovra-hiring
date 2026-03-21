@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Bell, Check, CheckCheck, Briefcase, Calendar, FileText, MessageSquare } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { Button } from '@/components/ui/button';
@@ -55,7 +55,14 @@ export function NotificationsPage() {
         {notifications.map((notification, index) => {
           const Icon = typeIcons[notification.type] || Bell;
           return (
-            <motion.div key={notification.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
+            <motion.div
+              key={notification.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.01, x: 2 }}
+              whileTap={{ scale: 0.99 }}
+            >
               <Card
                 className={cn(
                   'p-4 cursor-pointer hover:shadow-sm transition-all',

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import {
   Upload, FileText, Download, Trash2, File, X,
 } from 'lucide-react';

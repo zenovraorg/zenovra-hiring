@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import {
   ArrowLeft, Upload, CheckCircle2, Zap, FileText, X,
 } from 'lucide-react';

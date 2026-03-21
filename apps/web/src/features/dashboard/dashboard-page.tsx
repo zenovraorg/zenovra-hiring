@@ -1,5 +1,6 @@
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'motion/react';
 import {
   Briefcase,
   Users,
@@ -37,14 +38,27 @@ import { useJobs } from '@/hooks/use-api';
 const CHART_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#06b6d4', '#10b981', '#f59e0b'];
 const PIE_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b'];
 
+const smoothEase = [0.22, 1, 0.36, 1] as const;
+
 export function DashboardPage() {
   const navigate = useNavigate();
   const { data: jobsData } = useJobs();
   const openJobs = jobsData?.items?.filter(j => j.status === 'open') || fallbackJobs.filter(j => j.status === 'open');
   const stats = demoDashboardStats;
+  const chartsRef = useRef(null);
+  const chartsInView = useInView(chartsRef, { once: true, margin: '-50px' });
+  const bottomRef = useRef(null);
+  const bottomInView = useInView(bottomRef, { once: true, margin: '-50px' });
+  const deptRef = useRef(null);
+  const deptInView = useInView(deptRef, { once: true, margin: '-50px' });
 
   return (
     <div className="p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto">
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, ease: smoothEase }}
+      >
       <PageHeader
         title="Hiring Dashboard"
         description="Overview of your organization's hiring health"
@@ -55,6 +69,7 @@ export function DashboardPage() {
           </Button>
         }
       />
+      </motion.div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
@@ -67,12 +82,12 @@ export function DashboardPage() {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div ref={chartsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pipeline Funnel */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.3 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={chartsInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: smoothEase }}
         >
           <Card>
             <CardHeader className="pb-2">
@@ -107,9 +122,9 @@ export function DashboardPage() {
 
         {/* Hires by Month */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.35 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={chartsInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}
         >
           <Card>
             <CardHeader className="pb-2">
@@ -152,12 +167,12 @@ export function DashboardPage() {
       </div>
 
       {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div ref={bottomRef} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Source Breakdown */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={bottomInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: smoothEase }}
         >
           <Card className="h-full">
             <CardHeader className="pb-2">
@@ -211,9 +226,9 @@ export function DashboardPage() {
 
         {/* Open Positions */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.45 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={bottomInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}
         >
           <Card className="h-full">
             <CardHeader className="pb-2 flex-row items-center justify-between">
@@ -253,9 +268,9 @@ export function DashboardPage() {
 
         {/* Recent Activity */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.5 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={bottomInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2, ease: smoothEase }}
         >
           <Card className="h-full">
             <CardHeader className="pb-2 flex-row items-center justify-between">
@@ -304,9 +319,10 @@ export function DashboardPage() {
 
       {/* Department Metrics */}
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.55 }}
+        ref={deptRef}
+        initial={{ opacity: 0, y: 30 }}
+        animate={deptInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: smoothEase }}
       >
         <Card>
           <CardHeader className="pb-2">
@@ -317,9 +333,10 @@ export function DashboardPage() {
               {stats.department_metrics.map((dept, i) => (
                 <motion.div
                   key={dept.department}
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + i * 0.05 }}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={deptInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: smoothEase }}
+                  whileHover={{ scale: 1.02, y: -2 }}
                   className="rounded-lg border p-4 hover:shadow-sm transition-shadow"
                 >
                   <p className="text-sm font-medium">{dept.department}</p>

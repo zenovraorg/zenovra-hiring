@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import {
   Users, Shield, Settings, FileText, Bell, Palette,
   Building2, MapPin, ChevronRight, Search,

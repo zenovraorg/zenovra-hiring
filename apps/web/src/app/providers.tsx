@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { LazyMotion, domAnimation, MotionConfig } from 'framer-motion';
+import { LazyMotion, domAnimation, MotionConfig } from 'motion/react';
 import { type ReactNode } from 'react';
 
 const queryClient = new QueryClient({

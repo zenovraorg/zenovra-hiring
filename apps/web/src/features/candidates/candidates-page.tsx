@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Plus,
   Search,
@@ -55,25 +55,39 @@ export function CandidatesPage() {
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto">
       {/* Header Section */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+      >
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight text-primary">Candidate Pool</h1>
           <p className="text-muted-foreground">Manage your talent pipeline and track candidate progress across roles.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl shadow-sm bg-white/50 backdrop-blur-sm">
-            <Download className="mr-2 h-4 w-4" />
-            Export Pool
-          </Button>
-          <Button onClick={() => setAddDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20">
-            <Plus className="mr-2 h-4 w-4" />
-            Add Candidate
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button variant="outline" className="rounded-xl shadow-sm bg-white/50 backdrop-blur-sm">
+              <Download className="mr-2 h-4 w-4" />
+              Export Pool
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button onClick={() => setAddDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Candidate
+            </Button>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Search & Filters */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+      >
         <div className="relative w-full md:w-96">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -94,10 +108,15 @@ export function CandidatesPage() {
             <span>Candidates</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Candidate List */}
-      <div className="premium-card overflow-hidden bg-white/70 backdrop-blur-sm">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="premium-card overflow-hidden bg-white/70 backdrop-blur-sm"
+      >
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -117,10 +136,10 @@ export function CandidatesPage() {
                   <motion.tr
                     key={candidate.id}
                     layout
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.2, delay: index * 0.03 }}
+                    transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
                     className="group hover:bg-primary/[0.02] transition-colors cursor-pointer"
                     onClick={() => navigate(`/candidates/${candidate.id}`)}
                   >
@@ -231,7 +250,7 @@ export function CandidatesPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </motion.div>
 
       {filtered.length === 0 && (
         <div className="py-20 text-center premium-card bg-white/50">

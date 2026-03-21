@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import {
   User, Mail, Phone, MapPin, Linkedin, Globe, X, Plus, CheckCircle2,
 } from 'lucide-react';

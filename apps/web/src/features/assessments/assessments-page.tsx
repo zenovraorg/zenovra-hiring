@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ClipboardCheck, Plus, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatCard } from '@/components/shared/stat-card';
@@ -30,10 +30,12 @@ export function AssessmentsPage() {
         title="Assessments"
         description="Track candidate assessments and challenges"
         actions={
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Assessment
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Create Assessment
+            </Button>
+          </motion.div>
         }
       />
 
@@ -59,9 +61,10 @@ export function AssessmentsPage() {
             return (
               <motion.div
                 key={assessment.id}
-                initial={{ opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: index * 0.04 }}
+                transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ backgroundColor: 'rgba(99, 102, 241, 0.03)', x: 2 }}
                 className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-3 items-center border-t hover:bg-muted/30 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-2">

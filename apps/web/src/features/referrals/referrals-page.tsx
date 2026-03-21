@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { UserPlus, Gift, TrendingUp, CheckCircle2, Plus } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatCard } from '@/components/shared/stat-card';
@@ -31,10 +31,12 @@ export function ReferralsPage() {
         title="Referrals"
         description="Track employee referrals and rewards"
         actions={
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Submit Referral
-          </Button>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Submit Referral
+            </Button>
+          </motion.div>
         }
       />
 
@@ -54,9 +56,10 @@ export function ReferralsPage() {
             {demoReferrals.map((ref, index) => (
               <motion.div
                 key={ref.id}
-                initial={{ opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: index * 0.04 }}
+                transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ x: 4, backgroundColor: 'rgba(99, 102, 241, 0.02)' }}
                 className="flex items-center justify-between py-3 border-b last:border-0"
               >
                 <div className="flex items-center gap-3">

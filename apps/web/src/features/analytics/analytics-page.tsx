@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend,
@@ -53,7 +54,14 @@ const offerAcceptance = [
   { month: 'Q4', accepted: 8, declined: 1 },
 ];
 
+const smoothEase = [0.22, 1, 0.36, 1] as const;
+
 export function AnalyticsPage() {
+  const chartsRef = useRef(null);
+  const chartsInView = useInView(chartsRef, { once: true, margin: '-50px' });
+  const recruiterRef = useRef(null);
+  const recruiterInView = useInView(recruiterRef, { once: true, margin: '-50px' });
+
   return (
     <div className="p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto">
       <PageHeader
@@ -76,9 +84,9 @@ export function AnalyticsPage() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div ref={chartsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Hiring Funnel */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={chartsInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease: smoothEase }}>
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">Hiring Funnel</CardTitle>
@@ -104,7 +112,7 @@ export function AnalyticsPage() {
         </motion.div>
 
         {/* Time to Hire Trend */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={chartsInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}>
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">Time to Hire Trend</CardTitle>
@@ -132,7 +140,7 @@ export function AnalyticsPage() {
         </motion.div>
 
         {/* Source Performance */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={chartsInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2, ease: smoothEase }}>
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">Source Performance</CardTitle>
@@ -156,7 +164,7 @@ export function AnalyticsPage() {
         </motion.div>
 
         {/* Offer Acceptance */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={chartsInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.3, ease: smoothEase }}>
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">Offer Acceptance Rate</CardTitle>
@@ -181,7 +189,12 @@ export function AnalyticsPage() {
       </div>
 
       {/* Recruiter Performance */}
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+      <motion.div
+        ref={recruiterRef}
+        initial={{ opacity: 0, y: 30 }}
+        animate={recruiterInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: smoothEase }}
+      >
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-medium">Recruiter Performance</CardTitle>
@@ -196,13 +209,20 @@ export function AnalyticsPage() {
                 <span className="text-center">Hires</span>
               </div>
               {recruiterData.map((recruiter, i) => (
-                <div key={recruiter.name} className="grid grid-cols-5 gap-4 px-4 py-3 items-center border-t hover:bg-muted/30 transition-colors">
+                <motion.div
+                  key={recruiter.name}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={recruiterInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.15 + i * 0.08, ease: smoothEase }}
+                  whileHover={{ backgroundColor: 'rgba(99, 102, 241, 0.03)' }}
+                  className="grid grid-cols-5 gap-4 px-4 py-3 items-center border-t transition-colors"
+                >
                   <span className="text-sm font-medium">{recruiter.name}</span>
                   <span className="text-sm text-center">{recruiter.pipeline}</span>
                   <span className="text-sm text-center">{recruiter.interviews}</span>
                   <span className="text-sm text-center">{recruiter.offers}</span>
                   <span className="text-sm text-center font-semibold text-primary">{recruiter.hires}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </CardContent>

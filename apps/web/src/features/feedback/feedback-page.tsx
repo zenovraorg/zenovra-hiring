@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { MessageSquare, Star, ThumbsUp, ThumbsDown, Plus } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatCard } from '@/components/shared/stat-card';
@@ -48,7 +48,14 @@ export function FeedbackPage() {
 
       <div className="space-y-3">
         {demoFeedback.map((fb, index) => (
-          <motion.div key={fb.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
+          <motion.div
+            key={fb.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ scale: 1.01, y: -2 }}
+            whileTap={{ scale: 0.99 }}
+          >
             <Card className="p-5 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4">
