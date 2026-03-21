@@ -289,8 +289,8 @@ function OverviewTab({
                   <div>
                     <p className="text-xs text-muted-foreground">Salary Range</p>
                     <p className="text-sm font-medium">
-                      {formatCurrency(job.compensation.min_salary)} &ndash;{' '}
-                      {formatCurrency(job.compensation.max_salary)}{' '}
+                      {formatCurrency(job.compensation.min_salary || 0)} &ndash;{' '}
+                      {formatCurrency(job.compensation.max_salary || 0)}{' '}
                       <span className="text-muted-foreground font-normal">{job.compensation.currency}</span>
                     </p>
                   </div>
