@@ -17,6 +17,13 @@ import { CareersPage } from '@/features/careers/careers-page';
 import { CreateJobPage } from '@/features/jobs/create-job-page';
 import { JobDetailPage } from '@/features/jobs/job-detail-page';
 import { CandidateDetailPage } from '@/features/candidates/candidate-detail-page';
+import { CareerJobDetail } from '@/features/careers/career-job-detail';
+import { CareerApply } from '@/features/careers/career-apply';
+import { CareerLogin } from '@/features/careers/career-login';
+import { PortalLayout } from '@/features/candidate-portal/portal-layout';
+import { PortalDashboard } from '@/features/candidate-portal/portal-dashboard';
+import { PortalDocuments } from '@/features/candidate-portal/portal-documents';
+import { PortalProfile } from '@/features/candidate-portal/portal-profile';
 
 export const router = createBrowserRouter([
   {
@@ -24,8 +31,29 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: '/careers/login',
+    element: <CareerLogin />,
+  },
+  {
+    path: '/careers/:id/apply',
+    element: <CareerApply />,
+  },
+  {
+    path: '/careers/:id',
+    element: <CareerJobDetail />,
+  },
+  {
     path: '/careers',
     element: <CareersPage />,
+  },
+  {
+    path: '/portal',
+    element: <PortalLayout />,
+    children: [
+      { index: true, element: <PortalDashboard /> },
+      { path: 'documents', element: <PortalDocuments /> },
+      { path: 'profile', element: <PortalProfile /> },
+    ],
   },
   {
     path: '/',

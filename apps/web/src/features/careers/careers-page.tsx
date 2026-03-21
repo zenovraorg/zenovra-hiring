@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Briefcase, Clock, Building2, ArrowRight, Zap, Globe } from 'lucide-react';
+import { Search, MapPin, Briefcase, Clock, Building2, ArrowRight, Zap, Globe, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +11,7 @@ import { demoJobs, demoOrg } from '@/lib/demo-data';
 import { formatCurrency } from '@/lib/utils';
 
 export function CareersPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
 
@@ -28,7 +30,17 @@ export function CareersPage() {
       {/* Hero */}
       <div className="relative overflow-hidden border-b">
         <div className="gradient-mesh absolute inset-0" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center">
+        {/* Sign In link for applicants */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-4 flex justify-end">
+          <Link
+            to="/careers/login"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <LogIn className="h-3.5 w-3.5" />
+            Sign In
+          </Link>
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,12 +117,12 @@ export function CareersPage() {
         <div className="space-y-3">
           {filteredJobs.map((job, index) => (
             <motion.div key={job.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
-              <Card className="p-5 hover:shadow-md hover:border-primary/20 transition-all cursor-pointer group">
+              <Card className="p-5 hover:shadow-md hover:border-primary/20 transition-all cursor-pointer group" onClick={() => navigate(`/careers/${job.id}`)}>
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="text-base font-semibold group-hover:text-primary transition-colors">
+                    <Link to={`/careers/${job.id}`} className="text-base font-semibold group-hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
                       {job.title}
-                    </h3>
+                    </Link>
                     <div className="flex items-center gap-3 mt-1.5 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Building2 className="h-3.5 w-3.5" />
@@ -137,7 +149,12 @@ export function CareersPage() {
                       )}
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                    onClick={(e) => { e.stopPropagation(); navigate(`/careers/${job.id}`); }}
+                  >
                     Apply
                     <ArrowRight className="ml-1 h-3.5 w-3.5" />
                   </Button>
