@@ -15,7 +15,7 @@ export const demoUsers: User[] = [
 
 export const demoOrg: Organization = {
   id: 'org1',
-  name: 'Zenovra Technologies',
+  name: 'Zenovra Tech',
   slug: 'zenovra',
   domain: 'zenovra.com',
   industry: 'Technology',

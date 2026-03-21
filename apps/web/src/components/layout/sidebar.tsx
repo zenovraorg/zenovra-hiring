@@ -94,14 +94,14 @@ export function Sidebar() {
                 </div>
                 {!sidebarCollapsed && (
                   <span className="truncate text-sm font-medium">
-                    {organization?.name || 'Zenovra Inc'}
+                    {organization?.name || 'Zenovra Tech'}
                   </span>
                 )}
               </button>
             </TooltipTrigger>
             {sidebarCollapsed && (
               <TooltipContent side="right">
-                {organization?.name || 'Zenovra Inc'}
+                {organization?.name || 'Zenovra Tech'}
               </TooltipContent>
             )}
           </Tooltip>

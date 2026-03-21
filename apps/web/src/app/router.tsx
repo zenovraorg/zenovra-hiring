@@ -14,6 +14,7 @@ import { NotificationsPage } from '@/features/notifications/notifications-page';
 import { ReferralsPage } from '@/features/referrals/referrals-page';
 import { AdminPage } from '@/features/admin/admin-page';
 import { CareersPage } from '@/features/careers/careers-page';
+import { CreateJobPage } from '@/features/jobs/create-job-page';
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/dashboard" replace /> },
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'jobs', element: <JobsPage /> },
-      { path: 'jobs/new', element: <JobsPage /> },
+      { path: 'jobs/new', element: <CreateJobPage /> },
       { path: 'jobs/:id', element: <JobsPage /> },
       { path: 'candidates', element: <CandidatesPage /> },
       { path: 'candidates/:id', element: <CandidatesPage /> },
