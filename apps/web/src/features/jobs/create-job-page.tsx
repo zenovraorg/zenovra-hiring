@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { demoDepartments, demoLocations, demoUsers } from '@/lib/demo-data';
-import { useDataStore } from '@/stores/data-store';
+import { useCreateJob } from '@/hooks/use-api';
 
 const employmentTypes = [
   { value: 'full_time', label: 'Full Time' },
@@ -28,6 +28,7 @@ const experienceLevels = [
 
 export function CreateJobPage() {
   const navigate = useNavigate();
+  const createJob = useCreateJob();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     title: 'Senior Full Stack Engineer',
@@ -71,14 +72,14 @@ export function CreateJobPage() {
   };
 
   const handleSubmit = () => {
-    useDataStore.getState().addJob({
+    createJob.mutate({
       title: form.title,
       department_id: form.department_id,
       location_id: form.location_id,
       hiring_manager_id: form.hiring_manager_id,
       recruiter_id: form.recruiter_id,
-      employment_type: form.employment_type as any,
-      experience_level: form.experience_level as any,
+      employment_type: form.employment_type,
+      experience_level: form.experience_level,
       is_remote: form.is_remote,
       description: form.description,
       requirements: form.requirements.filter(Boolean),

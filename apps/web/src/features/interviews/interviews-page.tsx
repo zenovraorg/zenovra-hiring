@@ -9,14 +9,14 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
 import { ScheduleInterviewDialog } from '@/features/interviews/schedule-interview-dialog';
-import { useDataStore } from '@/stores/data-store';
+import { demoInterviews, demoApplications } from '@/lib/demo-data';
 import { getInitials, formatDate } from '@/lib/utils';
 
 export function InterviewsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
-  const interviews = useDataStore((s) => s.interviews);
-  const applications = useDataStore((s) => s.applications);
+  const interviews = demoInterviews;
+  const applications = demoApplications;
   const today = interviews.filter((i) => i.status === 'scheduled');
   const completed = interviews.filter((i) => i.status === 'completed');
 

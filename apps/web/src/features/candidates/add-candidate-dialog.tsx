@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useDataStore } from '@/stores/data-store';
+import { useCreateCandidate } from '@/hooks/use-api';
 
 const sourceOptions = ['LinkedIn', 'Referral', 'Careers Page', 'Direct', 'Agency'];
 
@@ -19,6 +19,7 @@ interface AddCandidateDialogProps {
 }
 
 export function AddCandidateDialog({ open, onClose }: AddCandidateDialogProps) {
+  const createCandidate = useCreateCandidate();
   const [firstName, setFirstName] = useState('Taylor');
   const [lastName, setLastName] = useState('Morgan');
   const [email, setEmail] = useState('taylor.morgan@email.com');
@@ -110,7 +111,7 @@ export function AddCandidateDialog({ open, onClose }: AddCandidateDialogProps) {
               'Direct': 'direct',
               'Agency': 'agency',
             };
-            useDataStore.getState().addCandidate({
+            createCandidate.mutate({
               first_name: firstName,
               last_name: lastName,
               email,
@@ -119,7 +120,7 @@ export function AddCandidateDialog({ open, onClose }: AddCandidateDialogProps) {
               current_company: currentCompany || undefined,
               current_title: currentTitle || undefined,
               experience_years: experienceYears ? Number(experienceYears) : undefined,
-              source: (sourceMap[source] || 'direct') as any,
+              source: sourceMap[source] || 'direct',
               skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
             });
             onClose();

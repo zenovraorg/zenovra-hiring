@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { useDataStore } from '@/stores/data-store';
+import { useJobs } from '@/hooks/use-api';
+import { demoJobs } from '@/lib/demo-data';
 
 export function CareerApply() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +40,8 @@ Jamie Anderson`,
     heardFrom: 'LinkedIn',
   });
 
-  const jobs = useDataStore((s) => s.jobs);
+  const { data: jobsData } = useJobs();
+  const jobs = jobsData?.items || demoJobs;
   const job = jobs.find((j) => j.id === id);
 
   useEffect(() => {

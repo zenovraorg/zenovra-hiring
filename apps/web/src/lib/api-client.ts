@@ -19,11 +19,14 @@ class ApiError extends Error {
 }
 
 async function getAuthToken(): Promise<string | null> {
-  // Firebase auth token will be injected here
-  const { auth } = await import('./firebase');
-  const user = auth.currentUser;
-  if (!user) return null;
-  return user.getIdToken();
+  try {
+    const { auth } = await import('./firebase');
+    const user = auth.currentUser;
+    if (user) return user.getIdToken();
+  } catch {
+    // Firebase not configured
+  }
+  return 'demo-token';
 }
 
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {

@@ -10,15 +10,16 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { demoOrg } from '@/lib/demo-data';
+import { demoOrg, demoJobs } from '@/lib/demo-data';
 import { formatCurrency } from '@/lib/utils';
-import { useDataStore } from '@/stores/data-store';
+import { useJobs } from '@/hooks/use-api';
 
 export function CareerJobDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
-  const jobs = useDataStore((s) => s.jobs);
+  const { data } = useJobs();
+  const jobs = data?.items || demoJobs;
   const job = jobs.find((j) => j.id === id);
 
   if (!job) {

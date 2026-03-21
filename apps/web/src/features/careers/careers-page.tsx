@@ -8,11 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
 import { formatCurrency } from '@/lib/utils';
-import { useDataStore } from '@/stores/data-store';
+import { useJobs } from '@/hooks/use-api';
+import { demoJobs } from '@/lib/demo-data';
 
 export function CareersPage() {
   const navigate = useNavigate();
-  const jobs = useDataStore((s) => s.jobs);
+  const { data } = useJobs();
+  const jobs = data?.items || demoJobs;
   const [search, setSearch] = useState('');
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
 

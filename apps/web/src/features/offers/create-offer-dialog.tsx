@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { useDataStore } from '@/stores/data-store';
+import { demoCandidates } from '@/lib/demo-data';
 
 const benefitOptions = [
   'Health/Dental/Vision',
@@ -32,7 +32,7 @@ interface CreateOfferDialogProps {
 }
 
 export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
-  const candidates = useDataStore((s) => s.candidates);
+  const candidates = demoCandidates;
   const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? '');
   const [jobTitle, setJobTitle] = useState('Senior Frontend Engineer');
   const [department, setDepartment] = useState('Engineering');
@@ -136,15 +136,7 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button onClick={() => {
-            useDataStore.getState().addOffer({
-              title: jobTitle,
-              department,
-              base_salary: Number(baseSalary) || 0,
-              bonus: bonus ? Number(bonus) : undefined,
-              equity: equity || undefined,
-              start_date: startDate,
-              benefits,
-            });
+            // TODO: Wire to API when offer endpoints are available
             onClose();
           }}>Create Offer</Button>
         </DialogFooter>

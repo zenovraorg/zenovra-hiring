@@ -25,17 +25,19 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { AddCandidateDialog } from '@/features/candidates/add-candidate-dialog';
-import { useDataStore } from '@/stores/data-store';
+import { useCandidates } from '@/hooks/use-api';
+import { demoCandidates } from '@/lib/demo-data';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
 
 export function CandidatesPage() {
   const navigate = useNavigate();
-  const candidates = useDataStore((s) => s.candidates);
   const [search, setSearch] = useState('');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const { data, isLoading } = useCandidates({ search: search || undefined });
+  const candidates = data?.items || demoCandidates;
 
   const filtered = candidates.filter((c) => {
-    if (!search) return true;
+    if (!search || data?.items) return true;
     const q = search.toLowerCase();
     return (
       c.first_name.toLowerCase().includes(q) ||

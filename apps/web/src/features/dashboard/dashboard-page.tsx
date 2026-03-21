@@ -30,16 +30,17 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-import { demoDashboardStats, demoActivity } from '@/lib/demo-data';
+import { demoDashboardStats, demoActivity, demoJobs as fallbackJobs } from '@/lib/demo-data';
 import { getInitials, formatRelativeTime, formatNumber } from '@/lib/utils';
-import { useDataStore } from '@/stores/data-store';
+import { useJobs } from '@/hooks/use-api';
 
 const CHART_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#06b6d4', '#10b981', '#f59e0b'];
 const PIE_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b'];
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const demoJobs = useDataStore((s) => s.jobs);
+  const { data: jobsData } = useJobs();
+  const openJobs = jobsData?.items?.filter(j => j.status === 'open') || fallbackJobs.filter(j => j.status === 'open');
   const stats = demoDashboardStats;
 
   return (
@@ -223,7 +224,7 @@ export function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {demoJobs.filter((j) => j.status === 'open').slice(0, 5).map((job, index) => (
+                {openJobs.slice(0, 5).map((job, index) => (
                   <motion.div
                     key={job.id}
                     initial={{ opacity: 0, y: 6 }}
