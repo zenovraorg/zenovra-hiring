@@ -138,8 +138,12 @@ export function LoginPage() {
           </Button>
 
           <p className="text-center text-xs text-muted-foreground mt-6">
-            Don't have an account?{' '}
-            <a href="#" className="text-primary hover:underline font-medium">Request access</a>
+            Looking for jobs?{' '}
+            <a href="/careers" className="text-primary hover:underline font-medium">View open positions</a>
+          </p>
+          <p className="text-center text-xs text-muted-foreground mt-2">
+            Applicant?{' '}
+            <a href="/careers/login" className="text-primary hover:underline font-medium">Sign in here</a>
           </p>
         </motion.div>
       </div>

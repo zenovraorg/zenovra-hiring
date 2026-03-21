@@ -30,14 +30,20 @@ export function CareersPage() {
       {/* Hero */}
       <div className="relative overflow-hidden border-b">
         <div className="gradient-mesh absolute inset-0" />
-        {/* Sign In link for applicants */}
-        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-4 flex justify-end">
+        {/* Sign In links */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-4 flex justify-end gap-4">
           <Link
             to="/careers/login"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <LogIn className="h-3.5 w-3.5" />
-            Sign In
+            Applicant Sign In
+          </Link>
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Admin Login
           </Link>
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
@@ -52,22 +58,26 @@ export function CareersPage() {
               </div>
               <span className="text-xl font-semibold">Zenovra Tech</span>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4">
-              Join Our Team
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+              <Briefcase className="h-3.5 w-3.5" />
+              {publishedJobs.length} open positions across {departments.length} teams
+            </div>
+            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+              Build the Future With Us
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Help us build the future of hiring. We're looking for exceptional people
-              who want to make recruiting better for everyone.
+              Join a team of builders, thinkers, and innovators shaping how the world hires talent.
+              We offer competitive compensation, equity, and the chance to make real impact.
             </p>
-            <div className="flex items-center gap-4 justify-center text-sm text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Globe className="h-4 w-4" />
-                <span>Remote-first</span>
+            <div className="flex items-center gap-6 justify-center text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="h-2 w-2 rounded-full bg-success" />
+                <span>Actively Hiring</span>
               </div>
-              <span className="text-border">·</span>
-              <span>{publishedJobs.length} open positions</span>
-              <span className="text-border">·</span>
-              <span>{departments.length} departments</span>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <MapPin className="h-3.5 w-3.5" />
+                <span>SF, NYC, London & Remote</span>
+              </div>
             </div>
           </motion.div>
         </div>
