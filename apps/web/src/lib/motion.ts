@@ -67,7 +67,7 @@ export const listItem: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
-export const cardHover = {
+export const cardHover: Variants = {
   rest: { y: 0, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' },
   hover: {
     y: -2,

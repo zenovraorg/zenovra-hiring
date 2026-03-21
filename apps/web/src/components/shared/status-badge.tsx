@@ -53,8 +53,22 @@ interface StatusBadgeProps {
   status: string;
 }
 
-export function StatusBadge({ type, status }: StatusBadgeProps) {
+export function StatusBadge({ type, status, className }: StatusBadgeProps & { className?: string }) {
   const config = (configs[type] as Record<string, { label: string; variant: string }>)[status];
-  if (!config) return <Badge variant="secondary">{status}</Badge>;
-  return <Badge variant={config.variant as 'success' | 'warning' | 'info' | 'destructive' | 'secondary' | 'muted'}>{config.label}</Badge>;
+  if (!config) return <Badge variant="secondary" className={className}>{status}</Badge>;
+  return (
+    <Badge 
+      variant={config.variant as any} 
+      className={cn(
+        "px-2 py-0.5 rounded-full border-none",
+        className
+      )}
+    >
+      {config.label}
+    </Badge>
+  );
+}
+
+function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).join(' ');
 }

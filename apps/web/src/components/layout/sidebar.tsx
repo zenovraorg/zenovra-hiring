@@ -48,80 +48,97 @@ const adminNav = [
 ];
 
 export function Sidebar() {
-  const { sidebarCollapsed, toggleSidebar, organization } = useAppStore();
+  const { sidebarCollapsed, toggleSidebar } = useAppStore();
   const location = useLocation();
 
   return (
     <TooltipProvider delayDuration={0}>
       <motion.aside
         initial={false}
-        animate={{ width: sidebarCollapsed ? 64 : 240 }}
-        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="relative flex h-full flex-col border-r bg-sidebar"
+        animate={{ width: sidebarCollapsed ? 80 : 260 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        className="relative flex h-full flex-col border-r bg-white/50 backdrop-blur-xl z-30"
       >
-        {/* Logo */}
-        <div className="flex h-14 items-center gap-2 px-4">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Zap className="h-4 w-4" />
+        {/* Logo Section */}
+        <div className="flex h-20 items-center gap-3 px-6">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+            <Zap className="h-5 w-5 fill-current" />
           </div>
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             {!sidebarCollapsed && (
               <motion.div
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: 'auto' }}
-                exit={{ opacity: 0, width: 0 }}
-                transition={{ duration: 0.15 }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
                 <div className="flex flex-col">
-                  <span className="text-base font-semibold tracking-tight leading-tight">Zenovra Tech</span>
-                  <span className="text-2xs text-muted-foreground leading-tight">part of Zenovra Org</span>
+                  <span className="text-lg font-bold tracking-tight leading-none text-primary">HireFlow</span>
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-0.5">Enterprise</span>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        <Separator />
-
         {/* Navigation */}
-        <ScrollArea className="flex-1 py-2">
-          <nav className="space-y-1 px-3">
-            <SidebarSection items={mainNav} collapsed={sidebarCollapsed} currentPath={location.pathname} />
-            <div className="py-2">
-              <Separator />
+        <ScrollArea className="flex-1 px-4">
+          <div className="space-y-6 py-4">
+            <div>
+              {!sidebarCollapsed && (
+                <h4 className="mb-2 px-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                  Main Menu
+                </h4>
+              )}
+              <nav className="space-y-1">
+                <SidebarSection items={mainNav} collapsed={sidebarCollapsed} currentPath={location.pathname} />
+              </nav>
             </div>
-            <SidebarSection items={secondaryNav} collapsed={sidebarCollapsed} currentPath={location.pathname} />
-            <div className="py-2">
-              <Separator />
+
+            <div>
+              {!sidebarCollapsed && (
+                <h4 className="mb-2 px-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                  Operations
+                </h4>
+              )}
+              <nav className="space-y-1">
+                <SidebarSection items={secondaryNav} collapsed={sidebarCollapsed} currentPath={location.pathname} />
+              </nav>
             </div>
-            <SidebarSection items={adminNav} collapsed={sidebarCollapsed} currentPath={location.pathname} />
-          </nav>
+
+            <div>
+              {!sidebarCollapsed && (
+                <h4 className="mb-2 px-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                  System
+                </h4>
+              )}
+              <nav className="space-y-1">
+                <SidebarSection items={adminNav} collapsed={sidebarCollapsed} currentPath={location.pathname} />
+              </nav>
+            </div>
+          </div>
         </ScrollArea>
 
-        {/* Careers page link */}
-        <div className="border-t px-3 py-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink
-                to="/careers"
-                className={cn(
-                  'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-foreground transition-colors',
-                  sidebarCollapsed && 'justify-center'
-                )}
-              >
-                <Globe className="h-4 w-4 shrink-0" />
-                {!sidebarCollapsed && <span>Careers Page</span>}
-              </NavLink>
-            </TooltipTrigger>
-            {sidebarCollapsed && <TooltipContent side="right">Careers Page</TooltipContent>}
-          </Tooltip>
+        {/* Footer / Careers */}
+        <div className="p-4 mt-auto">
+          <NavLink
+            to="/careers"
+            className={cn(
+              "flex items-center gap-3 rounded-xl p-3 text-sm font-medium transition-all duration-200",
+              "bg-primary/5 text-primary hover:bg-primary hover:text-white group shadow-sm",
+              sidebarCollapsed && "justify-center px-0"
+            )}
+          >
+            <Globe className="h-5 w-5 shrink-0 transition-transform group-hover:rotate-12" />
+            {!sidebarCollapsed && <span>Public Careers</span>}
+          </NavLink>
         </div>
 
         {/* Collapse toggle */}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-3 top-20 flex h-6 w-6 items-center justify-center rounded-full border bg-background shadow-sm hover:bg-accent transition-colors"
+          className="absolute -right-3 top-24 flex h-6 w-6 items-center justify-center rounded-full border bg-white shadow-md hover:scale-110 transition-transform z-50"
         >
           {sidebarCollapsed ? (
             <ChevronRight className="h-3 w-3" />
@@ -155,27 +172,36 @@ function SidebarSection({
               <NavLink
                 to={item.href}
                 className={cn(
-                  'group relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors',
+                  'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                   isActive
-                    ? 'bg-sidebar-accent text-foreground'
-                    : 'text-muted-foreground hover:bg-sidebar-accent hover:text-foreground',
-                  collapsed && 'justify-center'
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:bg-primary/5 hover:text-primary',
+                  collapsed && 'justify-center px-0'
                 )}
               >
                 {isActive && (
                   <motion.div
-                    layoutId="sidebar-active"
-                    className="absolute inset-0 rounded-md bg-sidebar-accent"
-                    transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                    layoutId="sidebar-active-pill"
+                    className="absolute inset-0 rounded-xl bg-primary/10"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
-                <Icon className="relative z-10 h-4 w-4 shrink-0" />
+                <Icon className={cn(
+                  "relative z-10 h-5 w-5 shrink-0 transition-transform duration-200",
+                  isActive ? "scale-110" : "group-hover:scale-110"
+                )} />
                 {!collapsed && (
                   <span className="relative z-10 truncate">{item.label}</span>
                 )}
+                {isActive && !collapsed && (
+                  <motion.div
+                    layoutId="sidebar-active-dot"
+                    className="absolute right-3 h-1.5 w-1.5 rounded-full bg-primary"
+                  />
+                )}
               </NavLink>
             </TooltipTrigger>
-            {collapsed && <TooltipContent side="right">{item.label}</TooltipContent>}
+            {collapsed && <TooltipContent side="right" className="font-medium">{item.label}</TooltipContent>}
           </Tooltip>
         );
       })}

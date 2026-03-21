@@ -13,12 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { getInitials } from '@/lib/utils';
 
 export function Topbar() {
   const navigate = useNavigate();
-  const { user, unreadCount, setCommandPaletteOpen, theme, setTheme } = useAppStore();
+  const { user, membership, unreadCount, setCommandPaletteOpen, theme, setTheme } = useAppStore();
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -29,89 +29,91 @@ export function Topbar() {
   }, [theme]);
 
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-background/80 backdrop-blur-sm px-4 lg:px-6">
-      {/* Search */}
-      <button
-        onClick={() => setCommandPaletteOpen(true)}
-        className="flex items-center gap-2 rounded-lg border bg-muted/50 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted w-64 lg:w-80"
-      >
-        <Search className="h-4 w-4" />
-        <span>Search anything...</span>
-        <kbd className="ml-auto hidden rounded bg-background px-1.5 py-0.5 text-2xs font-mono text-muted-foreground border sm:inline">
-          ⌘K
-        </kbd>
-      </button>
+    <header className="sticky top-0 z-20 flex h-20 w-full items-center justify-between border-b bg-white/50 px-6 backdrop-blur-xl">
+      <div className="flex items-center gap-4">
+        {/* Search Trigger */}
+        <button
+          onClick={() => setCommandPaletteOpen(true)}
+          className="group flex items-center gap-3 rounded-xl border bg-white/50 px-4 py-2 text-sm text-muted-foreground transition-all hover:bg-white hover:shadow-sm w-64 lg:w-96"
+        >
+          <Search className="h-4 w-4 transition-colors group-hover:text-primary" />
+          <span className="flex-1 text-left">Search anything...</span>
+          <kbd className="hidden rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold font-mono text-muted-foreground border sm:inline">
+            ⌘K
+          </kbd>
+        </button>
+      </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {/* Theme toggle */}
         <Button
           variant="ghost"
-          size="icon-sm"
+          size="icon"
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-          className="text-muted-foreground"
+          className="rounded-xl hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors"
         >
-          {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+          {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
         </Button>
 
         {/* Notifications */}
         <Button
           variant="ghost"
-          size="icon-sm"
-          className="relative text-muted-foreground"
+          size="icon"
+          className="relative rounded-xl hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors"
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
-              {unreadCount > 9 ? '9+' : unreadCount}
-            </span>
+            <span className="absolute right-2 top-2 flex h-2 w-2 rounded-full bg-primary ring-2 ring-white" />
           )}
         </Button>
+
+        <Separator orientation="vertical" className="h-8 mx-2" />
 
         {/* User menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-muted transition-colors ml-1">
-              <Avatar className="h-7 w-7">
+            <Button variant="ghost" className="flex items-center gap-3 rounded-xl px-2 hover:bg-primary/5 transition-all">
+              <Avatar className="h-10 w-10 rounded-xl shadow-sm">
                 <AvatarImage src={user?.avatar_url} />
-                <AvatarFallback className="text-xs">
+                <AvatarFallback className="rounded-xl bg-primary/10 text-primary font-bold">
                   {user ? getInitials(user.display_name) : 'U'}
                 </AvatarFallback>
               </Avatar>
-              <div className="hidden lg:flex flex-col items-start">
-                <span className="text-sm font-medium leading-tight">
+              <div className="hidden text-left md:block">
+                <p className="text-sm font-bold leading-none text-primary">
                   {user?.display_name || 'Demo User'}
-                </span>
-                <span className="text-2xs text-muted-foreground leading-tight">
-                  {user?.email || 'demo@zenovra.com'}
-                </span>
+                </p>
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {membership?.role?.replace('_', ' ') || 'Administrator'}
+                </p>
               </div>
-              <ChevronDown className="h-3 w-3 text-muted-foreground hidden lg:block" />
-            </button>
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <div className="flex flex-col">
-                <span>{user?.display_name || 'Demo User'}</span>
-                <span className="text-xs font-normal text-muted-foreground">
+          <DropdownMenuContent align="end" className="w-64 rounded-xl p-2 shadow-xl border-muted/20">
+            <DropdownMenuLabel className="px-2 py-2">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-bold leading-none">{user?.display_name || 'Demo User'}</p>
+                <p className="text-xs font-medium text-muted-foreground truncate">
                   {user?.email || 'demo@zenovra.com'}
-                </span>
+                </p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => navigate('/admin')}>
+            <DropdownMenuSeparator className="my-1" />
+            <DropdownMenuGroup className="space-y-1">
+              <DropdownMenuItem className="rounded-lg cursor-pointer py-2" onClick={() => navigate('/admin')}>
                 <User className="mr-2 h-4 w-4" />
-                Profile
+                <span>Profile Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/admin/settings')}>
+              <DropdownMenuItem className="rounded-lg cursor-pointer py-2" onClick={() => navigate('/admin/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
-                Settings
+                <span>Organization Settings</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive" onClick={() => navigate('/careers')}>
+            <DropdownMenuSeparator className="my-1" />
+            <DropdownMenuItem className="rounded-lg cursor-pointer py-2 text-destructive focus:text-destructive focus:bg-destructive/5" onClick={() => navigate('/careers')}>
               <LogOut className="mr-2 h-4 w-4" />
-              Log out
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
