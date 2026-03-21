@@ -9,18 +9,20 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { StatCard } from '@/components/shared/stat-card';
 
+import { CreateOfferDialog } from '@/features/offers/create-offer-dialog';
 import { demoOffers, demoApplications, demoCandidates } from '@/lib/demo-data';
 import { getInitials, formatCurrency, formatDate } from '@/lib/utils';
 
 export function OffersPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [offerDialogOpen, setOfferDialogOpen] = useState(false);
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
         title="Offers"
         description="Manage compensation offers and approvals"
         actions={
-          <Button onClick={() => window.alert('Create Offer dialog coming soon')}>
+          <Button onClick={() => setOfferDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Create Offer
           </Button>
@@ -122,6 +124,7 @@ export function OffersPage() {
           );
         })}
       </div>
+      <CreateOfferDialog open={offerDialogOpen} onClose={() => setOfferDialogOpen(false)} />
     </div>
   );
 }

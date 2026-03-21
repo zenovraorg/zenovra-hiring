@@ -8,11 +8,13 @@ import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
+import { ScheduleInterviewDialog } from '@/features/interviews/schedule-interview-dialog';
 import { demoInterviews, demoApplications, demoCandidates } from '@/lib/demo-data';
 import { getInitials, formatDate } from '@/lib/utils';
 
 export function InterviewsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
   const today = demoInterviews.filter((i) => i.status === 'scheduled');
   const completed = demoInterviews.filter((i) => i.status === 'completed');
 
@@ -22,7 +24,7 @@ export function InterviewsPage() {
         title="Interviews"
         description={`${demoInterviews.length} total interviews`}
         actions={
-          <Button onClick={() => window.alert('Schedule Interview dialog coming soon')}>
+          <Button onClick={() => setScheduleDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Schedule Interview
           </Button>
@@ -164,6 +166,7 @@ export function InterviewsPage() {
           </div>
         </div>
       )}
+      <ScheduleInterviewDialog open={scheduleDialogOpen} onClose={() => setScheduleDialogOpen(false)} />
     </div>
   );
 }

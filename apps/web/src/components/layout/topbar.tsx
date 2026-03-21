@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Bell, Moon, Sun, LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import { useAppStore } from '@/stores/app-store';
@@ -18,6 +19,14 @@ import { getInitials } from '@/lib/utils';
 export function Topbar() {
   const navigate = useNavigate();
   const { user, unreadCount, setCommandPaletteOpen, theme, setTheme } = useAppStore();
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background/80 backdrop-blur-sm px-4 lg:px-6">

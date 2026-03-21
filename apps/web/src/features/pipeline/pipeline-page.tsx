@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import { AddCandidateDialog } from '@/features/candidates/add-candidate-dialog';
 import { demoJobs, demoApplications } from '@/lib/demo-data';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
 import type { Application } from '@/types';
@@ -26,6 +27,7 @@ export function PipelinePage() {
   );
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null);
   const [draggingAppId, setDraggingAppId] = useState<string | null>(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const stages = selectedJob.pipeline_stages;
 
@@ -136,12 +138,14 @@ export function PipelinePage() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button size="sm" onClick={() => window.alert('Add Candidate dialog coming soon')}>
+          <Button size="sm" onClick={() => setAddDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Add Candidate
           </Button>
         </div>
       </div>
+
+      <AddCandidateDialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)} />
 
       {/* Kanban Board */}
       <div className="flex-1 overflow-x-auto">
