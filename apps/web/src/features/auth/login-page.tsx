@@ -52,7 +52,7 @@ export function LoginPage() {
               Streamline your recruiting workflow, from sourcing to onboarding. Enterprise-grade ATS designed for modern teams.
             </motion.p>
           </div>
-          <p className="text-sm text-primary-foreground/60">Trusted by 500+ companies worldwide</p>
+          <p className="text-sm text-primary-foreground/60">Zenovra Tech — Part of Zenovra Org</p>
         </div>
       </div>
 
