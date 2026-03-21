@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { motion, Reorder } from 'framer-motion';
-import { ChevronDown, GripVertical, MoreHorizontal, Plus, MapPin, Calendar, Eye, Table2, Kanban } from 'lucide-react';
+import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ChevronDown, MoreHorizontal, Plus, Table2, Kanban } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,19 +13,79 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { demoJobs, demoApplications, demoCandidates } from '@/lib/demo-data';
+import { demoJobs, demoApplications } from '@/lib/demo-data';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
-import type { Application, PipelineStage } from '@/types';
+import type { Application } from '@/types';
 
 export function PipelinePage() {
+  const navigate = useNavigate();
   const [selectedJob, setSelectedJob] = useState(demoJobs[0]);
   const [view, setView] = useState<'board' | 'table'>('board');
+  const [applications, setApplications] = useState<Application[]>(
+    () => demoApplications.filter((a) => a.job_id === demoJobs[0].id)
+  );
+  const [dragOverStageId, setDragOverStageId] = useState<string | null>(null);
+  const [draggingAppId, setDraggingAppId] = useState<string | null>(null);
 
   const stages = selectedJob.pipeline_stages;
-  const applications = demoApplications.filter((a) => a.job_id === selectedJob.id);
 
-  const getApplicationsForStage = (stageId: string) =>
-    applications.filter((a) => a.stage_id === stageId);
+  const handleJobChange = (job: typeof demoJobs[0]) => {
+    setSelectedJob(job);
+    setApplications(demoApplications.filter((a) => a.job_id === job.id));
+  };
+
+  const getApplicationsForStage = useCallback(
+    (stageId: string) => applications.filter((a) => a.stage_id === stageId),
+    [applications]
+  );
+
+  const handleDragStart = (e: React.DragEvent, appId: string, stageId: string) => {
+    e.dataTransfer.setData('application/json', JSON.stringify({ appId, stageId }));
+    e.dataTransfer.effectAllowed = 'move';
+    setDraggingAppId(appId);
+  };
+
+  const handleDragOver = (e: React.DragEvent, stageId: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverStageId(stageId);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only clear if we're actually leaving the column (not entering a child)
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
+    if (!relatedTarget || !e.currentTarget.contains(relatedTarget)) {
+      setDragOverStageId(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetStageId: string) => {
+    e.preventDefault();
+    setDragOverStageId(null);
+    setDraggingAppId(null);
+
+    try {
+      const data = JSON.parse(e.dataTransfer.getData('application/json'));
+      const { appId, stageId: sourceStageId } = data;
+
+      if (sourceStageId === targetStageId) return;
+
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === appId
+            ? { ...app, stage_id: targetStageId, moved_at: new Date().toISOString() }
+            : app
+        )
+      );
+    } catch {
+      // ignore invalid drag data
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDragOverStageId(null);
+    setDraggingAppId(null);
+  };
 
   return (
     <div className="p-6 lg:p-8 space-y-6 h-full flex flex-col">
@@ -69,14 +129,14 @@ export function PipelinePage() {
               {demoJobs
                 .filter((j) => j.status === 'open')
                 .map((job) => (
-                  <DropdownMenuItem key={job.id} onClick={() => setSelectedJob(job)}>
+                  <DropdownMenuItem key={job.id} onClick={() => handleJobChange(job)}>
                     {job.title}
                   </DropdownMenuItem>
                 ))}
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button size="sm">
+          <Button size="sm" onClick={() => window.alert('Add Candidate dialog coming soon')}>
             <Plus className="mr-2 h-4 w-4" />
             Add Candidate
           </Button>
@@ -88,6 +148,7 @@ export function PipelinePage() {
         <div className="flex gap-4 h-full min-w-max pb-4">
           {stages.map((stage, index) => {
             const stageApps = getApplicationsForStage(stage.id);
+            const isOver = dragOverStageId === stage.id;
             return (
               <motion.div
                 key={stage.id}
@@ -113,13 +174,31 @@ export function PipelinePage() {
                   </Button>
                 </div>
 
-                {/* Column Body */}
-                <div className="flex-1 space-y-2 bg-muted/30 rounded-lg p-2 min-h-[200px]">
+                {/* Column Body - Drop Zone */}
+                <div
+                  className={`flex-1 space-y-2 rounded-lg p-2 min-h-[200px] transition-all duration-200 ${
+                    isOver
+                      ? 'bg-primary/10 border-2 border-primary'
+                      : 'bg-muted/30 border-2 border-transparent'
+                  }`}
+                  onDragOver={(e) => handleDragOver(e, stage.id)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, stage.id)}
+                >
                   {stageApps.map((app) => (
-                    <CandidateCard key={app.id} application={app} />
+                    <CandidateCard
+                      key={app.id}
+                      application={app}
+                      isDragging={draggingAppId === app.id}
+                      onDragStart={(e) => handleDragStart(e, app.id, stage.id)}
+                      onDragEnd={handleDragEnd}
+                      onViewProfile={() => navigate(`/candidates/${app.candidate_id}`)}
+                    />
                   ))}
                   {stageApps.length === 0 && (
-                    <div className="flex items-center justify-center h-20 text-xs text-muted-foreground border border-dashed rounded-md">
+                    <div className={`flex items-center justify-center h-20 text-xs text-muted-foreground border border-dashed rounded-md ${
+                      isOver ? 'border-primary text-primary' : ''
+                    }`}>
                       Drop candidates here
                     </div>
                   )}
@@ -133,18 +212,30 @@ export function PipelinePage() {
   );
 }
 
-function CandidateCard({ application }: { application: Application }) {
+function CandidateCard({
+  application,
+  isDragging,
+  onDragStart,
+  onDragEnd,
+  onViewProfile,
+}: {
+  application: Application;
+  isDragging: boolean;
+  onDragStart: (e: React.DragEvent) => void;
+  onDragEnd: () => void;
+  onViewProfile: () => void;
+}) {
   const candidate = application.candidate;
   if (!candidate) return null;
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -1, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
-      transition={{ duration: 0.15 }}
-      className="bg-card rounded-lg border p-3 cursor-pointer"
+    <div
+      className={`bg-card rounded-lg border p-3 cursor-grab active:cursor-grabbing transition-all hover:-translate-y-0.5 hover:shadow-md ${
+        isDragging ? 'opacity-50 shadow-lg' : ''
+      }`}
+      draggable
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
     >
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center gap-2">
@@ -169,10 +260,10 @@ function CandidateCard({ application }: { application: Application }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>View Profile</DropdownMenuItem>
-            <DropdownMenuItem>Schedule Interview</DropdownMenuItem>
-            <DropdownMenuItem>Move Stage</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive">Reject</DropdownMenuItem>
+            <DropdownMenuItem onClick={onViewProfile}>View Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => window.alert('Schedule Interview dialog coming soon')}>Schedule Interview</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => window.alert('Use drag and drop to move between stages')}>Move Stage</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onClick={() => { if (window.confirm('Reject this candidate?')) { /* demo */ } }}>Reject</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -193,6 +284,6 @@ function CandidateCard({ application }: { application: Application }) {
         </div>
         <span>{formatRelativeTime(application.applied_at)}</span>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Search, Bell, Moon, Sun, LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import { useAppStore } from '@/stores/app-store';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { getInitials } from '@/lib/utils';
 
 export function Topbar() {
+  const navigate = useNavigate();
   const { user, unreadCount, setCommandPaletteOpen, theme, setTheme } = useAppStore();
 
   return (
@@ -88,17 +90,17 @@ export function Topbar() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/admin')}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/admin/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
+            <DropdownMenuItem className="text-destructive" onClick={() => navigate('/login')}>
               <LogOut className="mr-2 h-4 w-4" />
               Log out
             </DropdownMenuItem>

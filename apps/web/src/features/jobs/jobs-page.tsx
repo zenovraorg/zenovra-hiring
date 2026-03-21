@@ -140,10 +140,10 @@ export function JobsPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate(`/jobs/${job.id}`)}>Edit</DropdownMenuItem>
                         <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                        <DropdownMenuItem>View Careers Page</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Close Job</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/careers')}>View Careers Page</DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive" onClick={() => { if (window.confirm('Are you sure you want to close this job?')) { /* demo - no action */ } }}>Close Job</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

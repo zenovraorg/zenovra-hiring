@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Briefcase,
@@ -36,6 +37,7 @@ const CHART_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#06b6d4', '#10b981', '#f
 const PIE_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b'];
 
 export function DashboardPage() {
+  const navigate = useNavigate();
   const stats = demoDashboardStats;
 
   return (
@@ -44,7 +46,7 @@ export function DashboardPage() {
         title="Hiring Dashboard"
         description="Overview of your organization's hiring health"
         actions={
-          <Button size="sm">
+          <Button size="sm" onClick={() => navigate('/jobs/new')}>
             <Briefcase className="mr-2 h-4 w-4" />
             Create Job
           </Button>
@@ -213,7 +215,7 @@ export function DashboardPage() {
           <Card className="h-full">
             <CardHeader className="pb-2 flex-row items-center justify-between">
               <CardTitle className="text-base font-medium">Open Positions</CardTitle>
-              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
+              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => navigate('/jobs')}>
                 View all <ArrowRight className="ml-1 h-3 w-3" />
               </Button>
             </CardHeader>
@@ -226,6 +228,7 @@ export function DashboardPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: index * 0.04 }}
                     className="flex items-center justify-between py-2 group cursor-pointer hover:bg-muted/50 -mx-2 px-2 rounded-md transition-colors"
+                    onClick={() => navigate(`/jobs/${job.id}`)}
                   >
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{job.title}</p>
@@ -254,7 +257,7 @@ export function DashboardPage() {
           <Card className="h-full">
             <CardHeader className="pb-2 flex-row items-center justify-between">
               <CardTitle className="text-base font-medium">Recent Activity</CardTitle>
-              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
+              <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => navigate('/notifications')}>
                 View all <ArrowRight className="ml-1 h-3 w-3" />
               </Button>
             </CardHeader>

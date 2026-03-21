@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin, Video, User, Plus, Filter } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
@@ -11,6 +12,7 @@ import { demoInterviews, demoApplications, demoCandidates } from '@/lib/demo-dat
 import { getInitials, formatDate } from '@/lib/utils';
 
 export function InterviewsPage() {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const today = demoInterviews.filter((i) => i.status === 'scheduled');
   const completed = demoInterviews.filter((i) => i.status === 'completed');
 
@@ -20,7 +22,7 @@ export function InterviewsPage() {
         title="Interviews"
         description={`${demoInterviews.length} total interviews`}
         actions={
-          <Button>
+          <Button onClick={() => window.alert('Schedule Interview dialog coming soon')}>
             <Plus className="mr-2 h-4 w-4" />
             Schedule Interview
           </Button>
@@ -39,7 +41,7 @@ export function InterviewsPage() {
 
             return (
               <motion.div key={interview.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
-                <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                <Card className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">
                       <div className="flex flex-col items-center justify-center rounded-lg bg-primary/5 px-3 py-2 text-center min-w-[60px]">
@@ -126,7 +128,7 @@ export function InterviewsPage() {
 
               return (
                 <motion.div key={interview.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
-                  <Card className="p-4 opacity-75 hover:opacity-100 transition-opacity cursor-pointer">
+                  <Card className={`p-4 opacity-75 hover:opacity-100 transition-opacity cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-primary opacity-100' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4">
                         <div className="flex flex-col items-center justify-center rounded-lg bg-muted px-3 py-2 text-center min-w-[60px]">

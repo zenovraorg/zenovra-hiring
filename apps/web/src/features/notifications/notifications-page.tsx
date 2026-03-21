@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bell, Check, CheckCheck, Briefcase, Calendar, FileText, MessageSquare } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
@@ -6,6 +8,7 @@ import { Card } from '@/components/ui/card';
 
 import { demoNotifications } from '@/lib/demo-data';
 import { formatRelativeTime, cn } from '@/lib/utils';
+import type { Notification } from '@/types';
 
 const typeIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   application: Briefcase,
@@ -15,13 +18,33 @@ const typeIcons: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export function NotificationsPage() {
+  const navigate = useNavigate();
+  const [notifications, setNotifications] = useState<Notification[]>(demoNotifications);
+
+  const unreadCount = notifications.filter((n) => !n.is_read).length;
+
+  const markAllRead = () => {
+    setNotifications((prev) =>
+      prev.map((n) => ({ ...n, is_read: true }))
+    );
+  };
+
+  const handleNotificationClick = (notification: Notification) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notification.id ? { ...n, is_read: true } : n))
+    );
+    if (notification.link) {
+      navigate(notification.link);
+    }
+  };
+
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[800px] mx-auto">
       <PageHeader
         title="Notifications"
-        description={`${demoNotifications.filter((n) => !n.is_read).length} unread`}
+        description={`${unreadCount} unread`}
         actions={
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={markAllRead}>
             <CheckCheck className="mr-2 h-4 w-4" />
             Mark all read
           </Button>
@@ -29,7 +52,7 @@ export function NotificationsPage() {
       />
 
       <div className="space-y-2">
-        {demoNotifications.map((notification, index) => {
+        {notifications.map((notification, index) => {
           const Icon = typeIcons[notification.type] || Bell;
           return (
             <motion.div key={notification.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
@@ -38,6 +61,7 @@ export function NotificationsPage() {
                   'p-4 cursor-pointer hover:shadow-sm transition-all',
                   !notification.is_read && 'border-l-2 border-l-primary bg-primary/[0.02]'
                 )}
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex items-start gap-3">
                   <div className={cn(

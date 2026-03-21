@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, DollarSign, Calendar, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
@@ -12,13 +13,14 @@ import { demoOffers, demoApplications, demoCandidates } from '@/lib/demo-data';
 import { getInitials, formatCurrency, formatDate } from '@/lib/utils';
 
 export function OffersPage() {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
         title="Offers"
         description="Manage compensation offers and approvals"
         actions={
-          <Button>
+          <Button onClick={() => window.alert('Create Offer dialog coming soon')}>
             <Plus className="mr-2 h-4 w-4" />
             Create Offer
           </Button>
@@ -41,7 +43,7 @@ export function OffersPage() {
 
           return (
             <motion.div key={offer.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: index * 0.04 }}>
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className={`hover:shadow-md transition-shadow cursor-pointer ${selectedId === offer.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedId(selectedId === offer.id ? null : offer.id)}>
                 <div className="p-5">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">

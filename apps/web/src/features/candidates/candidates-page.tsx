@@ -164,10 +164,10 @@ export function CandidatesPage() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>View Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Add to Job</DropdownMenuItem>
-                  <DropdownMenuItem>Send Email</DropdownMenuItem>
-                  <DropdownMenuItem>Add Note</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/candidates/${candidate.id}`)}>View Profile</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.alert('Select a job to add this candidate to')}>Add to Job</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.open(`mailto:${candidate.email}`)}>Send Email</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.alert('Note feature coming soon')}>Add Note</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </motion.div>
