@@ -1,0 +1,17 @@
+{
+  "name": "zenovra-hiring",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Enterprise Hiring Platform / ATS by Zenovra",
+  "workspaces": ["apps/web", "packages/*"],
+  "scripts": {
+    "dev": "cd apps/web && npm run dev",
+    "dev:api": "cd apps/api && uvicorn app.main:app --reload --port 8000",
+    "build": "cd apps/web && npm run build",
+    "lint": "cd apps/web && npm run lint",
+    "preview": "cd apps/web && npm run preview"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
