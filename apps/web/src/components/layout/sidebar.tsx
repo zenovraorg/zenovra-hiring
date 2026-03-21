@@ -73,38 +73,10 @@ export function Sidebar() {
                 transition={{ duration: 0.15 }}
                 className="overflow-hidden"
               >
-                <span className="text-base font-semibold tracking-tight">Zenovra</span>
+                <span className="text-base font-semibold tracking-tight">Zenovra Tech</span>
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
-
-        <Separator />
-
-        {/* Org switcher */}
-        <div className="px-3 py-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className={cn(
-                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-sidebar-accent transition-colors',
-                sidebarCollapsed && 'justify-center'
-              )}>
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-primary/10 text-primary text-2xs font-bold">
-                  {organization?.name?.charAt(0) || 'Z'}
-                </div>
-                {!sidebarCollapsed && (
-                  <span className="truncate text-sm font-medium">
-                    {organization?.name || 'Zenovra Tech'}
-                  </span>
-                )}
-              </button>
-            </TooltipTrigger>
-            {sidebarCollapsed && (
-              <TooltipContent side="right">
-                {organization?.name || 'Zenovra Tech'}
-              </TooltipContent>
-            )}
-          </Tooltip>
         </div>
 
         <Separator />

@@ -15,6 +15,8 @@ import { ReferralsPage } from '@/features/referrals/referrals-page';
 import { AdminPage } from '@/features/admin/admin-page';
 import { CareersPage } from '@/features/careers/careers-page';
 import { CreateJobPage } from '@/features/jobs/create-job-page';
+import { JobDetailPage } from '@/features/jobs/job-detail-page';
+import { CandidateDetailPage } from '@/features/candidates/candidate-detail-page';
 
 export const router = createBrowserRouter([
   {
@@ -33,9 +35,9 @@ export const router = createBrowserRouter([
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'jobs', element: <JobsPage /> },
       { path: 'jobs/new', element: <CreateJobPage /> },
-      { path: 'jobs/:id', element: <JobsPage /> },
+      { path: 'jobs/:id', element: <JobDetailPage /> },
       { path: 'candidates', element: <CandidatesPage /> },
-      { path: 'candidates/:id', element: <CandidatesPage /> },
+      { path: 'candidates/:id', element: <CandidateDetailPage /> },
       { path: 'pipeline', element: <PipelinePage /> },
       { path: 'interviews', element: <InterviewsPage /> },
       { path: 'feedback', element: <FeedbackPage /> },

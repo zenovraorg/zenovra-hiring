@@ -32,7 +32,7 @@ export function LoginPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
               <Zap className="h-5 w-5" />
             </div>
-            <span className="text-xl font-semibold">Zenovra</span>
+            <span className="text-xl font-semibold">Zenovra Tech</span>
           </div>
           <div className="max-w-md">
             <motion.h1
@@ -69,7 +69,7 @@ export function LoginPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Zap className="h-4 w-4" />
             </div>
-            <span className="text-lg font-semibold">Zenovra</span>
+            <span className="text-lg font-semibold">Zenovra Tech</span>
           </div>
 
           <h2 className="text-2xl font-semibold mb-1">Welcome back</h2>

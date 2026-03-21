@@ -38,7 +38,7 @@ export function CareersPage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <Zap className="h-5 w-5" />
               </div>
-              <span className="text-xl font-semibold">Zenovra</span>
+              <span className="text-xl font-semibold">Zenovra Tech</span>
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4">
               Join Our Team
