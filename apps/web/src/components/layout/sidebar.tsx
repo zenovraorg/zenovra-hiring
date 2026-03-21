@@ -73,7 +73,10 @@ export function Sidebar() {
                 transition={{ duration: 0.15 }}
                 className="overflow-hidden"
               >
-                <span className="text-base font-semibold tracking-tight">Zenovra Tech</span>
+                <div className="flex flex-col">
+                  <span className="text-base font-semibold tracking-tight leading-tight">Zenovra Tech</span>
+                  <span className="text-2xs text-muted-foreground leading-tight">part of Zenovra Org</span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
