@@ -9,7 +9,6 @@ import {
   Building2, 
   ArrowRight, 
   Zap, 
-  Globe, 
   LogIn, 
   CheckCircle2, 
   Users, 
@@ -71,9 +70,38 @@ export function CareersPage() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32">
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute -top-[10%] -left-[10%] h-[60%] w-[60%] rounded-full bg-primary/5 blur-[120px]" />
-          <div className="absolute bottom-0 right-0 h-[50%] w-[50%] rounded-full bg-blue-500/5 blur-[120px]" />
+        {/* Animated background orbs */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <motion.div
+            animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0], scale: [1, 1.15, 0.95, 1] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -top-[10%] -left-[5%] h-[500px] w-[500px] rounded-full bg-primary/[0.07] blur-[100px]"
+          />
+          <motion.div
+            animate={{ x: [0, -40, 30, 0], y: [0, 30, -30, 0], scale: [1, 0.9, 1.1, 1] }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            className="absolute top-[10%] right-[5%] h-[400px] w-[400px] rounded-full bg-blue-500/[0.06] blur-[100px]"
+          />
+          <motion.div
+            animate={{ x: [0, 20, -30, 0], y: [0, -20, 40, 0], scale: [1, 1.1, 0.9, 1] }}
+            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+            className="absolute bottom-[0%] left-[30%] h-[350px] w-[350px] rounded-full bg-violet-500/[0.05] blur-[100px]"
+          />
+          {/* Floating particles */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              animate={{ y: [0, -60, 0], opacity: [0.2, 0.6, 0.2] }}
+              transition={{ duration: 6 + i * 2, repeat: Infinity, ease: 'easeInOut', delay: i * 1.5 }}
+              className="absolute rounded-full bg-primary/20"
+              style={{
+                width: 4 + i * 2,
+                height: 4 + i * 2,
+                left: `${15 + i * 14}%`,
+                top: `${30 + (i % 3) * 20}%`,
+              }}
+            />
+          ))}
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -119,9 +147,9 @@ export function CareersPage() {
             </motion.p>
             <div className="flex flex-wrap items-center justify-center gap-8 text-sm font-bold uppercase tracking-widest text-muted-foreground/60">
               {[
-                { icon: Globe, label: 'Remote First' },
                 { icon: ShieldCheck, label: 'Premium Benefits' },
                 { icon: Star, label: 'Equity Options' },
+                { icon: Users, label: 'Great Culture' },
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
