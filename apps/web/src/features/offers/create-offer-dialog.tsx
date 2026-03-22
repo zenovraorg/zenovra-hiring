@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { demoCandidates } from '@/lib/demo-data';
+import { useCandidates, useCreateOffer } from '@/hooks/use-api';
 
 const benefitOptions = [
   'Health/Dental/Vision',
@@ -32,8 +32,12 @@ interface CreateOfferDialogProps {
 }
 
 export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
-  const candidates = demoCandidates;
-  const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? '');
+  const { data: candidatesData } = useCandidates();
+  const createOffer = useCreateOffer();
+
+  const candidates = candidatesData?.items || [];
+
+  const [candidateId, setCandidateId] = useState('');
   const [jobTitle, setJobTitle] = useState('Senior Frontend Engineer');
   const [department, setDepartment] = useState('Engineering');
   const [baseSalary, setBaseSalary] = useState('200000');
@@ -43,9 +47,35 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
   const [benefits, setBenefits] = useState<string[]>([...benefitOptions]);
   const [notes, setNotes] = useState('');
 
+  // Set default candidate when data loads
+  if (candidates.length > 0 && !candidateId) {
+    setCandidateId(candidates[0].id);
+  }
+
   const toggleBenefit = (b: string) => {
     setBenefits((prev) =>
       prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b]
+    );
+  };
+
+  const handleSubmit = () => {
+    createOffer.mutate(
+      {
+        candidate_id: candidateId,
+        title: jobTitle,
+        department,
+        base_salary: Number(baseSalary) || 0,
+        bonus: Number(bonus) || 0,
+        equity,
+        start_date: startDate,
+        benefits,
+        notes,
+        status: 'draft',
+      },
+      {
+        onSuccess: () => onClose(),
+        onError: () => alert('Failed to create offer'),
+      }
     );
   };
 
@@ -65,6 +95,7 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
               onChange={(e) => setCandidateId(e.target.value)}
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
+              {candidates.length === 0 && <option value="">No candidates</option>}
               {candidates.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.first_name} {c.last_name}
@@ -135,31 +166,12 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={async () => {
-            try {
-              const apiBase = import.meta.env.VITE_API_URL || '/api/v1';
-              const token = 'demo-token';
-              const res = await fetch(`${apiBase}/offers`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({
-                  candidate_id: candidateId,
-                  job_id: '',
-                  base_salary: Number(baseSalary) || 0,
-                  bonus: Number(bonus) || 0,
-                  equity,
-                  start_date: startDate,
-                  benefits: selectedBenefits,
-                  notes,
-                  status: 'draft',
-                }),
-              });
-              if (!res.ok) throw new Error('Failed');
-              onClose();
-            } catch {
-              alert('Failed to create offer');
-            }
-          }}>Create Offer</Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={createOffer.isPending || !candidateId}
+          >
+            {createOffer.isPending ? 'Creating...' : 'Create Offer'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

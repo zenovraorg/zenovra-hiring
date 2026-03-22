@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
-import { Calendar, Clock, MapPin, Video, User, Plus, Filter } from 'lucide-react';
+import { Calendar, Clock, MapPin, Video, User, Plus, Filter, Loader2 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { Button } from '@/components/ui/button';
@@ -9,18 +9,26 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
 import { ScheduleInterviewDialog } from '@/features/interviews/schedule-interview-dialog';
-import { demoInterviews, demoApplications } from '@/lib/demo-data';
+import { useInterviews } from '@/hooks/use-api';
 import { getInitials, formatDate } from '@/lib/utils';
 
 export function InterviewsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
-  const interviews = demoInterviews;
-  const applications = demoApplications;
+  const { data: interviewsData, isLoading } = useInterviews();
+  const interviews = interviewsData?.items || [];
   const today = interviews.filter((i) => i.status === 'scheduled');
   const completed = interviews.filter((i) => i.status === 'completed');
   const completedRef = useRef(null);
   const completedInView = useInView(completedRef, { once: true, margin: '-50px' });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
@@ -35,103 +43,119 @@ export function InterviewsPage() {
         }
       />
 
-      {/* Upcoming Section */}
-      <div className="space-y-3">
-        <motion.h2
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="text-sm font-semibold text-muted-foreground uppercase tracking-wider"
-        >
-          Upcoming
-        </motion.h2>
-        <div className="space-y-3">
-          {today.map((interview, index) => {
-            const app = applications.find((a) => a.id === interview.application_id);
-            const candidate = app?.candidate;
+      {interviews.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <div className="p-4 rounded-full bg-muted/10">
+            <Calendar className="h-8 w-8 text-muted-foreground/50" />
+          </div>
+          <p className="text-muted-foreground font-medium">No interviews yet</p>
+          <Button onClick={() => setScheduleDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Schedule Interview
+          </Button>
+        </div>
+      )}
 
-            return (
-              <motion.div
-                key={interview.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ scale: 1.01, y: -2 }}
-                whileTap={{ scale: 0.99 }}
-              >
-                <Card className={`p-4 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <div className="flex flex-col items-center justify-center rounded-lg bg-indigo-500/10 px-3 py-2 text-center min-w-[60px]">
-                        <span className="text-xs text-white/50">
-                          {formatDate(interview.scheduled_at, { month: 'short' }).split(' ')[0]}
-                        </span>
-                        <span className="text-lg font-bold text-indigo-400">
-                          {new Date(interview.scheduled_at).getDate()}
-                        </span>
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-semibold">{interview.title}</h3>
-                        <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            <span>
-                              {new Date(interview.scheduled_at).toLocaleTimeString('en-US', {
-                                hour: 'numeric',
-                                minute: '2-digit',
-                              })}
-                            </span>
-                            <span>· {interview.duration_minutes}min</span>
-                          </div>
-                          {interview.meeting_link && (
-                            <div className="flex items-center gap-1 text-info">
-                              <Video className="h-3 w-3" />
-                              <span>Video Call</span>
-                            </div>
-                          )}
-                          {interview.location && (
+      {/* Upcoming Section */}
+      {today.length > 0 && (
+        <div className="space-y-3">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="text-sm font-semibold text-muted-foreground uppercase tracking-wider"
+          >
+            Upcoming
+          </motion.h2>
+          <div className="space-y-3">
+            {today.map((interview, index) => {
+              const candidate = interview.application?.candidate;
+
+              return (
+                <motion.div
+                  key={interview.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ scale: 1.01, y: -2 }}
+                  whileTap={{ scale: 0.99 }}
+                >
+                  <Card className={`p-4 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-4">
+                        <div className="flex flex-col items-center justify-center rounded-lg bg-indigo-500/10 px-3 py-2 text-center min-w-[60px]">
+                          <span className="text-xs text-white/50">
+                            {formatDate(interview.scheduled_at, { month: 'short' }).split(' ')[0]}
+                          </span>
+                          <span className="text-lg font-bold text-indigo-400">
+                            {new Date(interview.scheduled_at).getDate()}
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold">{interview.title}</h3>
+                          <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                             <div className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              <span>{interview.location}</span>
+                              <Clock className="h-3 w-3" />
+                              <span>
+                                {new Date(interview.scheduled_at).toLocaleTimeString('en-US', {
+                                  hour: 'numeric',
+                                  minute: '2-digit',
+                                })}
+                              </span>
+                              <span>· {interview.duration_minutes}min</span>
+                            </div>
+                            {interview.meeting_link && (
+                              <div className="flex items-center gap-1 text-info">
+                                <Video className="h-3 w-3" />
+                                <span>Video Call</span>
+                              </div>
+                            )}
+                            {interview.location && (
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                <span>{interview.location}</span>
+                              </div>
+                            )}
+                          </div>
+                          {candidate && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <Avatar className="h-6 w-6">
+                                <AvatarFallback className="text-2xs">
+                                  {getInitials(`${candidate.first_name} ${candidate.last_name}`)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <span className="text-sm">
+                                {candidate.first_name} {candidate.last_name}
+                              </span>
+                              {interview.application?.job && (
+                                <span className="text-xs text-muted-foreground">
+                                  for {interview.application.job.title}
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>
-                        {candidate && (
-                          <div className="flex items-center gap-2 mt-2">
-                            <Avatar className="h-6 w-6">
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <StatusBadge type="interview" status={interview.status} />
+                        <div className="flex -space-x-1.5">
+                          {interview.interviewers.map((p) => (
+                            <Avatar key={p.user_id} className="h-7 w-7 border-2 border-background">
                               <AvatarFallback className="text-2xs">
-                                {getInitials(`${candidate.first_name} ${candidate.last_name}`)}
+                                {p.user ? getInitials(p.user.display_name) : '?'}
                               </AvatarFallback>
                             </Avatar>
-                            <span className="text-sm">
-                              {candidate.first_name} {candidate.last_name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              for {app?.job?.title}
-                            </span>
-                          </div>
-                        )}
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <StatusBadge type="interview" status={interview.status} />
-                      <div className="flex -space-x-1.5">
-                        {interview.interviewers.map((p) => (
-                          <Avatar key={p.user_id} className="h-7 w-7 border-2 border-background">
-                            <AvatarFallback className="text-2xs">
-                              {p.user ? getInitials(p.user.display_name) : '?'}
-                            </AvatarFallback>
-                          </Avatar>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Completed Section */}
       {completed.length > 0 && (
@@ -146,8 +170,7 @@ export function InterviewsPage() {
           </motion.h2>
           <div className="space-y-3">
             {completed.map((interview, index) => {
-              const app = applications.find((a) => a.id === interview.application_id);
-              const candidate = app?.candidate;
+              const candidate = interview.application?.candidate;
 
               return (
                 <motion.div

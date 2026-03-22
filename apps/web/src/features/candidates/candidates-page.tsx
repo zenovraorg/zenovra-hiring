@@ -30,7 +30,6 @@ import { Separator } from '@/components/ui/separator';
 
 import { AddCandidateDialog } from '@/features/candidates/add-candidate-dialog';
 import { useCandidates } from '@/hooks/use-api';
-import { demoCandidates } from '@/lib/demo-data';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
 
 export function CandidatesPage() {
@@ -38,7 +37,7 @@ export function CandidatesPage() {
   const [search, setSearch] = useState('');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { data, isLoading } = useCandidates({ search: search || undefined });
-  const candidates = data?.items || demoCandidates;
+  const candidates = data?.items || [];
 
   const filtered = candidates.filter((c) => {
     if (!search || data?.items) return true;

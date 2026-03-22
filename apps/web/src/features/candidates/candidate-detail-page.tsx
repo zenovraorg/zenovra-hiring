@@ -19,6 +19,7 @@ import {
   FileText,
   UserPlus,
   Building2,
+  Loader2,
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -28,8 +29,9 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
-import { demoCandidates, demoApplications, demoJobs, demoUsers, demoActivity } from '@/lib/demo-data';
+import { useCandidate } from '@/hooks/use-api';
 import { getInitials, formatDate, formatRelativeTime } from '@/lib/utils';
+import type { Application } from '@/types';
 
 type Tab = 'activity' | 'applications' | 'notes' | 'documents';
 
@@ -40,53 +42,22 @@ const tabs: { label: string; value: Tab }[] = [
   { label: 'Documents', value: 'documents' },
 ];
 
-// Demo notes for the notes tab
-const demoNotes = [
-  {
-    id: 'note1',
-    author: demoUsers[0],
-    content: 'Had an initial call. Very strong communication skills and deep technical knowledge. Excited about the role.',
-    created_at: '2024-09-12T14:00:00Z',
-  },
-  {
-    id: 'note2',
-    author: demoUsers[1],
-    content: 'Reviewed portfolio. Impressive work on design systems at previous company. Would be a great culture fit.',
-    created_at: '2024-09-14T10:30:00Z',
-  },
-  {
-    id: 'note3',
-    author: demoUsers[4],
-    content: 'References check complete. All three references gave positive feedback, especially regarding leadership and collaboration.',
-    created_at: '2024-09-16T16:00:00Z',
-  },
-];
-
-// Demo activity timeline entries
-const demoTimeline = [
-  { id: 't1', action: 'applied', description: 'Applied for the position', date: '2024-09-02T09:00:00Z', actor: demoUsers[0] },
-  { id: 't2', action: 'moved_stage', description: 'Moved to Phone Screen', date: '2024-09-05T14:00:00Z', actor: demoUsers[0] },
-  { id: 't3', action: 'interview_scheduled', description: 'Phone screen scheduled', date: '2024-09-07T10:00:00Z', actor: demoUsers[1] },
-  { id: 't4', action: 'feedback_submitted', description: 'Phone screen feedback: Strong Yes', date: '2024-09-08T16:30:00Z', actor: demoUsers[1] },
-  { id: 't5', action: 'moved_stage', description: 'Moved to Technical Interview', date: '2024-09-10T09:00:00Z', actor: demoUsers[0] },
-  { id: 't6', action: 'interview_scheduled', description: 'Technical interview scheduled for Sep 22', date: '2024-09-15T11:00:00Z', actor: demoUsers[1] },
-];
-
-// Demo documents
-const demoDocuments = [
-  { id: 'doc1', name: 'Resume.pdf', type: 'resume', size: '245 KB', uploaded_at: '2024-09-02T09:00:00Z' },
-  { id: 'doc2', name: 'Cover_Letter.pdf', type: 'cover_letter', size: '128 KB', uploaded_at: '2024-09-02T09:00:00Z' },
-  { id: 'doc3', name: 'Portfolio_Samples.zip', type: 'portfolio', size: '4.2 MB', uploaded_at: '2024-09-03T14:00:00Z' },
-];
-
 export function CandidateDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('activity');
   const [noteText, setNoteText] = useState('');
 
-  const candidate = demoCandidates.find((c) => c.id === id);
-  const candidateApplications = demoApplications.filter((a) => a.candidate_id === id);
+  const { data: candidate, isLoading } = useCandidate(id || '');
+  const candidateApplications = candidate?.applications || [];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   if (!candidate) {
     return (
@@ -197,6 +168,9 @@ export function CandidateDetailPage() {
                     {skill}
                   </Badge>
                 ))}
+                {(!candidate.skills || candidate.skills.length === 0) && (
+                  <p className="text-xs text-muted-foreground">No skills listed</p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -351,63 +325,22 @@ export function CandidateDetailPage() {
   );
 }
 
-/* ─── Activity Tab ────────────────────────────────────────────────────── */
+/* --- Activity Tab --- */
 
 function ActivityTab() {
   return (
-    <div className="space-y-1">
-      {demoTimeline.map((event, i) => (
-        <motion.div
-          key={event.id}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, delay: i * 0.04 }}
-          className="flex gap-4 py-3"
-        >
-          {/* Timeline line + dot */}
-          <div className="flex flex-col items-center">
-            <div
-              className={`h-2.5 w-2.5 rounded-full mt-1.5 ${
-                event.action === 'feedback_submitted'
-                  ? 'bg-success'
-                  : event.action === 'interview_scheduled'
-                  ? 'bg-info'
-                  : event.action === 'moved_stage'
-                  ? 'bg-warning'
-                  : 'bg-primary'
-              }`}
-            />
-            {i < demoTimeline.length - 1 && (
-              <div className="w-px flex-1 bg-border mt-1" />
-            )}
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 pb-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">{event.description}</p>
-              <p className="text-xs text-muted-foreground">{formatRelativeTime(event.date)}</p>
-            </div>
-            <div className="flex items-center gap-2 mt-1">
-              <Avatar className="h-5 w-5">
-                <AvatarFallback className="text-[9px]">
-                  {getInitials(event.actor.display_name)}
-                </AvatarFallback>
-              </Avatar>
-              <p className="text-xs text-muted-foreground">{event.actor.display_name}</p>
-              <span className="text-xs text-muted-foreground">&middot;</span>
-              <p className="text-xs text-muted-foreground">{formatDate(event.date)}</p>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+    <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+      <div className="p-4 rounded-full bg-muted/10">
+        <Clock className="h-8 w-8 text-muted-foreground/50" />
+      </div>
+      <p className="text-muted-foreground font-medium">No activity recorded yet</p>
     </div>
   );
 }
 
-/* ─── Applications Tab ────────────────────────────────────────────────── */
+/* --- Applications Tab --- */
 
-function ApplicationsTab({ applications }: { applications: typeof demoApplications }) {
+function ApplicationsTab({ applications }: { applications: Application[] }) {
   const navigate = useNavigate();
 
   if (applications.length === 0) {
@@ -426,7 +359,7 @@ function ApplicationsTab({ applications }: { applications: typeof demoApplicatio
   return (
     <div className="space-y-3">
       {applications.map((app, i) => {
-        const job = app.job || demoJobs.find((j) => j.id === app.job_id);
+        const job = app.job;
         if (!job) return null;
 
         return (
@@ -473,7 +406,7 @@ function ApplicationsTab({ applications }: { applications: typeof demoApplicatio
   );
 }
 
-/* ─── Notes Tab ───────────────────────────────────────────────────────── */
+/* --- Notes Tab --- */
 
 function NotesTab({
   noteText,
@@ -484,7 +417,6 @@ function NotesTab({
 }) {
   return (
     <div className="space-y-4">
-      {/* Add note form */}
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
@@ -508,70 +440,22 @@ function NotesTab({
         </Card>
       </motion.div>
 
-      {/* Existing notes */}
-      {demoNotes.map((note, i) => (
-        <motion.div
-          key={note.id}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, delay: i * 0.05 }}
-        >
-          <Card>
-            <CardContent className="pt-4 pb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarFallback className="text-[10px]">
-                    {getInitials(note.author.display_name)}
-                  </AvatarFallback>
-                </Avatar>
-                <p className="text-sm font-medium">{note.author.display_name}</p>
-                <span className="text-xs text-muted-foreground">&middot;</span>
-                <p className="text-xs text-muted-foreground">{formatRelativeTime(note.created_at)}</p>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed pl-8">{note.content}</p>
-            </CardContent>
-          </Card>
-        </motion.div>
-      ))}
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <p className="text-sm text-muted-foreground">No notes yet</p>
+      </div>
     </div>
   );
 }
 
-/* ─── Documents Tab ───────────────────────────────────────────────────── */
+/* --- Documents Tab --- */
 
 function DocumentsTab() {
   return (
     <div className="space-y-3">
-      {demoDocuments.map((doc, i) => (
-        <motion.div
-          key={doc.id}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, delay: i * 0.05 }}
-        >
-          <Card className="hover:bg-accent/50 transition-colors cursor-pointer">
-            <CardContent className="flex items-center gap-4 py-4">
-              <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-primary/10">
-                <FileText className="h-5 w-5 text-primary" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">{doc.name}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                  <Badge variant="muted" className="text-[10px] capitalize">
-                    {doc.type.replace('_', ' ')}
-                  </Badge>
-                  <span>&middot;</span>
-                  <span>{doc.size}</span>
-                </div>
-              </div>
-              <p className="text-xs text-muted-foreground">{formatDate(doc.uploaded_at)}</p>
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-            </CardContent>
-          </Card>
-        </motion.div>
-      ))}
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <p className="text-sm text-muted-foreground">No documents uploaded yet</p>
+      </div>
 
-      {/* Upload button */}
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}

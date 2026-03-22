@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Plus, DollarSign, Calendar, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { Plus, DollarSign, Calendar, CheckCircle2, Clock, XCircle, Loader2 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { Button } from '@/components/ui/button';
@@ -10,14 +10,27 @@ import { Badge } from '@/components/ui/badge';
 import { StatCard } from '@/components/shared/stat-card';
 
 import { CreateOfferDialog } from '@/features/offers/create-offer-dialog';
-import { demoOffers, demoApplications } from '@/lib/demo-data';
+import { useOffers } from '@/hooks/use-api';
 import { getInitials, formatCurrency, formatDate } from '@/lib/utils';
 
 export function OffersPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [offerDialogOpen, setOfferDialogOpen] = useState(false);
-  const offers = demoOffers;
-  const applications = demoApplications;
+  const { data: offersData, isLoading } = useOffers();
+  const offers = offersData?.items || [];
+
+  const pendingCount = offers.filter((o) => o.status === 'pending_approval' || o.status === 'draft').length;
+  const acceptedCount = offers.filter((o) => o.status === 'accepted').length;
+  const totalCount = offers.length;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
@@ -35,17 +48,29 @@ export function OffersPage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <StatCard title="Total Offers" value={3} icon={DollarSign} delay={0} />
-        <StatCard title="Pending" value={1} icon={Clock} delay={0.05} />
-        <StatCard title="Accepted" value={1} icon={CheckCircle2} delay={0.1} />
-        <StatCard title="Acceptance Rate" value="87%" change={3} changeLabel="vs last quarter" icon={CheckCircle2} delay={0.15} />
+        <StatCard title="Total Offers" value={totalCount} icon={DollarSign} delay={0} />
+        <StatCard title="Pending" value={pendingCount} icon={Clock} delay={0.05} />
+        <StatCard title="Accepted" value={acceptedCount} icon={CheckCircle2} delay={0.1} />
+        <StatCard title="Acceptance Rate" value={totalCount > 0 ? `${Math.round((acceptedCount / totalCount) * 100)}%` : '0%'} icon={CheckCircle2} delay={0.15} />
       </div>
+
+      {offers.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <div className="p-4 rounded-full bg-muted/10">
+            <DollarSign className="h-8 w-8 text-muted-foreground/50" />
+          </div>
+          <p className="text-muted-foreground font-medium">No offers yet</p>
+          <Button onClick={() => setOfferDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Create Offer
+          </Button>
+        </div>
+      )}
 
       {/* Offer List */}
       <div className="space-y-3">
         {offers.map((offer, index) => {
-          const app = applications.find((a) => a.id === offer.application_id);
-          const candidate = app?.candidate;
+          const candidate = offer.application?.candidate;
 
           return (
             <motion.div
@@ -105,7 +130,7 @@ export function OffersPage() {
                   </div>
 
                   {/* Approvals */}
-                  {offer.approvals.length > 0 && (
+                  {offer.approvals && offer.approvals.length > 0 && (
                     <div className="mt-4 pt-4 border-t">
                       <span className="text-xs font-medium text-muted-foreground">Approvals</span>
                       <div className="flex items-center gap-3 mt-2">

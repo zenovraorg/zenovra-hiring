@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-import { demoUsers, demoCandidates, demoJobs } from '@/lib/demo-data';
+import { useCandidates, useJobs, useCreateInterview } from '@/hooks/use-api';
 
 const interviewTypes = ['Phone Screen', 'Technical', 'Behavioral', 'Culture Fit', 'Panel', 'Final'];
 const durationOptions = ['30', '45', '60', '90'];
@@ -28,22 +28,57 @@ interface ScheduleInterviewDialogProps {
 }
 
 export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDialogProps) {
-  const candidates = demoCandidates;
-  const jobs = demoJobs;
-  const [title, setTitle] = useState('Technical Interview \u2014 Frontend');
-  const [candidateId, setCandidateId] = useState(candidates[0]?.id ?? '');
-  const [jobId, setJobId] = useState(jobs[0]?.id ?? '');
+  const { data: candidatesData } = useCandidates();
+  const { data: jobsData } = useJobs();
+  const createInterview = useCreateInterview();
+
+  const candidates = candidatesData?.items || [];
+  const jobs = jobsData?.items || [];
+
+  const [title, setTitle] = useState('Technical Interview — Frontend');
+  const [candidateId, setCandidateId] = useState('');
+  const [jobId, setJobId] = useState('');
   const [interviewType, setInterviewType] = useState('Technical');
   const [date, setDate] = useState(getTomorrow);
   const [time, setTime] = useState('14:00');
   const [duration, setDuration] = useState('60');
   const [meetingLink, setMeetingLink] = useState('https://meet.google.com/abc-defg-hij');
-  const [selectedInterviewers, setSelectedInterviewers] = useState<string[]>(['u2']);
+  const [selectedInterviewers, setSelectedInterviewers] = useState<string[]>([]);
   const [notes, setNotes] = useState('');
+
+  // Set defaults when data loads
+  if (candidates.length > 0 && !candidateId) {
+    setCandidateId(candidates[0].id);
+  }
+  if (jobs.length > 0 && !jobId) {
+    const openJob = jobs.find((j) => j.status === 'open');
+    if (openJob) setJobId(openJob.id);
+    else if (jobs[0]) setJobId(jobs[0].id);
+  }
 
   const toggleInterviewer = (id: string) => {
     setSelectedInterviewers((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleSubmit = () => {
+    createInterview.mutate(
+      {
+        title: title || `${interviewType} Interview`,
+        candidate_id: candidateId,
+        job_id: jobId,
+        interview_type: interviewType.toLowerCase().replace(/\s+/g, '_'),
+        scheduled_at: `${date}T${time}:00`,
+        duration_minutes: Number(duration),
+        interviewer_ids: selectedInterviewers,
+        notes,
+        status: 'scheduled',
+      },
+      {
+        onSuccess: () => onClose(),
+        onError: () => alert('Failed to schedule interview'),
+      }
     );
   };
 
@@ -69,6 +104,7 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
                 onChange={(e) => setCandidateId(e.target.value)}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
+                {candidates.length === 0 && <option value="">No candidates</option>}
                 {candidates.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.first_name} {c.last_name}
@@ -83,6 +119,7 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
                 onChange={(e) => setJobId(e.target.value)}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
+                {jobs.length === 0 && <option value="">No jobs</option>}
                 {jobs.filter((j) => j.status === 'open').map((j) => (
                   <option key={j.id} value={j.id}>{j.title}</option>
                 ))}
@@ -140,23 +177,6 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">Interviewers</label>
-            <div className="flex flex-wrap gap-3">
-              {demoUsers.map((u) => (
-                <label key={u.id} className="flex items-center gap-2 text-sm cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedInterviewers.includes(u.id)}
-                    onChange={() => toggleInterviewer(u.id)}
-                    className="rounded border-input"
-                  />
-                  {u.display_name}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
             <label className="text-sm font-medium">Notes</label>
             <textarea
               value={notes}
@@ -170,31 +190,12 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={async () => {
-            try {
-              const apiBase = import.meta.env.VITE_API_URL || '/api/v1';
-              const token = 'demo-token';
-              const res = await fetch(`${apiBase}/interviews`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({
-                  title: `${interviewType.replace('_', ' ')} Interview`,
-                  candidate_id: candidateId,
-                  job_id: jobId,
-                  interview_type: interviewType,
-                  scheduled_at: `${date}T${time}:00`,
-                  duration_minutes: Number(duration),
-                  interviewer_ids: selectedInterviewers,
-                  notes,
-                  status: 'scheduled',
-                }),
-              });
-              if (!res.ok) throw new Error('Failed');
-              onClose();
-            } catch {
-              alert('Failed to schedule interview');
-            }
-          }}>Schedule</Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={createInterview.isPending || !candidateId || !jobId}
+          >
+            {createInterview.isPending ? 'Scheduling...' : 'Schedule'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

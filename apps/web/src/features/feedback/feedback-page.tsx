@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { MessageSquare, Star, ThumbsUp, ThumbsDown, Plus } from 'lucide-react';
+import { MessageSquare, Star, ThumbsUp, ThumbsDown, Loader2 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatCard } from '@/components/shared/stat-card';
 import { Button } from '@/components/ui/button';
@@ -7,13 +7,8 @@ import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
-import { getInitials } from '@/lib/utils';
-
-const demoFeedback = [
-  { id: '1', interviewer: 'Priya Patel', candidate: 'Chen Wei', job: 'Product Manager — Growth', rating: 4, recommendation: 'strong_yes', summary: 'Excellent product sense and strong analytical thinking. Clear frameworks for prioritization.', submitted: '2h ago' },
-  { id: '2', interviewer: 'Marcus Johnson', candidate: 'Alex Rivera', job: 'Senior Frontend Engineer', rating: 3, recommendation: 'yes', summary: 'Solid React fundamentals, good system design instincts. Could improve on testing approaches.', submitted: '1d ago' },
-  { id: '3', interviewer: 'James Wilson', candidate: 'Jordan Kim', job: 'Staff Backend Engineer', rating: 5, recommendation: 'strong_yes', summary: 'Outstanding distributed systems knowledge. Great communicator. Would be a strong culture add.', submitted: '2d ago' },
-];
+import { useFeedback } from '@/hooks/use-api';
+import { getInitials, formatRelativeTime } from '@/lib/utils';
 
 const recColors: Record<string, 'success' | 'info' | 'warning' | 'destructive'> = {
   strong_yes: 'success',
@@ -32,6 +27,22 @@ const recLabels: Record<string, string> = {
 };
 
 export function FeedbackPage() {
+  const { data: feedbackData, isLoading } = useFeedback();
+  const feedbackItems = feedbackData?.items || [];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  const avgRating = feedbackItems.length > 0
+    ? (feedbackItems.reduce((sum, fb: any) => sum + (fb.overall_rating || 0), 0) / feedbackItems.length).toFixed(1)
+    : '0';
+  const strongYesCount = feedbackItems.filter((fb: any) => fb.recommendation === 'strong_yes').length;
+
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px] mx-auto">
       <PageHeader
@@ -40,14 +51,23 @@ export function FeedbackPage() {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <StatCard title="Total Feedback" value={28} icon={MessageSquare} delay={0} />
-        <StatCard title="Avg Rating" value="3.8" icon={Star} delay={0.05} />
-        <StatCard title="Strong Yes" value={12} change={15} changeLabel="vs last month" icon={ThumbsUp} delay={0.1} />
-        <StatCard title="Pending Reviews" value={4} icon={MessageSquare} delay={0.15} />
+        <StatCard title="Total Feedback" value={feedbackItems.length} icon={MessageSquare} delay={0} />
+        <StatCard title="Avg Rating" value={avgRating} icon={Star} delay={0.05} />
+        <StatCard title="Strong Yes" value={strongYesCount} icon={ThumbsUp} delay={0.1} />
+        <StatCard title="Total Reviews" value={feedbackItems.length} icon={MessageSquare} delay={0.15} />
       </div>
 
+      {feedbackItems.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <div className="p-4 rounded-full bg-muted/10">
+            <MessageSquare className="h-8 w-8 text-muted-foreground/50" />
+          </div>
+          <p className="text-muted-foreground font-medium">No feedback submitted yet</p>
+        </div>
+      )}
+
       <div className="space-y-3">
-        {demoFeedback.map((fb, index) => (
+        {feedbackItems.map((fb: any, index: number) => (
           <motion.div
             key={fb.id}
             initial={{ opacity: 0, y: 20 }}
@@ -60,30 +80,38 @@ export function FeedbackPage() {
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4">
                   <Avatar className="h-10 w-10">
-                    <AvatarFallback>{getInitials(fb.candidate)}</AvatarFallback>
+                    <AvatarFallback>
+                      {fb.candidate_name ? getInitials(fb.candidate_name) : fb.interviewer?.display_name ? getInitials(fb.interviewer.display_name) : '?'}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className="text-sm font-semibold">{fb.candidate}</h3>
-                    <p className="text-xs text-muted-foreground">{fb.job}</p>
-                    <p className="text-sm text-muted-foreground mt-2">{fb.summary}</p>
+                    <h3 className="text-sm font-semibold">{fb.candidate_name || 'Unknown Candidate'}</h3>
+                    <p className="text-xs text-muted-foreground">{fb.job_title || ''}</p>
+                    <p className="text-sm text-muted-foreground mt-2">{fb.summary || fb.notes || ''}</p>
                     <div className="flex items-center gap-3 mt-3">
                       <div className="flex items-center gap-1">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <Star
                             key={i}
-                            className={`h-3.5 w-3.5 ${i < fb.rating ? 'text-warning fill-warning' : 'text-muted'}`}
+                            className={`h-3.5 w-3.5 ${i < (fb.overall_rating || 0) ? 'text-warning fill-warning' : 'text-muted'}`}
                           />
                         ))}
                       </div>
-                      <Badge variant={recColors[fb.recommendation]}>
-                        {recLabels[fb.recommendation]}
-                      </Badge>
+                      {fb.recommendation && (
+                        <Badge variant={recColors[fb.recommendation] || 'info'}>
+                          {recLabels[fb.recommendation] || fb.recommendation}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xs text-muted-foreground">by {fb.interviewer}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{fb.submitted}</p>
+                  <p className="text-xs text-muted-foreground">
+                    by {fb.interviewer?.display_name || 'Unknown'}
+                  </p>
+                  {fb.submitted_at && (
+                    <p className="text-xs text-muted-foreground mt-1">{formatRelativeTime(fb.submitted_at)}</p>
+                  )}
                 </div>
               </div>
             </Card>

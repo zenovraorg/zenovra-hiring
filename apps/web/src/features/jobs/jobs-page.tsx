@@ -27,7 +27,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useJobs } from '@/hooks/use-api';
-import { demoJobs } from '@/lib/demo-data';
 import { formatDate, formatCurrency } from '@/lib/utils';
 import type { JobStatus, JobRequisition as Job } from '@/types';
 
@@ -42,7 +41,7 @@ const statusTabs: { label: string; value: JobStatus | 'all' }[] = [
 export function JobsPage() {
   const navigate = useNavigate();
   const { data, isLoading } = useJobs();
-  const jobs = data?.items || demoJobs;
+  const jobs = data?.items || [];
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState<JobStatus | 'all'>('all');
 

@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Bell, Check, CheckCheck, Briefcase, Calendar, FileText, MessageSquare } from 'lucide-react';
+import { Bell, Check, CheckCheck, Briefcase, Calendar, FileText, MessageSquare, Loader2 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-import { demoNotifications } from '@/lib/demo-data';
+import { useNotifications, useMarkAllRead, useMarkNotificationRead } from '@/hooks/use-api';
 import { formatRelativeTime, cn } from '@/lib/utils';
 import type { Notification } from '@/types';
 
@@ -19,24 +18,33 @@ const typeIcons: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export function NotificationsPage() {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState<Notification[]>(demoNotifications);
+  const { data: notificationsData, isLoading } = useNotifications();
+  const markAllRead = useMarkAllRead();
+  const markOneRead = useMarkNotificationRead();
 
+  const notifications = notificationsData?.items || [];
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
-  const markAllRead = () => {
-    setNotifications((prev) =>
-      prev.map((n) => ({ ...n, is_read: true }))
-    );
+  const handleMarkAllRead = () => {
+    markAllRead.mutate();
   };
 
   const handleNotificationClick = (notification: Notification) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === notification.id ? { ...n, is_read: true } : n))
-    );
+    if (!notification.is_read) {
+      markOneRead.mutate(notification.id);
+    }
     if (notification.link) {
       navigate(notification.link);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[800px] mx-auto">
@@ -44,12 +52,21 @@ export function NotificationsPage() {
         title="Notifications"
         description={`${unreadCount} unread`}
         actions={
-          <Button variant="outline" size="sm" onClick={markAllRead}>
+          <Button variant="outline" size="sm" onClick={handleMarkAllRead} disabled={markAllRead.isPending}>
             <CheckCheck className="mr-2 h-4 w-4" />
             Mark all read
           </Button>
         }
       />
+
+      {notifications.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <div className="p-4 rounded-full bg-muted/10">
+            <Bell className="h-8 w-8 text-muted-foreground/50" />
+          </div>
+          <p className="text-muted-foreground font-medium">No notifications yet</p>
+        </div>
+      )}
 
       <div className="space-y-2">
         {notifications.map((notification, index) => {

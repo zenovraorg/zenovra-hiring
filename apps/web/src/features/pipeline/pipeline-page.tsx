@@ -1,21 +1,22 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ChevronDown, 
-  MoreHorizontal, 
-  Plus, 
-  Table2, 
-  Kanban, 
-  Search, 
-  Filter, 
+import {
+  ChevronDown,
+  MoreHorizontal,
+  Plus,
+  Table2,
+  Kanban,
+  Search,
+  Filter,
   Download,
   Calendar,
   MessageSquare,
   Star,
   Clock,
   Briefcase,
-  Users
+  Users,
+  Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,41 +31,47 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
 import { AddCandidateDialog } from '@/features/candidates/add-candidate-dialog';
-import { useJobs } from '@/hooks/use-api';
-import { demoJobs, demoApplications } from '@/lib/demo-data';
+import { useJobs, usePipeline, useMoveApplication } from '@/hooks/use-api';
 import { getInitials, formatRelativeTime } from '@/lib/utils';
-import type { Application } from '@/types';
+import type { Application, JobRequisition } from '@/types';
 
 export function PipelinePage() {
   const navigate = useNavigate();
-  const { data: jobsData } = useJobs();
-  const jobs = jobsData?.items || demoJobs;
-  const allApplications = demoApplications;
-  const [selectedJob, setSelectedJob] = useState(jobs[0]);
+  const { data: jobsData, isLoading: jobsLoading } = useJobs();
+  const jobs = jobsData?.items || [];
+  const [selectedJob, setSelectedJob] = useState<JobRequisition | null>(null);
   const [view, setView] = useState<'board' | 'table'>('board');
-  const [applications, setApplications] = useState<Application[]>(
-    () => allApplications.filter((a) => a.job_id === jobs[0]?.id)
-  );
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null);
   const [draggingAppId, setDraggingAppId] = useState<string | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const stages = selectedJob.pipeline_stages;
+  const moveApplication = useMoveApplication();
 
-  const handleJobChange = (job: typeof jobs[0]) => {
+  // Select first job when jobs load
+  useEffect(() => {
+    if (jobs.length > 0 && !selectedJob) {
+      setSelectedJob(jobs[0]);
+    }
+  }, [jobs, selectedJob]);
+
+  const { data: pipelineData, isLoading: pipelineLoading } = usePipeline(selectedJob?.id || '');
+  const applications = pipelineData?.items || [];
+
+  const stages = selectedJob?.pipeline_stages || [];
+
+  const handleJobChange = (job: JobRequisition) => {
     setSelectedJob(job);
-    setApplications(allApplications.filter((a) => a.job_id === job.id));
   };
 
   const getApplicationsForStage = useCallback(
     (stageId: string) => {
       return applications.filter((a) => {
         const matchesStage = a.stage_id === stageId;
-        const matchesSearch = !searchQuery || 
-          a.candidate?.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          a.candidate?.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          a.candidate?.email.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesSearch = !searchQuery ||
+          a.candidate?.first_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          a.candidate?.last_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          a.candidate?.email?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesStage && matchesSearch;
       });
     },
@@ -101,13 +108,7 @@ export function PipelinePage() {
 
       if (sourceStageId === targetStageId) return;
 
-      setApplications((prev) =>
-        prev.map((app) =>
-          app.id === appId
-            ? { ...app, stage_id: targetStageId, moved_at: new Date().toISOString() }
-            : app
-        )
-      );
+      moveApplication.mutate({ applicationId: appId, stageId: targetStageId });
     } catch {
       // ignore invalid drag data
     }
@@ -117,6 +118,29 @@ export function PipelinePage() {
     setDragOverStageId(null);
     setDraggingAppId(null);
   };
+
+  if (jobsLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (!selectedJob) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] gap-4">
+        <div className="p-4 rounded-full bg-muted/10">
+          <Briefcase className="h-8 w-8 text-muted-foreground/50" />
+        </div>
+        <p className="text-muted-foreground font-medium">No jobs found. Create a job first to view the pipeline.</p>
+        <Button onClick={() => navigate('/jobs/new')}>
+          <Plus className="mr-2 h-4 w-4" />
+          Create Job
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col space-y-8 max-w-[1800px] mx-auto">
@@ -219,75 +243,84 @@ export function PipelinePage() {
 
       <AddCandidateDialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)} />
 
-      {/* Kanban Board */}
-      <div className="flex-1 min-h-0 -mx-6 lg:-mx-8 px-6 lg:px-8 overflow-x-auto overflow-y-hidden">
-        <div className="flex gap-6 h-full min-w-max pb-6">
-          {stages.map((stage, index) => {
-            const stageApps = getApplicationsForStage(stage.id);
-            const isOver = dragOverStageId === stage.id;
-            return (
-              <motion.div
-                key={stage.id}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="flex flex-col w-[320px] shrink-0"
-              >
-                {/* Column Header */}
-                <div className="flex items-center justify-between mb-4 px-2">
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      className="h-3 w-3 rounded-full shadow-sm"
-                      style={{ backgroundColor: stage.color, boxShadow: `0 0 8px 2px ${stage.color}25, 0 0 0 2px ${stage.color}15` }}
-                    />
-                    <span className="text-sm font-bold text-white/90 uppercase tracking-wider">{stage.name}</span>
-                    <span className="flex h-5 min-w-5 px-1 items-center justify-center rounded-full bg-white/[0.08] text-[10px] font-bold text-white/70">
-                      {stageApps.length}
-                    </span>
-                  </div>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg text-white/30 hover:text-white hover:bg-white/[0.06]">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {/* Column Body - Drop Zone */}
-                <div
-                  className={`flex-1 space-y-3 rounded-2xl p-3 min-h-[200px] transition-all duration-300 overflow-y-auto custom-scrollbar ${
-                    isOver
-                      ? 'bg-white/[0.06] ring-2 ring-indigo-400/20'
-                      : 'bg-white/[0.02] border border-white/[0.06]'
-                  }`}
-                  onDragOver={(e) => handleDragOver(e, stage.id)}
-                  onDragLeave={handleDragLeave}
-                  onDrop={(e) => handleDrop(e, stage.id)}
-                >
-                  <AnimatePresence mode="popLayout">
-                    {stageApps.map((app) => (
-                      <CandidateCard
-                        key={app.id}
-                        application={app}
-                        isDragging={draggingAppId === app.id}
-                        onNativeDragStart={(e) => handleDragStart(e, app.id, stage.id)}
-                        onNativeDragEnd={handleDragEnd}
-                        onViewProfile={() => navigate(`/candidates/${app.candidate_id}`)}
-                      />
-                    ))}
-                  </AnimatePresence>
-                  
-                  {stageApps.length === 0 && (
-                    <div className={`flex flex-col items-center justify-center h-32 text-xs text-white/30 border-2 border-dashed rounded-xl transition-colors ${
-                      isOver ? 'border-indigo-400/40 bg-indigo-400/5 text-indigo-400' : 'border-white/[0.08]'
-                    }`}>
-                      <Plus className="h-5 w-5 mb-2 opacity-40" />
-                      <span>Drop candidates here</span>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
+      {/* Loading state for pipeline data */}
+      {pipelineLoading && (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
-      </div>
+      )}
+
+      {/* Kanban Board */}
+      {!pipelineLoading && (
+        <div className="flex-1 min-h-0 -mx-6 lg:-mx-8 px-6 lg:px-8 overflow-x-auto overflow-y-hidden">
+          <div className="flex gap-6 h-full min-w-max pb-6">
+            {stages.map((stage, index) => {
+              const stageApps = getApplicationsForStage(stage.id);
+              const isOver = dragOverStageId === stage.id;
+              return (
+                <motion.div
+                  key={stage.id}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col w-[320px] shrink-0"
+                >
+                  {/* Column Header */}
+                  <div className="flex items-center justify-between mb-4 px-2">
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className="h-3 w-3 rounded-full shadow-sm"
+                        style={{ backgroundColor: stage.color, boxShadow: `0 0 8px 2px ${stage.color}25, 0 0 0 2px ${stage.color}15` }}
+                      />
+                      <span className="text-sm font-bold text-white/90 uppercase tracking-wider">{stage.name}</span>
+                      <span className="flex h-5 min-w-5 px-1 items-center justify-center rounded-full bg-white/[0.08] text-[10px] font-bold text-white/70">
+                        {stageApps.length}
+                      </span>
+                    </div>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg text-white/30 hover:text-white hover:bg-white/[0.06]">
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  {/* Column Body - Drop Zone */}
+                  <div
+                    className={`flex-1 space-y-3 rounded-2xl p-3 min-h-[200px] transition-all duration-300 overflow-y-auto custom-scrollbar ${
+                      isOver
+                        ? 'bg-white/[0.06] ring-2 ring-indigo-400/20'
+                        : 'bg-white/[0.02] border border-white/[0.06]'
+                    }`}
+                    onDragOver={(e) => handleDragOver(e, stage.id)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, stage.id)}
+                  >
+                    <AnimatePresence mode="popLayout">
+                      {stageApps.map((app) => (
+                        <CandidateCard
+                          key={app.id}
+                          application={app}
+                          isDragging={draggingAppId === app.id}
+                          onNativeDragStart={(e) => handleDragStart(e, app.id, stage.id)}
+                          onNativeDragEnd={handleDragEnd}
+                          onViewProfile={() => navigate(`/candidates/${app.candidate_id}`)}
+                        />
+                      ))}
+                    </AnimatePresence>
+
+                    {stageApps.length === 0 && (
+                      <div className={`flex flex-col items-center justify-center h-32 text-xs text-white/30 border-2 border-dashed rounded-xl transition-colors ${
+                        isOver ? 'border-indigo-400/40 bg-indigo-400/5 text-indigo-400' : 'border-white/[0.08]'
+                      }`}>
+                        <Plus className="h-5 w-5 mb-2 opacity-40" />
+                        <span>Drop candidates here</span>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -321,7 +354,7 @@ function CandidateCard({
         isDragging ? 'opacity-50' : ''
       }`}
     >
-      <div 
+      <div
         className="p-4"
         draggable
         onDragStart={onNativeDragStart}
@@ -371,12 +404,12 @@ function CandidateCard({
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-4">
-        {candidate.skills.slice(0, 2).map((skill) => (
+        {(candidate.skills || []).slice(0, 2).map((skill) => (
           <Badge key={skill} className="rounded-md bg-white/[0.06] text-white/50 text-[9px] font-bold border border-white/[0.08] px-1.5 py-0">
             {skill}
           </Badge>
         ))}
-        {candidate.skills.length > 2 && (
+        {(candidate.skills || []).length > 2 && (
           <span className="text-[9px] font-bold text-white/30">
             +{candidate.skills.length - 2}
           </span>
@@ -387,11 +420,11 @@ function CandidateCard({
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 text-[10px] font-bold text-white/30">
             <Star className="h-3 w-3 fill-warning text-warning" />
-            <span>4.8</span>
+            <span>--</span>
           </div>
           <div className="flex items-center gap-1 text-[10px] font-bold text-white/30">
             <MessageSquare className="h-3 w-3" />
-            <span>3</span>
+            <span>0</span>
           </div>
         </div>
         <div className="flex items-center gap-1 text-[10px] font-bold text-white/20">

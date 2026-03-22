@@ -16,6 +16,7 @@ import {
   ChevronRight,
   CalendarDays,
   Mail,
+  Loader2,
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -24,8 +25,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { demoJobs, demoApplications, demoCandidates, demoUsers, demoInterviews } from '@/lib/demo-data';
+import { useJob, usePipeline, useInterviews } from '@/hooks/use-api';
 import { formatDate, formatCurrency, getInitials } from '@/lib/utils';
+import type { JobRequisition, Application, Interview, User } from '@/types';
 
 type Tab = 'overview' | 'candidates' | 'pipeline' | 'interviews';
 
@@ -41,11 +43,23 @@ export function JobDetailPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
 
-  const job = demoJobs.find((j) => j.id === id);
-  const jobApplications = demoApplications.filter((a) => a.job_id === id);
-  const jobInterviews = demoInterviews.filter((i) =>
+  const { data: job, isLoading } = useJob(id || '');
+  const { data: pipelineData } = usePipeline(id || '');
+  const { data: interviewsData } = useInterviews();
+
+  const jobApplications = pipelineData?.items || [];
+  const allInterviews = interviewsData?.items || [];
+  const jobInterviews = allInterviews.filter((i) =>
     jobApplications.some((a) => a.id === i.application_id)
   );
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   if (!job) {
     return (
@@ -63,8 +77,8 @@ export function JobDetailPage() {
     );
   }
 
-  const hiringManager = job.hiring_manager || demoUsers.find((u) => u.id === job.hiring_manager_id);
-  const recruiter = job.recruiter || demoUsers.find((u) => u.id === job.recruiter_id);
+  const hiringManager = job.hiring_manager;
+  const recruiter = job.recruiter;
 
   const stageGroups = (job.pipeline_stages || []).map((stage) => ({
     stage,
@@ -79,10 +93,10 @@ export function JobDetailPage() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
       >
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={() => navigate('/jobs')} 
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate('/jobs')}
           className="gap-2 text-muted-foreground hover:text-foreground transition-all group"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
@@ -198,22 +212,21 @@ export function JobDetailPage() {
   );
 }
 
-/* ─── Overview Tab ────────────────────────────────────────────────────── */
+/* --- Overview Tab --- */
 
 function OverviewTab({
   job,
   hiringManager,
   recruiter,
 }: {
-  job: (typeof demoJobs)[0];
-  hiringManager: (typeof demoUsers)[0] | undefined;
-  recruiter: (typeof demoUsers)[0] | undefined;
+  job: JobRequisition;
+  hiringManager?: User;
+  recruiter?: User;
 }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Main content */}
       <div className="lg:col-span-2 space-y-8">
-        {/* Description */}
         <Card className="premium-card overflow-hidden">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-bold">Job Description</CardTitle>
@@ -225,7 +238,6 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        {/* Requirements */}
         <Card className="premium-card overflow-hidden">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-bold">Requirements</CardTitle>
@@ -244,7 +256,6 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        {/* Nice to haves */}
         {job.nice_to_haves && job.nice_to_haves.length > 0 && (
           <Card className="premium-card overflow-hidden">
             <CardHeader className="pb-4">
@@ -268,7 +279,6 @@ function OverviewTab({
 
       {/* Sidebar */}
       <div className="space-y-8">
-        {/* Compensation Card */}
         <Card className="premium-card bg-primary/[0.02] border-primary/10">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg font-bold flex items-center gap-2">
@@ -289,7 +299,7 @@ function OverviewTab({
                     <span className="ml-2 text-sm font-medium text-muted-foreground uppercase">{job.compensation.currency}</span>
                   </p>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-muted/10">
                   {job.compensation.equity && (
                     <div className="space-y-1">
@@ -309,7 +319,6 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        {/* Hiring Team */}
         <Card className="premium-card">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg font-bold">Hiring Team</CardTitle>
@@ -344,7 +353,6 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        {/* Quick Stats */}
         <Card className="premium-card">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg font-bold">Job Details</CardTitle>
@@ -373,9 +381,9 @@ function OverviewTab({
   );
 }
 
-/* ─── Candidates Tab ──────────────────────────────────────────────────── */
+/* --- Candidates Tab --- */
 
-function CandidatesTab({ applications }: { applications: typeof demoApplications }) {
+function CandidatesTab({ applications }: { applications: Application[] }) {
   const navigate = useNavigate();
 
   if (applications.length === 0) {
@@ -392,7 +400,7 @@ function CandidatesTab({ applications }: { applications: typeof demoApplications
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {applications.map((app, i) => {
-        const candidate = app.candidate || demoCandidates.find((c) => c.id === app.candidate_id);
+        const candidate = app.candidate;
         if (!candidate) return null;
 
         return (
@@ -433,14 +441,14 @@ function CandidatesTab({ applications }: { applications: typeof demoApplications
   );
 }
 
-/* ─── Pipeline Tab ────────────────────────────────────────────────────── */
+/* --- Pipeline Tab --- */
 
 function PipelineTab({
   stageGroups,
 }: {
   stageGroups: {
     stage: { id: string; name: string; order: number; type: string; color: string };
-    applications: typeof demoApplications;
+    applications: Application[];
   }[];
 }) {
   const navigate = useNavigate();
@@ -473,7 +481,7 @@ function PipelineTab({
               <CardContent className="pt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {group.applications.map((app) => {
-                    const candidate = app.candidate || demoCandidates.find((c) => c.id === app.candidate_id);
+                    const candidate = app.candidate;
                     if (!candidate) return null;
                     return (
                       <div
@@ -512,9 +520,9 @@ function PipelineTab({
   );
 }
 
-/* ─── Interviews Tab ──────────────────────────────────────────────────── */
+/* --- Interviews Tab --- */
 
-function InterviewsTab({ interviews }: { interviews: typeof demoInterviews }) {
+function InterviewsTab({ interviews }: { interviews: Interview[] }) {
   if (interviews.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
@@ -564,7 +572,7 @@ function InterviewsTab({ interviews }: { interviews: typeof demoInterviews }) {
                 <StatusBadge type="interview" status={interview.status} className="px-2 py-0.5 text-[10px]" />
                 <div className="flex -space-x-2">
                   {interview.interviewers.slice(0, 3).map((interviewer) => {
-                    const user = interviewer.user || demoUsers.find((u) => u.id === interviewer.user_id);
+                    const user = interviewer.user;
                     return (
                       <Avatar key={interviewer.user_id} className="h-7 w-7 border-2 border-background shadow-sm">
                         <AvatarFallback className="text-[8px] font-bold bg-muted/20">
