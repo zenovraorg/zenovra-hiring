@@ -59,14 +59,14 @@ export function InterviewsPage() {
                 whileHover={{ scale: 1.01, y: -2 }}
                 whileTap={{ scale: 0.99 }}
               >
-                <Card className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
+                <Card className={`p-4 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">
-                      <div className="flex flex-col items-center justify-center rounded-lg bg-primary/5 px-3 py-2 text-center min-w-[60px]">
-                        <span className="text-xs text-muted-foreground">
+                      <div className="flex flex-col items-center justify-center rounded-lg bg-indigo-500/10 px-3 py-2 text-center min-w-[60px]">
+                        <span className="text-xs text-white/50">
                           {formatDate(interview.scheduled_at, { month: 'short' }).split(' ')[0]}
                         </span>
-                        <span className="text-lg font-bold text-primary">
+                        <span className="text-lg font-bold text-indigo-400">
                           {new Date(interview.scheduled_at).getDate()}
                         </span>
                       </div>
@@ -158,10 +158,10 @@ export function InterviewsPage() {
                   whileHover={{ scale: 1.01, y: -2 }}
                   whileTap={{ scale: 0.99 }}
                 >
-                  <Card className={`p-4 opacity-75 hover:opacity-100 transition-opacity cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-primary opacity-100' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
+                  <Card className={`p-4 bg-white/[0.02] border-white/[0.06] opacity-75 hover:opacity-100 hover:bg-white/[0.04] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40 opacity-100' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4">
-                        <div className="flex flex-col items-center justify-center rounded-lg bg-muted px-3 py-2 text-center min-w-[60px]">
+                        <div className="flex flex-col items-center justify-center rounded-lg bg-white/[0.06] px-3 py-2 text-center min-w-[60px]">
                           <span className="text-xs text-muted-foreground">
                             {formatDate(interview.scheduled_at, { month: 'short' }).split(' ')[0]}
                           </span>

@@ -30,11 +30,11 @@ export function StatCard({
       whileHover={{ scale: 1.02, y: -2 }}
       whileTap={{ scale: 0.98 }}
     >
-      <Card className="relative overflow-hidden p-5 hover:shadow-md transition-all duration-300 border-border/50 group">
-        <div className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-primary/60 via-primary/30 to-transparent rounded-full" />
+      <Card className="relative overflow-hidden p-5 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all duration-300 group">
+        <div className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-indigo-400/60 via-indigo-400/20 to-transparent rounded-full" />
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground font-medium">{title}</p>
+            <p className="text-sm text-white/50 font-medium">{title}</p>
             <motion.p
               className="text-2xl font-bold tracking-tight"
               initial={{ opacity: 0 }}
@@ -44,18 +44,18 @@ export function StatCard({
               {value}
             </motion.p>
           </div>
-          <div className={cn('rounded-xl p-2.5 bg-gradient-to-br from-primary/[0.08] to-primary/[0.03] group-hover:from-primary/[0.12] group-hover:to-primary/[0.06] transition-colors duration-200', iconColor)}>
+          <div className={cn('rounded-xl p-2.5 bg-white/[0.06] group-hover:bg-white/[0.08] transition-colors duration-200 text-indigo-400')}>
             <Icon className="h-5 w-5" />
           </div>
         </div>
         {change !== undefined && (
           <div className="mt-3 flex items-center gap-1 text-xs">
             {change >= 0 ? (
-              <TrendingUp className="h-3 w-3 text-success" />
+              <TrendingUp className="h-3 w-3 text-emerald-400" />
             ) : (
-              <TrendingDown className="h-3 w-3 text-destructive" />
+              <TrendingDown className="h-3 w-3 text-red-400" />
             )}
-            <span className={cn(change >= 0 ? 'text-success' : 'text-destructive', 'font-medium')}>
+            <span className={cn(change >= 0 ? 'text-emerald-400' : 'text-red-400', 'font-medium')}>
               {change >= 0 ? '+' : ''}{change}%
             </span>
             {changeLabel && (

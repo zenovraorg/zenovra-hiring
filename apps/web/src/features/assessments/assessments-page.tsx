@@ -47,8 +47,8 @@ export function AssessmentsPage() {
       </div>
 
       <div>
-        <div className="border rounded-lg">
-          <div className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-2.5 text-xs font-medium text-muted-foreground bg-muted/50 rounded-t-lg">
+        <div className="border border-white/[0.06] rounded-lg">
+          <div className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-2.5 text-xs font-medium text-white/40 bg-white/[0.03] rounded-t-lg">
             <span>Candidate</span>
             <span>Job</span>
             <span>Type</span>
@@ -65,7 +65,7 @@ export function AssessmentsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ backgroundColor: 'rgba(99, 102, 241, 0.03)', x: 2 }}
-                className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-3 items-center border-t hover:bg-muted/30 transition-colors cursor-pointer"
+                className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-3 items-center border-t border-white/[0.06] hover:bg-white/[0.03] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">

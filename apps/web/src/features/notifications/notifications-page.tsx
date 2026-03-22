@@ -65,15 +65,15 @@ export function NotificationsPage() {
             >
               <Card
                 className={cn(
-                  'p-4 cursor-pointer hover:shadow-sm transition-all',
-                  !notification.is_read && 'border-l-2 border-l-primary bg-primary/[0.02]'
+                  'p-4 cursor-pointer bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] transition-all',
+                  !notification.is_read && 'border-l-2 border-l-indigo-400 bg-indigo-400/[0.04]'
                 )}
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex items-start gap-3">
                   <div className={cn(
                     'rounded-lg p-2 shrink-0',
-                    !notification.is_read ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
+                    !notification.is_read ? 'bg-indigo-500/10 text-indigo-400' : 'bg-white/[0.06] text-white/40'
                   )}>
                     <Icon className="h-4 w-4" />
                   </div>

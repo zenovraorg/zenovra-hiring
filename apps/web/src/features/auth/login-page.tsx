@@ -101,7 +101,7 @@ export function LoginPage() {
       </div>
 
       {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-background via-background to-muted/30">
+      <div className="flex-1 flex items-center justify-center p-8 bg-[#0a0a0f]">
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -110,23 +110,23 @@ export function LoginPage() {
         >
           {/* Mobile Logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.08] border border-white/[0.06]">
               <img src="/symbol.png" alt="Zenovra" className="h-4 w-4 object-contain" />
             </div>
-            <span className="text-lg font-semibold">Zenovra Tech</span>
+            <span className="text-lg font-semibold text-white/90">Zenovra Tech</span>
           </div>
 
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-2xl font-semibold mb-1"
+            className="text-2xl font-semibold mb-1 text-white/90"
           >Welcome back</motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="text-sm text-muted-foreground mb-6"
+            className="text-sm text-white/50 mb-6"
           >Sign in to your account to continue</motion.p>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -136,15 +136,15 @@ export function LoginPage() {
               transition={{ duration: 0.4, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-2"
             >
-              <label className="text-sm font-medium">Email</label>
+              <label className="text-sm font-medium text-white/70">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
                 <Input
                   type="email"
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-9 h-11 rounded-xl border-border/50 focus-visible:ring-primary/20 bg-white/50 transition-all duration-200 hover:border-primary/30"
+                  className="pl-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04] text-white/90 placeholder:text-white/30 transition-all duration-200 hover:border-white/[0.15]"
                 />
               </div>
             </motion.div>
@@ -156,22 +156,22 @@ export function LoginPage() {
               className="space-y-2"
             >
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium">Password</label>
-                <a href="#" className="text-xs text-primary hover:underline">Forgot password?</a>
+                <label className="text-sm font-medium text-white/70">Password</label>
+                <a href="#" className="text-xs text-indigo-400 hover:underline">Forgot password?</a>
               </div>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
                 <Input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9 pr-9 h-11 rounded-xl border-border/50 focus-visible:ring-primary/20 bg-white/50 transition-all duration-200 hover:border-primary/30"
+                  className="pl-9 pr-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04] text-white/90 placeholder:text-white/30 transition-all duration-200 hover:border-white/[0.15]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -184,7 +184,7 @@ export function LoginPage() {
               transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button type="submit" className="w-full rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200" size="lg">
+                <Button type="submit" className="w-full rounded-xl bg-white text-[#0a0a0f] hover:bg-white/90 shadow-lg transition-all duration-200" size="lg">
                   Sign In
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -194,7 +194,7 @@ export function LoginPage() {
 
           <div className="relative my-6">
             <Separator />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0f] px-2 text-xs text-white/30">
               or
             </span>
           </div>
@@ -207,7 +207,7 @@ export function LoginPage() {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
                 variant="outline"
-                className="w-full rounded-xl border-border/50 hover:bg-primary/[0.03] hover:border-primary/20 transition-all duration-200"
+                className="w-full rounded-xl border-white/[0.08] bg-white/[0.04] text-white/70 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"
                 size="lg"
                 onClick={handleDemoLogin}
               >
@@ -217,13 +217,13 @@ export function LoginPage() {
             </motion.div>
           </motion.div>
 
-          <p className="text-center text-xs text-muted-foreground mt-6">
+          <p className="text-center text-xs text-white/30 mt-6">
             Looking for jobs?{' '}
-            <a href="/careers" className="text-primary hover:underline font-medium">View open positions</a>
+            <a href="/careers" className="text-indigo-400 hover:underline font-medium">View open positions</a>
           </p>
-          <p className="text-center text-xs text-muted-foreground mt-2">
+          <p className="text-center text-xs text-white/30 mt-2">
             Applicant?{' '}
-            <a href="/careers/login" className="text-primary hover:underline font-medium">Sign in here</a>
+            <a href="/careers/login" className="text-indigo-400 hover:underline font-medium">Sign in here</a>
           </p>
         </motion.div>
       </div>

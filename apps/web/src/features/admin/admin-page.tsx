@@ -52,7 +52,7 @@ export function AdminPage() {
                 key={section.label}
                 onClick={() => setActiveSection(section.label)}
                 className={`w-full flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive ? 'bg-muted font-medium' : 'text-muted-foreground hover:bg-muted/50'
+                  isActive ? 'bg-white/[0.08] font-medium text-white' : 'text-white/50 hover:bg-white/[0.04] hover:text-white/70'
                 }`}
               >
                 <Icon className="h-4 w-4 shrink-0" />
@@ -82,7 +82,7 @@ export function AdminPage() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search members..." className="pl-9" />
               </div>
-              <div className="border rounded-lg divide-y">
+              <div className="border border-white/[0.06] rounded-lg divide-y divide-white/[0.06]">
                 {demoUsers.map((user) => {
                   const role = ['org_admin', 'recruiter', 'hiring_manager', 'interviewer', 'executive_viewer'][
                     Math.floor(Math.random() * 5)
@@ -91,7 +91,7 @@ export function AdminPage() {
                   return (
                     <div
                       key={user.id}
-                      className="flex items-center justify-between px-4 py-3 hover:bg-muted/30 transition-colors"
+                      className="flex items-center justify-between px-4 py-3 hover:bg-white/[0.03] transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
@@ -128,11 +128,11 @@ export function AdminPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {demoDepartments.map((dept) => (
-                  <Card key={dept.id} className="p-4 hover:shadow-sm transition-shadow cursor-pointer">
+                  <Card key={dept.id} className="p-4 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Building2 className="h-4 w-4 text-primary" />
+                        <div className="h-9 w-9 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                          <Building2 className="h-4 w-4 text-indigo-400" />
                         </div>
                         <div>
                           <p className="text-sm font-medium">{dept.name}</p>
@@ -156,8 +156,8 @@ export function AdminPage() {
               transition={{ duration: 0.2 }}
               className="flex flex-col items-center justify-center py-20 text-center"
             >
-              <div className="rounded-full bg-muted p-4 mb-4">
-                <Settings className="h-8 w-8 text-muted-foreground" />
+              <div className="rounded-full bg-white/[0.06] p-4 mb-4">
+                <Settings className="h-8 w-8 text-white/40" />
               </div>
               <h3 className="text-lg font-semibold mb-1">{activeSection}</h3>
               <p className="text-sm text-muted-foreground">This section is ready for configuration.</p>

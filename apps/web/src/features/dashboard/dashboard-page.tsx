@@ -245,7 +245,7 @@ export function DashboardPage() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: index * 0.04 }}
-                    className="flex items-center justify-between py-2 group cursor-pointer hover:bg-primary/[0.03] -mx-2 px-2 rounded-lg transition-all duration-200"
+                    className="flex items-center justify-between py-2 group cursor-pointer hover:bg-white/[0.03] -mx-2 px-2 rounded-lg transition-all duration-200"
                     onClick={() => navigate(`/jobs/${job.id}`)}
                   >
                     <div className="min-w-0">
@@ -337,7 +337,7 @@ export function DashboardPage() {
                   animate={deptInView ? { opacity: 1, scale: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: smoothEase }}
                   whileHover={{ scale: 1.02, y: -2 }}
-                  className="rounded-xl border border-border/50 p-4 hover:shadow-md hover:border-primary/10 transition-all duration-200 bg-gradient-to-br from-white/80 to-white/40"
+                  className="rounded-xl border border-white/[0.06] p-4 hover:bg-white/[0.05] hover:border-white/[0.10] transition-all duration-200 bg-white/[0.03]"
                 >
                   <p className="text-sm font-medium">{dept.department}</p>
                   <div className="mt-3 space-y-2">

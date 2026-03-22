@@ -132,22 +132,22 @@ export function PipelinePage() {
             <Briefcase className="h-4 w-4" />
             <span>Active Pipeline</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
+          <h1 className="text-3xl font-bold tracking-tight text-white/90 flex items-center gap-3">
             {selectedJob.title}
-            <Badge variant="outline" className="rounded-full bg-primary/5 text-primary border-primary/20 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5">
+            <Badge variant="outline" className="rounded-full bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5">
               {selectedJob.status}
             </Badge>
           </h1>
           <p className="text-muted-foreground">
-            Managing <span className="text-primary font-bold">{applications.length}</span> candidates across <span className="text-primary font-bold">{stages.length}</span> stages.
+            Managing <span className="text-white font-bold">{applications.length}</span> candidates across <span className="text-white font-bold">{stages.length}</span> stages.
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center bg-muted/50 backdrop-blur-sm rounded-xl p-1 border shadow-sm">
+          <div className="flex items-center bg-white/[0.04] rounded-xl p-1 border border-white/[0.06]">
             <button
               onClick={() => setView('board')}
               className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                view === 'board' ? 'bg-white shadow-sm text-primary' : 'text-muted-foreground hover:text-primary'
+                view === 'board' ? 'bg-white/[0.10] text-white border border-white/[0.08]' : 'text-white/50 hover:text-white'
               }`}
             >
               <Kanban className="h-3.5 w-3.5" />
@@ -156,7 +156,7 @@ export function PipelinePage() {
             <button
               onClick={() => setView('table')}
               className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                view === 'table' ? 'bg-white shadow-sm text-primary' : 'text-muted-foreground hover:text-primary'
+                view === 'table' ? 'bg-white/[0.10] text-white border border-white/[0.08]' : 'text-white/50 hover:text-white'
               }`}
             >
               <Table2 className="h-3.5 w-3.5" />
@@ -166,7 +166,7 @@ export function PipelinePage() {
           <Separator orientation="vertical" className="h-8 mx-1 hidden md:block" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-xl shadow-sm bg-white/50 backdrop-blur-sm h-10">
+              <Button variant="outline" className="rounded-xl bg-white/[0.06] text-white/70 border-white/[0.08] hover:bg-white/[0.10] h-10">
                 Switch Job
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
@@ -202,15 +202,15 @@ export function PipelinePage() {
             placeholder="Search candidates..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-10 rounded-xl border-muted-foreground/20 focus-visible:ring-primary/20 bg-white/50 backdrop-blur-sm"
+            className="pl-9 h-10 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04]"
           />
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="rounded-lg text-muted-foreground hover:text-primary">
+          <Button variant="ghost" size="sm" className="rounded-lg text-white/50 hover:text-white hover:bg-white/[0.05]">
             <Filter className="mr-2 h-4 w-4" />
             Filters
           </Button>
-          <Button variant="ghost" size="sm" className="rounded-lg text-muted-foreground hover:text-primary">
+          <Button variant="ghost" size="sm" className="rounded-lg text-white/50 hover:text-white hover:bg-white/[0.05]">
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
@@ -240,12 +240,12 @@ export function PipelinePage() {
                       className="h-3 w-3 rounded-full shadow-sm"
                       style={{ backgroundColor: stage.color, boxShadow: `0 0 8px 2px ${stage.color}25, 0 0 0 2px ${stage.color}15` }}
                     />
-                    <span className="text-sm font-bold text-primary uppercase tracking-wider">{stage.name}</span>
-                    <span className="flex h-5 min-w-5 px-1 items-center justify-center rounded-full bg-gradient-to-br from-primary/[0.08] to-primary/[0.03] text-[10px] font-bold text-primary">
+                    <span className="text-sm font-bold text-white/90 uppercase tracking-wider">{stage.name}</span>
+                    <span className="flex h-5 min-w-5 px-1 items-center justify-center rounded-full bg-white/[0.08] text-[10px] font-bold text-white/70">
                       {stageApps.length}
                     </span>
                   </div>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/5">
+                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg text-white/30 hover:text-white hover:bg-white/[0.06]">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
@@ -254,8 +254,8 @@ export function PipelinePage() {
                 <div
                   className={`flex-1 space-y-3 rounded-2xl p-3 min-h-[200px] transition-all duration-300 overflow-y-auto custom-scrollbar ${
                     isOver
-                      ? 'bg-primary/[0.04] ring-2 ring-primary/20 shadow-inner'
-                      : 'bg-gradient-to-b from-muted/[0.15] to-muted/[0.05] border border-border/20'
+                      ? 'bg-white/[0.06] ring-2 ring-indigo-400/20'
+                      : 'bg-white/[0.02] border border-white/[0.06]'
                   }`}
                   onDragOver={(e) => handleDragOver(e, stage.id)}
                   onDragLeave={handleDragLeave}
@@ -275,8 +275,8 @@ export function PipelinePage() {
                   </AnimatePresence>
                   
                   {stageApps.length === 0 && (
-                    <div className={`flex flex-col items-center justify-center h-32 text-xs text-muted-foreground/60 border-2 border-dashed rounded-xl transition-colors ${
-                      isOver ? 'border-primary/40 bg-primary/5 text-primary' : 'border-muted-foreground/10'
+                    <div className={`flex flex-col items-center justify-center h-32 text-xs text-white/30 border-2 border-dashed rounded-xl transition-colors ${
+                      isOver ? 'border-indigo-400/40 bg-indigo-400/5 text-indigo-400' : 'border-white/[0.08]'
                     }`}>
                       <Plus className="h-5 w-5 mb-2 opacity-40" />
                       <span>Drop candidates here</span>
@@ -317,8 +317,8 @@ function CandidateCard({
       whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
       whileTap={{ scale: 1.05 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className={`group bg-white rounded-xl border border-border/30 cursor-grab active:cursor-grabbing transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-primary/[0.06] hover:border-primary/20 ${
-        isDragging ? 'shadow-none opacity-50' : ''
+      className={`group bg-white/[0.03] rounded-xl border border-white/[0.06] cursor-grab active:cursor-grabbing transition-all duration-200 hover:bg-white/[0.05] hover:border-white/[0.10] ${
+        isDragging ? 'opacity-50' : ''
       }`}
     >
       <div 
@@ -331,12 +331,12 @@ function CandidateCard({
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9 rounded-lg shadow-sm">
             <AvatarImage src={`https://picsum.photos/seed/${candidate.id}/40/40`} />
-            <AvatarFallback className="rounded-lg bg-primary/10 text-primary font-bold text-xs">
+            <AvatarFallback className="rounded-lg bg-white/[0.08] text-white/70 font-bold text-xs">
               {getInitials(`${candidate.first_name} ${candidate.last_name}`)}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="text-sm font-bold text-primary leading-tight group-hover:text-primary transition-colors">
+            <p className="text-sm font-bold text-white/90 leading-tight group-hover:text-white transition-colors">
               {candidate.first_name} {candidate.last_name}
             </p>
             <p className="text-[10px] font-medium text-muted-foreground leading-tight mt-0.5 truncate">
@@ -372,29 +372,29 @@ function CandidateCard({
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {candidate.skills.slice(0, 2).map((skill) => (
-          <Badge key={skill} className="rounded-md bg-gradient-to-r from-muted/60 to-muted/30 text-muted-foreground text-[9px] font-bold border border-border/20 px-1.5 py-0">
+          <Badge key={skill} className="rounded-md bg-white/[0.06] text-white/50 text-[9px] font-bold border border-white/[0.08] px-1.5 py-0">
             {skill}
           </Badge>
         ))}
         {candidate.skills.length > 2 && (
-          <span className="text-[9px] font-bold text-muted-foreground/40">
+          <span className="text-[9px] font-bold text-white/30">
             +{candidate.skills.length - 2}
           </span>
         )}
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-border/20">
+      <div className="flex items-center justify-between pt-3 border-t border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/60">
+          <div className="flex items-center gap-1 text-[10px] font-bold text-white/30">
             <Star className="h-3 w-3 fill-warning text-warning" />
             <span>4.8</span>
           </div>
-          <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/60">
+          <div className="flex items-center gap-1 text-[10px] font-bold text-white/30">
             <MessageSquare className="h-3 w-3" />
             <span>3</span>
           </div>
         </div>
-        <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/40">
+        <div className="flex items-center gap-1 text-[10px] font-bold text-white/20">
           <Clock className="h-3 w-3" />
           <span>{formatRelativeTime(application.applied_at)}</span>
         </div>

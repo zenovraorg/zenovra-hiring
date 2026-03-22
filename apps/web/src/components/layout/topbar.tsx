@@ -29,16 +29,16 @@ export function Topbar() {
   }, [theme]);
 
   return (
-    <header className="sticky top-0 z-20 flex h-20 w-full items-center justify-between border-b border-border/40 bg-white/70 px-6 backdrop-blur-2xl shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+    <header className="sticky top-0 z-20 flex h-20 w-full items-center justify-between border-b border-white/[0.06] bg-[#0a0a0f]/80 px-6 backdrop-blur-2xl">
       <div className="flex items-center gap-4">
         {/* Search Trigger */}
         <button
           onClick={() => setCommandPaletteOpen(true)}
-          className="group flex items-center gap-3 rounded-xl border border-border/50 bg-gradient-to-r from-white/80 to-white/50 px-4 py-2.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-white hover:shadow-md hover:shadow-black/[0.03] hover:border-primary/20 focus:ring-2 focus:ring-primary/10 w-64 lg:w-96"
+          className="group flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-2.5 text-sm text-white/40 transition-all duration-200 hover:bg-white/[0.06] hover:border-white/[0.12] focus:ring-2 focus:ring-white/20 w-64 lg:w-96"
         >
-          <Search className="h-4 w-4 transition-colors group-hover:text-primary" />
+          <Search className="h-4 w-4 transition-colors group-hover:text-white" />
           <span className="flex-1 text-left">Search anything...</span>
-          <kbd className="hidden rounded-md bg-muted/70 px-1.5 py-0.5 text-[10px] font-bold font-mono text-muted-foreground/70 border border-border/50 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:inline">
+          <kbd className="hidden rounded-md bg-white/[0.06] px-1.5 py-0.5 text-[10px] font-bold font-mono text-white/30 border border-white/[0.08] sm:inline">
             ⌘K
           </kbd>
         </button>
@@ -50,7 +50,7 @@ export function Topbar() {
           variant="ghost"
           size="icon"
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-          className="rounded-xl hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors"
+          className="rounded-xl hover:bg-white/[0.05] text-white/40 hover:text-white transition-colors"
         >
           {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
         </Button>
@@ -59,13 +59,13 @@ export function Topbar() {
         <Button
           variant="ghost"
           size="icon"
-          className="relative rounded-xl hover:bg-primary/5 text-muted-foreground hover:text-primary transition-all duration-200 hover:shadow-sm"
+          className="relative rounded-xl hover:bg-white/[0.05] text-white/40 hover:text-white transition-all duration-200"
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <span className="absolute right-2 top-2 flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/40" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary ring-2 ring-white" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-400 ring-2 ring-[#0a0a0f]" />
             </span>
           )}
         </Button>
@@ -75,18 +75,18 @@ export function Topbar() {
         {/* User menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-3 rounded-xl px-2 hover:bg-primary/[0.04] transition-all duration-200">
-              <Avatar className="h-10 w-10 rounded-xl shadow-sm ring-2 ring-primary/[0.06]">
+            <Button variant="ghost" className="flex items-center gap-3 rounded-xl px-2 hover:bg-white/[0.05] transition-all duration-200">
+              <Avatar className="h-10 w-10 rounded-xl shadow-sm ring-2 ring-white/[0.08]">
                 <AvatarImage src={user?.avatar_url} />
-                <AvatarFallback className="rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-bold">
+                <AvatarFallback className="rounded-xl bg-white/[0.08] text-white/70 font-bold">
                   {user ? getInitials(user.display_name) : 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className="hidden text-left md:block">
-                <p className="text-sm font-bold leading-none text-primary">
+                <p className="text-sm font-bold leading-none text-white/90">
                   {user?.display_name || 'Demo User'}
                 </p>
-                <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white/30">
                   {membership?.role?.replace('_', ' ') || 'Administrator'}
                 </p>
               </div>

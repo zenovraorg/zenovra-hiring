@@ -62,12 +62,12 @@ export function JobsPage() {
         className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
       >
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-primary">Job Requisitions</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white/90">Job Requisitions</h1>
           <p className="text-muted-foreground">Manage and track your organization's open positions and hiring pipeline.</p>
         </div>
         <div className="flex items-center gap-3">
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-            <Button variant="outline" className="rounded-xl shadow-sm bg-white/50 backdrop-blur-sm">
+            <Button variant="outline" className="rounded-xl bg-white/[0.06] text-white/70 border-white/[0.08] hover:bg-white/[0.10]">
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
@@ -96,21 +96,21 @@ export function JobsPage() {
         transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
       >
-        <div className="flex items-center gap-1 bg-muted/40 p-1 rounded-xl backdrop-blur-sm border border-border/30 shadow-sm">
+        <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/[0.06]">
           {statusTabs.map((tab) => (
             <button
               key={tab.value}
               onClick={() => setActiveTab(tab.value)}
               className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                 activeTab === tab.value
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-primary'
+                  ? 'text-white'
+                  : 'text-white/50 hover:text-white'
               }`}
             >
               {activeTab === tab.value && (
                 <motion.div
                   layoutId="jobs-active-tab"
-                  className="absolute inset-0 bg-white shadow-md shadow-black/[0.04] rounded-lg border border-border/30"
+                  className="absolute inset-0 bg-white/[0.10] rounded-lg border border-white/[0.08]"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
@@ -124,12 +124,12 @@ export function JobsPage() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search requisitions..."
-              className="pl-9 rounded-xl border-muted-foreground/20 focus-visible:ring-primary/20 bg-white/50 backdrop-blur-sm"
+              className="pl-9 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04]"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <Button variant="outline" size="icon" className="rounded-xl shrink-0 bg-white/50 backdrop-blur-sm">
+          <Button variant="outline" size="icon" className="rounded-xl shrink-0 bg-white/[0.04] border-white/[0.08]">
             <Filter className="h-4 w-4" />
           </Button>
         </div>
@@ -158,20 +158,20 @@ export function JobsPage() {
 
 function StatCard({ title, value, icon: Icon, trend }: { title: string; value: string; icon: any; trend: string }) {
   return (
-    <div className="premium-card relative overflow-hidden p-6 bg-white/60 backdrop-blur-sm border-border/50">
-      <div className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-primary/50 via-primary/20 to-transparent rounded-full" />
+    <div className="premium-card relative overflow-hidden p-6">
+      <div className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-indigo-400/60 via-indigo-400/20 to-transparent rounded-full" />
       <div className="flex items-center justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/[0.08] to-primary/[0.03] text-primary">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.06] text-indigo-400">
           <Icon className="h-5 w-5" />
         </div>
-        <div className="flex items-center gap-1 text-xs font-bold text-success">
+        <div className="flex items-center gap-1 text-xs font-bold text-emerald-400">
           <TrendingUp className="h-3 w-3" />
           {trend}
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-        <p className="text-2xl font-bold text-primary">{value}</p>
+        <h3 className="text-sm font-medium text-white/50">{title}</h3>
+        <p className="text-2xl font-bold text-white/90">{value}</p>
       </div>
     </div>
   );
@@ -181,17 +181,17 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
   return (
     <motion.div
       whileHover={{ y: -4 }}
-      className="premium-card group overflow-hidden bg-white/70 backdrop-blur-sm cursor-pointer border-border/40 hover:border-primary/15"
+      className="premium-card group overflow-hidden cursor-pointer"
       onClick={onClick}
     >
       <div className="p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1 min-w-0">
-            <h3 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors truncate">{job.title}</h3>
+            <h3 className="font-bold text-lg leading-tight text-white/90 group-hover:text-white transition-colors truncate">{job.title}</h3>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Building2 className="h-3 w-3" />
               <span className="truncate">{job.department?.name}</span>
-              <span className="text-border">·</span>
+              <span className="text-white/20">·</span>
               <MapPin className="h-3 w-3" />
               <span className="truncate">{job.location?.name}</span>
             </div>
@@ -200,13 +200,13 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="rounded-xl bg-gradient-to-br from-muted/40 to-muted/20 p-3 border border-border/30">
+          <div className="rounded-xl bg-white/[0.04] p-3 border border-white/[0.06]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Candidates</p>
-            <p className="text-lg font-bold text-primary">{job.candidate_count}</p>
+            <p className="text-lg font-bold text-white/90">{job.candidate_count}</p>
           </div>
-          <div className="rounded-xl bg-gradient-to-br from-muted/40 to-muted/20 p-3 border border-border/30">
+          <div className="rounded-xl bg-white/[0.04] p-3 border border-white/[0.06]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Filled</p>
-            <p className="text-lg font-bold text-primary">{job.filled_count}/{job.headcount}</p>
+            <p className="text-lg font-bold text-white/90">{job.filled_count}/{job.headcount}</p>
           </div>
         </div>
 
@@ -215,17 +215,17 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
             {[1, 2, 3].map((i) => (
               <img
                 key={i}
-                className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0a0a0f]"
                 src={`https://picsum.photos/seed/user${i + (job.id as any)}/32/32`}
                 alt=""
                 referrerPolicy="no-referrer"
               />
             ))}
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-[10px] font-bold ring-2 ring-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.08] text-[10px] font-bold text-white/60 ring-2 ring-[#0a0a0f]">
               +{Math.floor(Math.random() * 10) + 2}
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="rounded-lg group-hover:bg-primary group-hover:text-white transition-all">
+          <Button variant="ghost" size="sm" className="rounded-lg text-white/50 group-hover:bg-white group-hover:text-[#0a0a0f] transition-all">
             View Details
             <ChevronRight className="ml-1 h-4 w-4" />
           </Button>
@@ -233,11 +233,11 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
       </div>
       
       {/* Progress bar for hiring pipeline */}
-      <div className="h-1 w-full bg-muted/20">
+      <div className="h-1 w-full bg-white/[0.04]">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${(job.filled_count / job.headcount) * 100}%` }}
-          className="h-full bg-gradient-to-r from-primary to-primary/70"
+          className="h-full bg-gradient-to-r from-indigo-400 to-cyan-400"
           transition={{ duration: 1, ease: "easeOut" }}
         />
       </div>

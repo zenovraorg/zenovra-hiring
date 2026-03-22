@@ -56,7 +56,7 @@ export function FeedbackPage() {
             whileHover={{ scale: 1.01, y: -2 }}
             whileTap={{ scale: 0.99 }}
           >
-            <Card className="p-5 hover:shadow-md transition-shadow cursor-pointer">
+            <Card className="p-5 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer">
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4">
                   <Avatar className="h-10 w-10">

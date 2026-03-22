@@ -200,8 +200,8 @@ export function AnalyticsPage() {
             <CardTitle className="text-base font-medium">Recruiter Performance</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="border rounded-lg">
-              <div className="grid grid-cols-5 gap-4 px-4 py-2.5 text-xs font-medium text-muted-foreground bg-muted/50 rounded-t-lg">
+            <div className="border border-white/[0.06] rounded-lg">
+              <div className="grid grid-cols-5 gap-4 px-4 py-2.5 text-xs font-medium text-white/40 bg-white/[0.03] rounded-t-lg">
                 <span>Recruiter</span>
                 <span className="text-center">Active Pipeline</span>
                 <span className="text-center">Interviews</span>
@@ -215,13 +215,13 @@ export function AnalyticsPage() {
                   animate={recruiterInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.4, delay: 0.15 + i * 0.08, ease: smoothEase }}
                   whileHover={{ backgroundColor: 'rgba(99, 102, 241, 0.03)' }}
-                  className="grid grid-cols-5 gap-4 px-4 py-3 items-center border-t transition-colors"
+                  className="grid grid-cols-5 gap-4 px-4 py-3 items-center border-t border-white/[0.06] transition-colors"
                 >
                   <span className="text-sm font-medium">{recruiter.name}</span>
                   <span className="text-sm text-center">{recruiter.pipeline}</span>
                   <span className="text-sm text-center">{recruiter.interviews}</span>
                   <span className="text-sm text-center">{recruiter.offers}</span>
-                  <span className="text-sm text-center font-semibold text-primary">{recruiter.hires}</span>
+                  <span className="text-sm text-center font-semibold text-indigo-400">{recruiter.hires}</span>
                 </motion.div>
               ))}
             </div>
