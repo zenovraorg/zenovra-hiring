@@ -2,25 +2,36 @@
 
 ## Documentation-Driven Workflow (MANDATORY)
 
-Every coding task MUST follow the Documentation Loop before writing any code.
+Every coding task MUST follow the Documentation Loop (`/documentation-loop`).
 
-### Before Any Code Change:
-1. Read `SYSTEM_DOCS.md` — understand architecture, routes, APIs, database, deployment
-2. Read `ROUTE_REFERENCE.md` (if exists) — understand route map
-3. Identify the exact files, APIs, and database tables involved
-4. Check Known Issues section to avoid regressions
-5. If unclear — read actual source code. Do NOT guess.
+### Mode Detection:
+- Default: **NORMAL MODE**
+- If user says "fix", "cleanup", "stabilize", "fix issues", "fix APIs" → **FIX MODE**
 
-### During Implementation:
-- Follow existing patterns (React 19, Vite 6, Tailwind v4, Zustand, TanStack Query, FastAPI, Motor/MongoDB)
-- Do not introduce new frameworks or patterns not already in the codebase
-- Keep changes scoped to relevant files only
-- Never regress on previously fixed issues
+### Pre-Implementation (MANDATORY):
+1. Read `SYSTEM_DOCS.md` — architecture, routes, APIs, database, deployment
+2. Read `ROUTE_REFERENCE.md` (if exists)
+3. Identify exact files, APIs, and database tables involved
+4. Check Known Issues
+5. If unclear — read actual code. Do NOT guess.
 
-### After Implementation:
-1. Update `SYSTEM_DOCS.md`: what changed, new known issues, update Last Audited date
-2. Only update `ROUTE_REFERENCE.md` if routes were added/changed
-3. Verify changes work — check for errors
+### Normal Mode:
+- Follow existing architecture and patterns
+- Reuse existing APIs and components
+- Do NOT invent routes, APIs, database tables, or schema
+- Do NOT modify existing endpoints or contracts
+- Keep changes minimal and scoped
+
+### Fix Mode:
+- Fix in small batches (one area at a time)
+- Prefer bug fixes, consistency fixes, corrections
+- Do NOT redesign architecture or rename APIs/routes/schema
+- If a fix requires breaking changes → STOP and explain first
+
+### Post-Implementation (MANDATORY):
+1. Verify no existing functionality is broken
+2. Update `SYSTEM_DOCS.md`: what changed, new known issues, Last Audited, Recent Changes
+3. Update `ROUTE_REFERENCE.md` ONLY if routes changed
 
 ## Project Context
 - **Frontend**: React 19 + Vite 6 + Tailwind v4 + Zustand + TanStack Query + Radix UI

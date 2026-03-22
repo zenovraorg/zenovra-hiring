@@ -1,47 +1,69 @@
 # Documentation Loop
 
-Reusable skill that enforces a documentation-driven workflow for every coding task.
-Prevents guessing, breaking existing functionality, and undocumented changes.
+You are working in a production codebase with a documentation system.
+Always follow this workflow.
 
-## PRE-IMPLEMENTATION
+## MODE DETECTION
 
-Before writing any code:
+Default: **NORMAL MODE**
 
-1. **Read SYSTEM_DOCS.md** in the project root — understand the full architecture, routes, components, API endpoints, database collections, and deployment config.
-2. **Read ROUTE_REFERENCE.md** (if it exists) — understand the route map and page structure.
-3. **Identify correct files** — based on the docs, pinpoint the exact files, APIs, and database tables involved in this task. Do NOT guess file locations or API shapes.
-4. **Check Known Issues** — read the Known Issues section in SYSTEM_DOCS.md to avoid re-introducing fixed bugs or conflicting with known problems.
-5. **If required information is unclear:**
-   - Do NOT guess or assume
-   - Read the actual source code to verify
-   - Grep for function names, route paths, or component names
-   - Ask the user if still ambiguous
+If user says:
+- "fix", "cleanup", "stabilize", "fix issues", "fix APIs"
+→ Switch to **FIX MODE**
 
-## IMPLEMENTATION
+## PRE-IMPLEMENTATION (MANDATORY)
 
-While writing code:
+1. Read `SYSTEM_DOCS.md`
+2. Read `ROUTE_REFERENCE.md` (if exists)
+3. Identify:
+   - Exact files to modify
+   - APIs involved
+   - Database tables involved
+4. Check Known Issues
 
-- **Follow existing architecture and patterns** — match the coding style, folder structure, naming conventions, and state management patterns already in the codebase.
-- **Do not invent new patterns** — if the codebase uses Zustand, don't introduce Redux. If it uses Motor for MongoDB, don't add Mongoose. Match what exists.
-- **Keep changes scoped** — only modify files directly relevant to the task. Do not refactor unrelated code unless explicitly asked.
-- **Preserve existing fixes** — never regress on previously fixed UI issues or bugs. Check git log if unsure whether something was intentionally changed.
+If anything is unclear:
+- Do NOT guess
+- Read actual code to confirm
 
-## POST-IMPLEMENTATION
+## NORMAL MODE (default)
 
-After code changes are complete:
+- Follow existing architecture and patterns
+- Reuse existing APIs and components
+- Do NOT invent routes, APIs, database tables, or schema
+- Do NOT modify existing endpoints or contracts
+- Keep changes minimal and scoped
+- Do NOT modify unrelated files
 
-1. **Update SYSTEM_DOCS.md** with:
-   - What changed (new routes, endpoints, components, collections)
-   - Any new Known Issues discovered during implementation
-   - Update the "Last Audited" date to today
-   - Add entry to "Recent Changes" section (create if missing)
-2. **Do NOT update ROUTE_REFERENCE.md** unless routes were actually added, removed, or changed.
-3. **Verify the changes work** — run the dev server, check for errors, confirm the feature works as expected.
+## FIX MODE (for multiple issues)
+
+Goal: Fix issues across the system WITHOUT breaking existing functionality
+
+- Fix issues in small batches (one area at a time)
+- Prefer bug fixes, consistency fixes, and corrections
+- Do NOT redesign architecture
+- Do NOT rename APIs, routes, or schema
+- After each fix:
+  - Verify nothing else broke
+  - Update `SYSTEM_DOCS.md`
+
+If a fix requires breaking changes:
+→ **STOP** and explain before proceeding
+
+## POST-IMPLEMENTATION (MANDATORY)
+
+1. Verify:
+   - No existing functionality is broken
+   - APIs and responses remain unchanged
+2. Update `SYSTEM_DOCS.md`:
+   - What changed
+   - Any new Known Issues
+   - Update Last Audited
+   - Add to Recent Changes
+3. Update `ROUTE_REFERENCE.md` ONLY if routes changed
 
 ## RULES
 
-- `SYSTEM_DOCS.md` is the **source of truth** for architecture understanding
-- `ROUTE_REFERENCE.md` is the **reference map** for navigation and routing
-- Only update documentation sections that were **actually modified or verified**
-- Never mark documentation as "audited" for sections you didn't review
-- When in doubt, read the code — docs may be stale
+- `SYSTEM_DOCS.md` is the source of truth
+- `ROUTE_REFERENCE.md` is the reference
+- Never guess APIs, tables, or routes
+- Only update sections you actually worked on
