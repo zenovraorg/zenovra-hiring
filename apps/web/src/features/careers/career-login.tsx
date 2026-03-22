@@ -18,6 +18,7 @@ export function CareerLogin() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem('isApplicantLoggedIn', 'true');
+    localStorage.setItem('applicantEmail', email);
     navigate(redirect);
   };
 

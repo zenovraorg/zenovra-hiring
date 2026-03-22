@@ -66,9 +66,33 @@ Jamie Anderson`,
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || '/api/v1';
+      const res = await fetch(`${apiBase}/apply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          job_id: job.id || (job as any)._id,
+          first_name: form.name.split(' ')[0] || form.name,
+          last_name: form.name.split(' ').slice(1).join(' ') || '',
+          email: form.email,
+          phone: form.phone,
+          linkedin_url: form.linkedin,
+          portfolio_url: form.portfolio,
+          cover_letter: form.coverLetter,
+          source: 'careers_page',
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || 'Failed to submit application');
+      }
+      setSubmitted(true);
+    } catch (err: any) {
+      alert(`Application failed: ${err.message}`);
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {

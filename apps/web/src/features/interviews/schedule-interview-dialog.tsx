@@ -170,9 +170,30 @@ export function ScheduleInterviewDialog({ open, onClose }: ScheduleInterviewDial
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={() => {
-            // TODO: Wire to API when interview endpoints are available
-            onClose();
+          <Button onClick={async () => {
+            try {
+              const apiBase = import.meta.env.VITE_API_URL || '/api/v1';
+              const token = 'demo-token';
+              const res = await fetch(`${apiBase}/interviews`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({
+                  title: `${interviewType.replace('_', ' ')} Interview`,
+                  candidate_id: candidateId,
+                  job_id: jobId,
+                  interview_type: interviewType,
+                  scheduled_at: `${date}T${time}:00`,
+                  duration_minutes: Number(duration),
+                  interviewer_ids: selectedInterviewers,
+                  notes,
+                  status: 'scheduled',
+                }),
+              });
+              if (!res.ok) throw new Error('Failed');
+              onClose();
+            } catch {
+              alert('Failed to schedule interview');
+            }
           }}>Schedule</Button>
         </DialogFooter>
       </DialogContent>

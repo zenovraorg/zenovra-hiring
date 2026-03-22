@@ -10,6 +10,7 @@ from app.api.v1.routers import (
     notifications,
     feedback,
     referrals,
+    apply,
 )
 
 api_router = APIRouter()
@@ -23,3 +24,4 @@ api_router.include_router(offers.router)
 api_router.include_router(notifications.router)
 api_router.include_router(feedback.router)
 api_router.include_router(referrals.router)
+api_router.include_router(apply.router)

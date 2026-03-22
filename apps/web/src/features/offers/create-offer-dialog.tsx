@@ -135,9 +135,30 @@ export function CreateOfferDialog({ open, onClose }: CreateOfferDialogProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={() => {
-            // TODO: Wire to API when offer endpoints are available
-            onClose();
+          <Button onClick={async () => {
+            try {
+              const apiBase = import.meta.env.VITE_API_URL || '/api/v1';
+              const token = 'demo-token';
+              const res = await fetch(`${apiBase}/offers`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({
+                  candidate_id: candidateId,
+                  job_id: '',
+                  base_salary: Number(baseSalary) || 0,
+                  bonus: Number(bonus) || 0,
+                  equity,
+                  start_date: startDate,
+                  benefits: selectedBenefits,
+                  notes,
+                  status: 'draft',
+                }),
+              });
+              if (!res.ok) throw new Error('Failed');
+              onClose();
+            } catch {
+              alert('Failed to create offer');
+            }
           }}>Create Offer</Button>
         </DialogFooter>
       </DialogContent>
