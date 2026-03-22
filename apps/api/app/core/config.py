@@ -3,7 +3,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     app_name: str = "Zenovra Hiring Platform"
-    debug: bool = False
+    debug: bool = True
     api_prefix: str = "/api/v1"
 
     # MongoDB
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     local_storage_path: str = "./uploads"
 
     # CORS
-    cors_origins: list[str] = ["http://localhost:3000"]
+    cors_origins: list[str] = ["http://localhost:3000", "https://hiring.zenovra.org", "https://zenovra-hiring.vercel.app"]
 
     class Config:
         env_file = ".env"

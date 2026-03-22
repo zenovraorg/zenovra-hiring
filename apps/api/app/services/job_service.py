@@ -36,7 +36,6 @@ class JobService:
             "pipeline_stages": default_stages,
             "candidate_count": 0,
             "filled_count": 0,
-            "is_published": False,
             "is_deleted": False,
             **data.model_dump(),
         }

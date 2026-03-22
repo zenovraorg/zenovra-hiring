@@ -3,9 +3,9 @@ from typing import Optional
 
 class JobCreate(BaseModel):
     title: str
-    department_id: str
-    location_id: str
-    hiring_manager_id: str
+    department_id: str = ""
+    location_id: str = ""
+    hiring_manager_id: str = ""
     recruiter_id: Optional[str] = None
     employment_type: str = "full_time"
     experience_level: str = "mid"
@@ -15,6 +15,8 @@ class JobCreate(BaseModel):
     compensation: dict = Field(default_factory=dict)
     headcount: int = 1
     is_remote: bool = False
+    status: str = "open"
+    is_published: bool = True
 
 class JobUpdate(BaseModel):
     title: Optional[str] = None
