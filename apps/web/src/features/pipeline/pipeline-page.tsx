@@ -411,7 +411,7 @@ function CandidateCard({
         ))}
         {(candidate.skills || []).length > 2 && (
           <span className="text-[9px] font-bold text-white/30">
-            +{candidate.skills.length - 2}
+            +{(candidate.skills || []).length - 2}
           </span>
         )}
       </div>

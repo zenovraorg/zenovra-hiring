@@ -139,7 +139,7 @@ export function InterviewsPage() {
                       <div className="flex items-center gap-2">
                         <StatusBadge type="interview" status={interview.status} />
                         <div className="flex -space-x-1.5">
-                          {interview.interviewers.map((p) => (
+                          {(interview.interviewers || []).map((p) => (
                             <Avatar key={p.user_id} className="h-7 w-7 border-2 border-background">
                               <AvatarFallback className="text-2xs">
                                 {p.user ? getInitials(p.user.display_name) : '?'}

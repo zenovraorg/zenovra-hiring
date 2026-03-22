@@ -113,7 +113,7 @@ export function CareerJobDetail() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Briefcase className="h-4 w-4" />
-                    <span className="capitalize">{job.employment_type.replace('_', ' ')}</span>
+                    <span className="capitalize">{(job.employment_type || '').replace('_', ' ')}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Clock className="h-4 w-4" />
@@ -125,13 +125,13 @@ export function CareerJobDetail() {
                     {job.experience_level}
                   </Badge>
                   <Badge variant="info" className="capitalize">
-                    {job.employment_type.replace('_', ' ')}
+                    {(job.employment_type || '').replace('_', ' ')}
                   </Badge>
                   {job.is_remote && <Badge variant="success">Remote</Badge>}
-                  {job.compensation.min_salary && (
+                  {job.compensation?.min_salary && (
                     <Badge variant="outline">
                       <DollarSign className="h-3 w-3 mr-0.5" />
-                      {formatCurrency(job.compensation.min_salary)} &ndash; {formatCurrency(job.compensation.max_salary || 0)}
+                      {formatCurrency(job.compensation.min_salary)} &ndash; {formatCurrency(job.compensation?.max_salary || 0)}
                     </Badge>
                   )}
                 </div>
@@ -154,7 +154,7 @@ export function CareerJobDetail() {
                 <div>
                   <h2 className="text-lg font-semibold mb-3">Requirements</h2>
                   <ul className="space-y-2.5">
-                    {job.requirements.map((req, i) => (
+                    {(job.requirements || []).map((req, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-muted-foreground">
                         <CheckCircle2 className="h-4.5 w-4.5 text-primary mt-0.5 shrink-0" />
                         <span>{req}</span>
@@ -186,7 +186,7 @@ export function CareerJobDetail() {
                 <div>
                   <h2 className="text-lg font-semibold mb-3">Compensation</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {job.compensation.min_salary && (
+                    {job.compensation?.min_salary && (
                       <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                           <DollarSign className="h-4.5 w-4.5 text-primary" />
@@ -194,12 +194,12 @@ export function CareerJobDetail() {
                         <div>
                           <p className="text-sm text-muted-foreground">Base Salary</p>
                           <p className="font-semibold">
-                            {formatCurrency(job.compensation.min_salary)} &ndash; {formatCurrency(job.compensation.max_salary || 0)}
+                            {formatCurrency(job.compensation.min_salary)} &ndash; {formatCurrency(job.compensation?.max_salary || 0)}
                           </p>
                         </div>
                       </div>
                     )}
-                    {job.compensation.equity && (
+                    {job.compensation?.equity && (
                       <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10">
                           <Star className="h-4.5 w-4.5 text-success" />
@@ -210,7 +210,7 @@ export function CareerJobDetail() {
                         </div>
                       </div>
                     )}
-                    {job.compensation.bonus && (
+                    {job.compensation?.bonus && (
                       <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-info/10">
                           <Briefcase className="h-4.5 w-4.5 text-info" />
@@ -239,7 +239,7 @@ export function CareerJobDetail() {
                 <CardContent className="p-6">
                   <h3 className="font-semibold mb-2">Interested in this role?</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Join {job.candidate_count}+ candidates who have already applied.
+                    Join {job.candidate_count ?? 0}+ candidates who have already applied.
                   </p>
                   <Button size="lg" className="w-full" onClick={handleApply}>
                     Apply Now

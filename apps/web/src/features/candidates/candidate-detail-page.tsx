@@ -139,7 +139,7 @@ export function CandidateDetailPage() {
               </div>
             )}
             <Badge variant="secondary" className="capitalize">
-              {candidate.source.replace('_', ' ')}
+              {(candidate.source || 'unknown').replace('_', ' ')}
             </Badge>
           </div>
         </div>
@@ -255,7 +255,7 @@ export function CandidateDetailPage() {
             </CardHeader>
             <CardContent className="space-y-2">
               <Badge variant="info" className="capitalize">
-                {candidate.source.replace('_', ' ')}
+                {(candidate.source || 'unknown').replace('_', ' ')}
               </Badge>
               {candidate.source_detail && (
                 <p className="text-xs text-muted-foreground">{candidate.source_detail}</p>

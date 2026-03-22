@@ -571,7 +571,7 @@ function InterviewsTab({ interviews }: { interviews: Interview[] }) {
               <div className="flex flex-col items-end gap-3">
                 <StatusBadge type="interview" status={interview.status} className="px-2 py-0.5 text-[10px]" />
                 <div className="flex -space-x-2">
-                  {interview.interviewers.slice(0, 3).map((interviewer) => {
+                  {(interview.interviewers || []).slice(0, 3).map((interviewer) => {
                     const user = interviewer.user;
                     return (
                       <Avatar key={interviewer.user_id} className="h-7 w-7 border-2 border-background shadow-sm">
@@ -581,9 +581,9 @@ function InterviewsTab({ interviews }: { interviews: Interview[] }) {
                       </Avatar>
                     );
                   })}
-                  {interview.interviewers.length > 3 && (
+                  {(interview.interviewers || []).length > 3 && (
                     <div className="h-7 w-7 rounded-full bg-muted/10 border-2 border-background flex items-center justify-center text-[8px] font-bold text-muted-foreground">
-                      +{interview.interviewers.length - 3}
+                      +{(interview.interviewers || []).length - 3}
                     </div>
                   )}
                 </div>

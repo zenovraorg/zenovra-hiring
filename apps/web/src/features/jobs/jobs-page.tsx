@@ -201,11 +201,11 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
         <div className="mt-6 grid grid-cols-2 gap-4">
           <div className="rounded-xl bg-white/[0.04] p-3 border border-white/[0.06]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Candidates</p>
-            <p className="text-lg font-bold text-white/90">{job.candidate_count}</p>
+            <p className="text-lg font-bold text-white/90">{job.candidate_count ?? 0}</p>
           </div>
           <div className="rounded-xl bg-white/[0.04] p-3 border border-white/[0.06]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Filled</p>
-            <p className="text-lg font-bold text-white/90">{job.filled_count}/{job.headcount}</p>
+            <p className="text-lg font-bold text-white/90">{job.filled_count ?? 0}/{job.headcount ?? 0}</p>
           </div>
         </div>
 
@@ -235,7 +235,7 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
       <div className="h-1 w-full bg-white/[0.04]">
         <motion.div
           initial={{ width: 0 }}
-          animate={{ width: `${(job.filled_count / job.headcount) * 100}%` }}
+          animate={{ width: `${job.headcount ? ((job.filled_count || 0) / job.headcount) * 100 : 0}%` }}
           className="h-full bg-gradient-to-r from-indigo-400 to-cyan-400"
           transition={{ duration: 1, ease: "easeOut" }}
         />

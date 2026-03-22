@@ -47,7 +47,7 @@ export function CandidatesPage() {
       c.last_name.toLowerCase().includes(q) ||
       c.email.toLowerCase().includes(q) ||
       c.headline?.toLowerCase().includes(q) ||
-      c.skills.some((s) => s.toLowerCase().includes(q))
+      (c.skills || []).some((s) => s.toLowerCase().includes(q))
     );
   });
 
@@ -172,19 +172,19 @@ export function CandidatesPage() {
                     </td>
                     <td className="px-6 py-4">
                       <Badge variant="secondary" className="rounded-full bg-white/[0.06] text-white/50 font-bold uppercase tracking-widest text-[9px] px-2 border-white/[0.08]">
-                        {candidate.source.replace('_', ' ')}
+                        {(candidate.source || 'unknown').replace('_', ' ')}
                       </Badge>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1.5">
-                        {candidate.skills.slice(0, 2).map((skill) => (
+                        {(candidate.skills || []).slice(0, 2).map((skill) => (
                           <Badge key={skill} className="rounded-lg bg-indigo-500/10 text-indigo-400 text-[10px] font-bold border border-indigo-500/20">
                             {skill}
                           </Badge>
                         ))}
-                        {candidate.skills.length > 2 && (
+                        {(candidate.skills || []).length > 2 && (
                           <span className="text-[10px] font-bold text-white/30">
-                            +{candidate.skills.length - 2}
+                            +{(candidate.skills || []).length - 2}
                           </span>
                         )}
                       </div>

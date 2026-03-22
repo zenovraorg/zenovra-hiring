@@ -94,7 +94,7 @@ export function OffersPage() {
                         <h3 className="font-semibold">
                           {candidate?.first_name} {candidate?.last_name}
                         </h3>
-                        <p className="text-sm text-muted-foreground">{offer.title} · {offer.department}</p>
+                        <p className="text-sm text-muted-foreground">{offer.title || 'Untitled'} · {offer.department || 'No Department'}</p>
                         <div className="flex items-center gap-4 mt-3">
                           <div>
                             <span className="text-xs text-muted-foreground">Base</span>
@@ -130,11 +130,11 @@ export function OffersPage() {
                   </div>
 
                   {/* Approvals */}
-                  {offer.approvals && offer.approvals.length > 0 && (
+                  {(offer.approvals || []).length > 0 && (
                     <div className="mt-4 pt-4 border-t">
                       <span className="text-xs font-medium text-muted-foreground">Approvals</span>
                       <div className="flex items-center gap-3 mt-2">
-                        {offer.approvals.map((approval) => (
+                        {(offer.approvals || []).map((approval) => (
                           <div key={approval.approver_id} className="flex items-center gap-2">
                             <Avatar className="h-6 w-6">
                               <AvatarFallback className="text-2xs">

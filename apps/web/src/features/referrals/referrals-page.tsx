@@ -78,7 +78,7 @@ export function ReferralsPage() {
             <div className="space-y-3">
               {referrals.map((ref, index) => {
                 const candidateName = ref.candidate
-                  ? `${ref.candidate.first_name} ${ref.candidate.last_name}`
+                  ? `${ref.candidate.first_name || ''} ${ref.candidate.last_name || ''}`.trim() || 'Unknown Candidate'
                   : 'Unknown Candidate';
                 const referrerName = ref.referrer?.display_name || 'Unknown';
                 const jobTitle = ref.job?.title || '';
