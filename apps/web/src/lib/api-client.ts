@@ -18,13 +18,14 @@ class ApiError extends Error {
   }
 }
 
-async function getAuthToken(): Promise<string | null> {
+async function getAuthToken(): Promise<string> {
   try {
     const { auth } = await import('./firebase');
-    const user = auth.currentUser;
-    if (user) return user.getIdToken();
+    if (auth?.currentUser) {
+      return await auth.currentUser.getIdToken();
+    }
   } catch {
-    // Firebase not configured
+    // Firebase not configured or errored
   }
   return 'demo-token';
 }

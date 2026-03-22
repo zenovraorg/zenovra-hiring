@@ -97,9 +97,10 @@ export function CreateJobPage() {
       },
       {
         onSuccess: () => navigate('/jobs'),
-        onError: (err) => {
+        onError: (err: any) => {
           console.error('Failed to create job:', err);
-          alert('Failed to create job. Check console for details.');
+          const detail = err?.data?.detail || err?.message || 'Unknown error';
+          alert(`Failed to create job: ${detail}`);
         },
       }
     );
