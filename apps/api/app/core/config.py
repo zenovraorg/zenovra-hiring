@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     local_storage_path: str = "./uploads"
 
     # CORS
-    cors_origins: list[str] = ["http://localhost:3000", "https://hiring.zenovra.org", "https://zenovra-hiring.vercel.app"]
+    cors_origins: list[str] = ["*"]
 
     class Config:
         env_file = ".env"

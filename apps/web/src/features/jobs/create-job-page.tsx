@@ -72,29 +72,37 @@ export function CreateJobPage() {
   };
 
   const handleSubmit = () => {
-    createJob.mutate({
-      title: form.title,
-      department_id: form.department_id,
-      location_id: form.location_id,
-      hiring_manager_id: form.hiring_manager_id,
-      recruiter_id: form.recruiter_id,
-      employment_type: form.employment_type,
-      experience_level: form.experience_level,
-      is_remote: form.is_remote,
-      description: form.description,
-      requirements: form.requirements.filter(Boolean),
-      nice_to_haves: form.nice_to_haves.filter(Boolean),
-      compensation: {
-        min_salary: Number(form.min_salary) || 0,
-        max_salary: Number(form.max_salary) || 0,
-        currency: 'USD',
-        equity: form.equity || undefined,
+    createJob.mutate(
+      {
+        title: form.title,
+        department_id: form.department_id,
+        location_id: form.location_id,
+        hiring_manager_id: form.hiring_manager_id,
+        recruiter_id: form.recruiter_id,
+        employment_type: form.employment_type,
+        experience_level: form.experience_level,
+        is_remote: form.is_remote,
+        description: form.description,
+        requirements: form.requirements.filter(Boolean),
+        nice_to_haves: form.nice_to_haves.filter(Boolean),
+        compensation: {
+          min_salary: Number(form.min_salary) || 0,
+          max_salary: Number(form.max_salary) || 0,
+          currency: 'USD',
+          equity: form.equity || undefined,
+        },
+        headcount: Number(form.headcount) || 1,
+        status: 'open',
+        is_published: true,
       },
-      headcount: Number(form.headcount) || 1,
-      status: 'open',
-      is_published: true,
-    });
-    navigate('/jobs');
+      {
+        onSuccess: () => navigate('/jobs'),
+        onError: (err) => {
+          console.error('Failed to create job:', err);
+          alert('Failed to create job. Check console for details.');
+        },
+      }
+    );
   };
 
   return (
