@@ -9,4 +9,5 @@ uploads/
 *.log
 .DS_Store
 .claude/
-.vercel
+.vercel/
+.wrangler/
