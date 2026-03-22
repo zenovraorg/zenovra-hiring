@@ -58,4 +58,9 @@ class CandidateService:
 
     async def get_pipeline(self, org_id: str, job_id: str):
         items, total = await self.app_repo.get_by_job(org_id, job_id)
+        # Enrich with candidate data
+        for item in items:
+            candidate = await self.repo.get_by_id(item.get("candidate_id", ""))
+            if candidate:
+                item["candidate"] = candidate
         return items

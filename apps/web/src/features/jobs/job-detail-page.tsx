@@ -26,6 +26,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { useJob, usePipeline, useInterviews } from '@/hooks/use-api';
+import { api } from '@/lib/api-client';
 import { formatDate, formatCurrency, getInitials } from '@/lib/utils';
 import type { JobRequisition, Application, Interview, User } from '@/types';
 
@@ -141,11 +142,21 @@ export function JobDetailPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="rounded-full px-6 border-muted/30 hover:bg-muted/10">
+            <Button
+              variant="outline"
+              className="rounded-full px-6 border-muted/30 hover:bg-muted/10"
+              onClick={async () => {
+                if (!confirm('Are you sure you want to close this job?')) return;
+                try {
+                  await api.patch(`/jobs/${id}`, { status: 'closed', is_published: false });
+                  navigate('/jobs');
+                } catch { alert('Failed to close job'); }
+              }}
+            >
               <XCircle className="h-4 w-4 mr-2" />
               Close Job
             </Button>
-            <Button className="rounded-full px-8 shadow-lg shadow-primary/20" onClick={() => navigate(`/jobs/${id}/edit`)}>
+            <Button className="rounded-full px-8 shadow-lg shadow-primary/20" onClick={() => navigate(`/jobs/new`)}>
               <Edit className="h-4 w-4 mr-2" />
               Edit Details
             </Button>
