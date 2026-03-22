@@ -69,8 +69,13 @@ export function CareersPage() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32">
-        {/* Animated background orbs */}
+        {/* Animated background */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          {/* Subtle dot grid */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+          {/* Gradient mesh */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] via-transparent to-blue-500/[0.03]" />
+          {/* Animated orbs */}
           <motion.div
             animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0], scale: [1, 1.15, 0.95, 1] }}
             transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
@@ -87,20 +92,26 @@ export function CareersPage() {
             className="absolute bottom-[0%] left-[30%] h-[350px] w-[350px] rounded-full bg-violet-500/[0.05] blur-[100px]"
           />
           {/* Floating particles */}
-          {[...Array(6)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <motion.div
               key={i}
-              animate={{ y: [0, -60, 0], opacity: [0.2, 0.6, 0.2] }}
-              transition={{ duration: 6 + i * 2, repeat: Infinity, ease: 'easeInOut', delay: i * 1.5 }}
+              animate={{ y: [0, -80, 0], opacity: [0.15, 0.5, 0.15] }}
+              transition={{ duration: 6 + i * 1.5, repeat: Infinity, ease: 'easeInOut', delay: i * 1.2 }}
               className="absolute rounded-full bg-primary/20"
               style={{
-                width: 4 + i * 2,
-                height: 4 + i * 2,
-                left: `${15 + i * 14}%`,
-                top: `${30 + (i % 3) * 20}%`,
+                width: 3 + i * 1.5,
+                height: 3 + i * 1.5,
+                left: `${10 + i * 11}%`,
+                top: `${25 + (i % 4) * 15}%`,
               }}
             />
           ))}
+          {/* Animated gradient line */}
+          <motion.div
+            animate={{ x: ['-100%', '200%'] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-1/2 h-[1px] w-[40%] bg-gradient-to-r from-transparent via-primary/10 to-transparent"
+          />
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
