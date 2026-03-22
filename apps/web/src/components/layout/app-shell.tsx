@@ -9,9 +9,11 @@ export function AppShell() {
     <div className="relative flex h-screen w-full overflow-hidden bg-background selection:bg-primary/10 selection:text-primary">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-blue-500/[0.04] blur-[120px]" />
-        <div className="absolute top-[20%] -right-[10%] h-[30%] w-[30%] rounded-full bg-cyan-500/[0.03] blur-[100px]" />
-        <div className="absolute -bottom-[10%] left-[20%] h-[40%] w-[40%] rounded-full bg-sky-500/[0.04] blur-[120px]" />
+        <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-blue-500/[0.03] blur-[140px]" />
+        <div className="absolute top-[20%] -right-[10%] h-[30%] w-[30%] rounded-full bg-cyan-500/[0.025] blur-[120px]" />
+        <div className="absolute -bottom-[10%] left-[20%] h-[40%] w-[40%] rounded-full bg-sky-500/[0.03] blur-[140px]" />
+        {/* Subtle dot pattern */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 0.5px, transparent 0)', backgroundSize: '24px 24px' }} />
       </div>
 
       <Sidebar />

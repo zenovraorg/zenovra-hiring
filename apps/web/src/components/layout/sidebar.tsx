@@ -56,11 +56,11 @@ export function Sidebar() {
         initial={false}
         animate={{ width: sidebarCollapsed ? 80 : 260 }}
         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-        className="relative flex h-full flex-col border-r bg-white/50 backdrop-blur-xl z-30"
+        className="relative flex h-full flex-col border-r border-border/40 bg-gradient-to-b from-white/80 via-white/60 to-white/80 backdrop-blur-2xl z-30 shadow-[1px_0_30px_-10px_rgba(0,0,0,0.06)]"
       >
         {/* Logo Section */}
         <div className="flex h-20 items-center gap-3 px-6">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25 ring-1 ring-primary/10">
             <img src="/symbol.png" alt="Zenovra" className="h-5 w-5 object-contain" />
           </div>
           <AnimatePresence mode="wait">
@@ -125,7 +125,7 @@ export function Sidebar() {
             to="/careers"
             className={cn(
               "flex items-center gap-3 rounded-xl p-3 text-sm font-medium transition-all duration-200",
-              "bg-primary/5 text-primary hover:bg-primary hover:text-white group shadow-sm",
+              "bg-gradient-to-r from-primary/[0.06] to-primary/[0.03] text-primary hover:from-primary hover:to-primary/90 hover:text-white group shadow-sm border border-primary/10 hover:border-transparent hover:shadow-lg hover:shadow-primary/20",
               sidebarCollapsed && "justify-center px-0"
             )}
           >
@@ -137,7 +137,7 @@ export function Sidebar() {
         {/* Collapse toggle */}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-3 top-24 flex h-6 w-6 items-center justify-center rounded-full border bg-white shadow-md hover:scale-110 transition-transform z-50"
+          className="absolute -right-3 top-24 flex h-6 w-6 items-center justify-center rounded-full border border-border/50 bg-white shadow-lg shadow-black/5 hover:scale-110 hover:shadow-xl hover:shadow-black/10 transition-all duration-200 z-50"
         >
           {sidebarCollapsed ? (
             <ChevronRight className="h-3 w-3" />
@@ -178,15 +178,22 @@ function SidebarSection({
                 className={cn(
                   'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                   isActive
-                    ? 'text-primary'
-                    : 'text-muted-foreground hover:bg-primary/5 hover:text-primary',
+                    ? 'text-primary font-semibold'
+                    : 'text-muted-foreground hover:bg-primary/[0.04] hover:text-primary',
                   collapsed && 'justify-center px-0'
                 )}
               >
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-active-pill"
-                    className="absolute inset-0 rounded-xl bg-primary/10"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/[0.08] via-primary/[0.12] to-primary/[0.06] shadow-[inset_0_0_0_1px_rgba(var(--color-primary),0.08)]"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-bar"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-full bg-gradient-to-b from-primary to-primary/60"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -200,7 +207,7 @@ function SidebarSection({
                 {isActive && !collapsed && (
                   <motion.div
                     layoutId="sidebar-active-dot"
-                    className="absolute right-3 h-1.5 w-1.5 rounded-full bg-primary"
+                    className="absolute right-3 h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_2px_rgba(var(--color-primary),0.3)]"
                   />
                 )}
               </NavLink>

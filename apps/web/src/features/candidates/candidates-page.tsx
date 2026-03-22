@@ -115,12 +115,12 @@ export function CandidatesPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="premium-card overflow-hidden bg-white/70 backdrop-blur-sm"
+        className="premium-card overflow-hidden bg-white/70 backdrop-blur-sm border-border/40"
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b bg-muted/30">
+              <tr className="border-b border-border/40 bg-gradient-to-r from-muted/30 to-muted/10">
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Candidate</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Current Role</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Source</th>
@@ -130,7 +130,7 @@ export function CandidatesPage() {
                 <th className="px-6 py-4"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/50">
+            <tbody className="divide-y divide-border/30">
               <AnimatePresence mode="popLayout">
                 {filtered.map((candidate, index) => (
                   <motion.tr
@@ -140,14 +140,14 @@ export function CandidatesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                    className="group hover:bg-primary/[0.02] transition-colors cursor-pointer"
+                    className="group hover:bg-gradient-to-r hover:from-primary/[0.03] hover:to-transparent transition-all duration-200 cursor-pointer"
                     onClick={() => navigate(`/candidates/${candidate.id}`)}
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10 rounded-xl shadow-sm">
+                        <Avatar className="h-10 w-10 rounded-xl shadow-sm ring-2 ring-primary/[0.06] group-hover:ring-primary/[0.12] transition-all duration-200">
                           <AvatarImage src={`https://picsum.photos/seed/${candidate.id}/40/40`} />
-                          <AvatarFallback className="rounded-xl bg-primary/10 text-primary font-bold">
+                          <AvatarFallback className="rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-bold">
                             {getInitials(`${candidate.first_name} ${candidate.last_name}`)}
                           </AvatarFallback>
                         </Avatar>
@@ -253,8 +253,8 @@ export function CandidatesPage() {
       </motion.div>
 
       {filtered.length === 0 && (
-        <div className="py-20 text-center premium-card bg-white/50">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
+        <div className="py-20 text-center premium-card bg-white/50 border-border/40">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-muted to-muted/50 shadow-inner">
             <Users className="h-8 w-8 text-muted-foreground" />
           </div>
           <h3 className="text-xl font-bold">No candidates found</h3>

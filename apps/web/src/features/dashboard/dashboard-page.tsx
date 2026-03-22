@@ -53,7 +53,7 @@ export function DashboardPage() {
   const deptInView = useInView(deptRef, { once: true, margin: '-50px' });
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto">
+    <div className="p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto relative">
       <motion.div
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -89,9 +89,9 @@ export function DashboardPage() {
           animate={chartsInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: smoothEase }}
         >
-          <Card>
+          <Card className="border-border/50 shadow-premium hover:shadow-hover transition-all duration-300 overflow-hidden">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Pipeline Funnel</CardTitle>
+              <CardTitle className="text-base font-semibold tracking-tight">Pipeline Funnel</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-[260px]">
@@ -126,9 +126,9 @@ export function DashboardPage() {
           animate={chartsInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}
         >
-          <Card>
+          <Card className="border-border/50 shadow-premium hover:shadow-hover transition-all duration-300 overflow-hidden">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Hires Over Time</CardTitle>
+              <CardTitle className="text-base font-semibold tracking-tight">Hires Over Time</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-[260px]">
@@ -174,9 +174,9 @@ export function DashboardPage() {
           animate={bottomInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: smoothEase }}
         >
-          <Card className="h-full">
+          <Card className="h-full border-border/50 shadow-premium hover:shadow-hover transition-all duration-300">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Source Breakdown</CardTitle>
+              <CardTitle className="text-base font-semibold tracking-tight">Source Breakdown</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-[180px]">
@@ -230,9 +230,9 @@ export function DashboardPage() {
           animate={bottomInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}
         >
-          <Card className="h-full">
+          <Card className="h-full border-border/50 shadow-premium hover:shadow-hover transition-all duration-300">
             <CardHeader className="pb-2 flex-row items-center justify-between">
-              <CardTitle className="text-base font-medium">Open Positions</CardTitle>
+              <CardTitle className="text-base font-semibold tracking-tight">Open Positions</CardTitle>
               <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => navigate('/jobs')}>
                 View all <ArrowRight className="ml-1 h-3 w-3" />
               </Button>
@@ -245,7 +245,7 @@ export function DashboardPage() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: index * 0.04 }}
-                    className="flex items-center justify-between py-2 group cursor-pointer hover:bg-muted/50 -mx-2 px-2 rounded-md transition-colors"
+                    className="flex items-center justify-between py-2 group cursor-pointer hover:bg-primary/[0.03] -mx-2 px-2 rounded-lg transition-all duration-200"
                     onClick={() => navigate(`/jobs/${job.id}`)}
                   >
                     <div className="min-w-0">
@@ -272,9 +272,9 @@ export function DashboardPage() {
           animate={bottomInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2, ease: smoothEase }}
         >
-          <Card className="h-full">
+          <Card className="h-full border-border/50 shadow-premium hover:shadow-hover transition-all duration-300">
             <CardHeader className="pb-2 flex-row items-center justify-between">
-              <CardTitle className="text-base font-medium">Recent Activity</CardTitle>
+              <CardTitle className="text-base font-semibold tracking-tight">Recent Activity</CardTitle>
               <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => navigate('/notifications')}>
                 View all <ArrowRight className="ml-1 h-3 w-3" />
               </Button>
@@ -324,9 +324,9 @@ export function DashboardPage() {
         animate={deptInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, ease: smoothEase }}
       >
-        <Card>
+        <Card className="border-border/50 shadow-premium hover:shadow-hover transition-all duration-300">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base font-medium">Department Metrics</CardTitle>
+            <CardTitle className="text-base font-semibold tracking-tight">Department Metrics</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -337,7 +337,7 @@ export function DashboardPage() {
                   animate={deptInView ? { opacity: 1, scale: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: smoothEase }}
                   whileHover={{ scale: 1.02, y: -2 }}
-                  className="rounded-lg border p-4 hover:shadow-sm transition-shadow"
+                  className="rounded-xl border border-border/50 p-4 hover:shadow-md hover:border-primary/10 transition-all duration-200 bg-gradient-to-br from-white/80 to-white/40"
                 >
                   <p className="text-sm font-medium">{dept.department}</p>
                   <div className="mt-3 space-y-2">

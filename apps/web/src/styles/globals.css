@@ -86,6 +86,9 @@
     --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.3), 0 4px 10px -5px rgba(0, 0, 0, 0.15);
     --shadow-hover: 0 20px 40px -15px rgba(0, 0, 0, 0.4), 0 8px 15px -8px rgba(0, 0, 0, 0.2);
   }
+  .dark .premium-card {
+    @apply border-white/[0.06];
+  }
 }
 
 @layer utilities {
@@ -106,7 +109,21 @@
     display: none;
   }
   .premium-card {
-    @apply bg-card rounded-lg border shadow-premium transition-all duration-300 hover:shadow-hover hover:-translate-y-1;
+    @apply bg-card rounded-xl border border-border/50 shadow-premium transition-all duration-300 hover:shadow-hover hover:-translate-y-0.5;
+  }
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
   }
 }
 

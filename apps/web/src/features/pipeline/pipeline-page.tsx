@@ -238,10 +238,10 @@ export function PipelinePage() {
                   <div className="flex items-center gap-2.5">
                     <div
                       className="h-3 w-3 rounded-full shadow-sm"
-                      style={{ backgroundColor: stage.color }}
+                      style={{ backgroundColor: stage.color, boxShadow: `0 0 8px 2px ${stage.color}25, 0 0 0 2px ${stage.color}15` }}
                     />
                     <span className="text-sm font-bold text-primary uppercase tracking-wider">{stage.name}</span>
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/5 text-[10px] font-bold text-primary">
+                    <span className="flex h-5 min-w-5 px-1 items-center justify-center rounded-full bg-gradient-to-br from-primary/[0.08] to-primary/[0.03] text-[10px] font-bold text-primary">
                       {stageApps.length}
                     </span>
                   </div>
@@ -252,10 +252,10 @@ export function PipelinePage() {
 
                 {/* Column Body - Drop Zone */}
                 <div
-                  className={`flex-1 space-y-4 rounded-2xl p-3 min-h-[200px] transition-all duration-300 overflow-y-auto custom-scrollbar ${
+                  className={`flex-1 space-y-3 rounded-2xl p-3 min-h-[200px] transition-all duration-300 overflow-y-auto custom-scrollbar ${
                     isOver
-                      ? 'bg-primary/[0.04] ring-2 ring-primary/20'
-                      : 'bg-muted/20 border border-transparent'
+                      ? 'bg-primary/[0.04] ring-2 ring-primary/20 shadow-inner'
+                      : 'bg-gradient-to-b from-muted/[0.15] to-muted/[0.05] border border-border/20'
                   }`}
                   onDragOver={(e) => handleDragOver(e, stage.id)}
                   onDragLeave={handleDragLeave}
@@ -317,8 +317,8 @@ function CandidateCard({
       whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
       whileTap={{ scale: 1.05 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className={`group bg-white rounded-xl border border-muted/30 cursor-grab active:cursor-grabbing transition-shadow shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 ${
-        isDragging ? 'shadow-none' : ''
+      className={`group bg-white rounded-xl border border-border/30 cursor-grab active:cursor-grabbing transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-primary/[0.06] hover:border-primary/20 ${
+        isDragging ? 'shadow-none opacity-50' : ''
       }`}
     >
       <div 
@@ -372,7 +372,7 @@ function CandidateCard({
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {candidate.skills.slice(0, 2).map((skill) => (
-          <Badge key={skill} className="rounded-md bg-muted/50 text-muted-foreground text-[9px] font-bold border-none px-1.5 py-0">
+          <Badge key={skill} className="rounded-md bg-gradient-to-r from-muted/60 to-muted/30 text-muted-foreground text-[9px] font-bold border border-border/20 px-1.5 py-0">
             {skill}
           </Badge>
         ))}
@@ -383,7 +383,7 @@ function CandidateCard({
         )}
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-muted/20">
+      <div className="flex items-center justify-between pt-3 border-t border-border/20">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/60">
             <Star className="h-3 w-3 fill-warning text-warning" />

@@ -29,16 +29,16 @@ export function Topbar() {
   }, [theme]);
 
   return (
-    <header className="sticky top-0 z-20 flex h-20 w-full items-center justify-between border-b bg-white/50 px-6 backdrop-blur-xl">
+    <header className="sticky top-0 z-20 flex h-20 w-full items-center justify-between border-b border-border/40 bg-white/70 px-6 backdrop-blur-2xl shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
       <div className="flex items-center gap-4">
         {/* Search Trigger */}
         <button
           onClick={() => setCommandPaletteOpen(true)}
-          className="group flex items-center gap-3 rounded-xl border bg-white/50 px-4 py-2 text-sm text-muted-foreground transition-all hover:bg-white hover:shadow-sm w-64 lg:w-96"
+          className="group flex items-center gap-3 rounded-xl border border-border/50 bg-gradient-to-r from-white/80 to-white/50 px-4 py-2.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-white hover:shadow-md hover:shadow-black/[0.03] hover:border-primary/20 focus:ring-2 focus:ring-primary/10 w-64 lg:w-96"
         >
           <Search className="h-4 w-4 transition-colors group-hover:text-primary" />
           <span className="flex-1 text-left">Search anything...</span>
-          <kbd className="hidden rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold font-mono text-muted-foreground border sm:inline">
+          <kbd className="hidden rounded-md bg-muted/70 px-1.5 py-0.5 text-[10px] font-bold font-mono text-muted-foreground/70 border border-border/50 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:inline">
             ⌘K
           </kbd>
         </button>
@@ -59,11 +59,14 @@ export function Topbar() {
         <Button
           variant="ghost"
           size="icon"
-          className="relative rounded-xl hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors"
+          className="relative rounded-xl hover:bg-primary/5 text-muted-foreground hover:text-primary transition-all duration-200 hover:shadow-sm"
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute right-2 top-2 flex h-2 w-2 rounded-full bg-primary ring-2 ring-white" />
+            <span className="absolute right-2 top-2 flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/40" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary ring-2 ring-white" />
+            </span>
           )}
         </Button>
 
@@ -72,10 +75,10 @@ export function Topbar() {
         {/* User menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-3 rounded-xl px-2 hover:bg-primary/5 transition-all">
-              <Avatar className="h-10 w-10 rounded-xl shadow-sm">
+            <Button variant="ghost" className="flex items-center gap-3 rounded-xl px-2 hover:bg-primary/[0.04] transition-all duration-200">
+              <Avatar className="h-10 w-10 rounded-xl shadow-sm ring-2 ring-primary/[0.06]">
                 <AvatarImage src={user?.avatar_url} />
-                <AvatarFallback className="rounded-xl bg-primary/10 text-primary font-bold">
+                <AvatarFallback className="rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-bold">
                   {user ? getInitials(user.display_name) : 'U'}
                 </AvatarFallback>
               </Avatar>

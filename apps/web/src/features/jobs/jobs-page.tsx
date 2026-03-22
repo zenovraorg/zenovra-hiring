@@ -96,7 +96,7 @@ export function JobsPage() {
         transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
       >
-        <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-xl backdrop-blur-sm">
+        <div className="flex items-center gap-1 bg-muted/40 p-1 rounded-xl backdrop-blur-sm border border-border/30 shadow-sm">
           {statusTabs.map((tab) => (
             <button
               key={tab.value}
@@ -110,7 +110,7 @@ export function JobsPage() {
               {activeTab === tab.value && (
                 <motion.div
                   layoutId="jobs-active-tab"
-                  className="absolute inset-0 bg-white shadow-sm rounded-lg"
+                  className="absolute inset-0 bg-white shadow-md shadow-black/[0.04] rounded-lg border border-border/30"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
@@ -158,9 +158,10 @@ export function JobsPage() {
 
 function StatCard({ title, value, icon: Icon, trend }: { title: string; value: string; icon: any; trend: string }) {
   return (
-    <div className="premium-card p-6 bg-white/50 backdrop-blur-sm">
+    <div className="premium-card relative overflow-hidden p-6 bg-white/60 backdrop-blur-sm border-border/50">
+      <div className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-primary/50 via-primary/20 to-transparent rounded-full" />
       <div className="flex items-center justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/5 text-primary">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/[0.08] to-primary/[0.03] text-primary">
           <Icon className="h-5 w-5" />
         </div>
         <div className="flex items-center gap-1 text-xs font-bold text-success">
@@ -180,7 +181,7 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
   return (
     <motion.div
       whileHover={{ y: -4 }}
-      className="premium-card group overflow-hidden bg-white/70 backdrop-blur-sm cursor-pointer"
+      className="premium-card group overflow-hidden bg-white/70 backdrop-blur-sm cursor-pointer border-border/40 hover:border-primary/15"
       onClick={onClick}
     >
       <div className="p-6">
@@ -199,11 +200,11 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="rounded-xl bg-muted/30 p-3">
+          <div className="rounded-xl bg-gradient-to-br from-muted/40 to-muted/20 p-3 border border-border/30">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Candidates</p>
             <p className="text-lg font-bold text-primary">{job.candidate_count}</p>
           </div>
-          <div className="rounded-xl bg-muted/30 p-3">
+          <div className="rounded-xl bg-gradient-to-br from-muted/40 to-muted/20 p-3 border border-border/30">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Filled</p>
             <p className="text-lg font-bold text-primary">{job.filled_count}/{job.headcount}</p>
           </div>
@@ -232,11 +233,11 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
       </div>
       
       {/* Progress bar for hiring pipeline */}
-      <div className="h-1.5 w-full bg-muted/30">
-        <motion.div 
+      <div className="h-1 w-full bg-muted/20">
+        <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${(job.filled_count / job.headcount) * 100}%` }}
-          className="h-full bg-primary"
+          className="h-full bg-gradient-to-r from-primary to-primary/70"
           transition={{ duration: 1, ease: "easeOut" }}
         />
       </div>
