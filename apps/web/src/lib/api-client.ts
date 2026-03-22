@@ -65,7 +65,29 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
   }
 
   if (response.status === 204) return undefined as T;
-  return response.json();
+  const json = await response.json();
+  return normalizeIds(json) as T;
+}
+
+// MongoDB returns _id, frontend expects id — normalize recursively
+function normalizeIds(obj: any): any {
+  if (Array.isArray(obj)) return obj.map(normalizeIds);
+  if (obj && typeof obj === 'object') {
+    const result: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (key === '_id') {
+        result['id'] = value;
+      } else if (key === 'items' && Array.isArray(value)) {
+        result[key] = value.map(normalizeIds);
+      } else if (key === 'data' && typeof value === 'object') {
+        result[key] = normalizeIds(value);
+      } else {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  return obj;
 }
 
 export const api = {
