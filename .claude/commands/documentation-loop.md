@@ -11,6 +11,10 @@ If user says:
 - "fix", "cleanup", "stabilize", "fix issues", "fix APIs"
 → Switch to **FIX MODE**
 
+If user says:
+- "rehaul", "redesign", "refactor entire", "rebuild", "rewrite", "breaking changes allowed"
+→ Switch to **REHAUL MODE**
+
 ## PRE-IMPLEMENTATION (MANDATORY)
 
 1. Read `SYSTEM_DOCS.md`
@@ -34,36 +38,67 @@ If anything is unclear:
 - Keep changes minimal and scoped
 - Do NOT modify unrelated files
 
-## FIX MODE (for multiple issues)
+## FIX MODE
 
-Goal: Fix issues across the system WITHOUT breaking existing functionality
+Goal: Fix multiple issues WITHOUT breaking existing functionality
 
-- Fix issues in small batches (one area at a time)
-- Prefer bug fixes, consistency fixes, and corrections
+- Fix issues in small batches
+- Prefer bug fixes and consistency fixes
 - Do NOT redesign architecture
 - Do NOT rename APIs, routes, or schema
 - After each fix:
-  - Verify nothing else broke
+  - Verify nothing broke
   - Update `SYSTEM_DOCS.md`
 
 If a fix requires breaking changes:
 → **STOP** and explain before proceeding
 
+## REHAUL MODE
+
+Goal: Perform large-scale redesign or system changes (UI, APIs, structure)
+
+Before implementation:
+1. Read `SYSTEM_DOCS.md` fully
+2. Identify all impacted:
+   - APIs
+   - Routes
+   - Components
+   - Database areas
+3. Clearly list:
+   - What will change
+   - Which APIs/routes will be modified
+   - Potential risks
+
+Then proceed ONLY after clarity.
+
+During implementation:
+- Breaking changes are allowed
+- Maintain internal consistency
+- Avoid partial or inconsistent updates
+
+After implementation:
+1. Update `SYSTEM_DOCS.md` with:
+   - Full list of changes
+   - New architecture notes
+   - Updated Known Issues
+   - Last Audited
+2. Update `ROUTE_REFERENCE.md` if structure changed
+
 ## POST-IMPLEMENTATION (MANDATORY)
 
 1. Verify:
-   - No existing functionality is broken
-   - APIs and responses remain unchanged
+   - No unintended breakage
+   - System remains consistent
 2. Update `SYSTEM_DOCS.md`:
    - What changed
-   - Any new Known Issues
-   - Update Last Audited
-   - Add to Recent Changes
+   - Known Issues
+   - Last Audited
+   - Recent Changes
 3. Update `ROUTE_REFERENCE.md` ONLY if routes changed
 
 ## RULES
 
-- `SYSTEM_DOCS.md` is the source of truth
-- `ROUTE_REFERENCE.md` is the reference
+- `SYSTEM_DOCS.md` = source of truth
+- `ROUTE_REFERENCE.md` = reference
 - Never guess APIs, tables, or routes
 - Only update sections you actually worked on

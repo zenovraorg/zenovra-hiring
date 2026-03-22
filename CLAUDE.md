@@ -6,7 +6,8 @@ Every coding task MUST follow the Documentation Loop (`/documentation-loop`).
 
 ### Mode Detection:
 - Default: **NORMAL MODE**
-- If user says "fix", "cleanup", "stabilize", "fix issues", "fix APIs" → **FIX MODE**
+- "fix", "cleanup", "stabilize", "fix issues", "fix APIs" → **FIX MODE**
+- "rehaul", "redesign", "refactor entire", "rebuild", "rewrite", "breaking changes allowed" → **REHAUL MODE**
 
 ### Pre-Implementation (MANDATORY):
 1. Read `SYSTEM_DOCS.md` — architecture, routes, APIs, database, deployment
@@ -28,8 +29,15 @@ Every coding task MUST follow the Documentation Loop (`/documentation-loop`).
 - Do NOT redesign architecture or rename APIs/routes/schema
 - If a fix requires breaking changes → STOP and explain first
 
+### Rehaul Mode:
+- Large-scale redesign allowed (UI, APIs, structure)
+- Before implementation: list all impacted APIs, routes, components, DB areas, and risks
+- Breaking changes are allowed — maintain internal consistency
+- Avoid partial or inconsistent updates
+- After: update SYSTEM_DOCS.md with full change list, new architecture notes, Known Issues
+
 ### Post-Implementation (MANDATORY):
-1. Verify no existing functionality is broken
+1. Verify no unintended breakage, system remains consistent
 2. Update `SYSTEM_DOCS.md`: what changed, new known issues, Last Audited, Recent Changes
 3. Update `ROUTE_REFERENCE.md` ONLY if routes changed
 
