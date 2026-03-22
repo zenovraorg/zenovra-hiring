@@ -49,6 +49,21 @@
 
   --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.4), 0 4px 10px -5px rgba(0, 0, 0, 0.2);
   --shadow-hover: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 8px 15px -8px rgba(0, 0, 0, 0.25);
+
+  /* Surface tiers */
+  --color-surface-1: rgba(255, 255, 255, 0.02);
+  --color-surface-2: rgba(255, 255, 255, 0.04);
+  --color-surface-3: rgba(255, 255, 255, 0.06);
+
+  /* Text layers */
+  --color-text-primary: rgba(255, 255, 255, 0.92);
+  --color-text-secondary: rgba(255, 255, 255, 0.60);
+  --color-text-tertiary: rgba(255, 255, 255, 0.40);
+
+  /* Accent tokens */
+  --color-accent-indigo: hsl(234 89% 74%);
+  --color-accent-cyan: hsl(190 95% 60%);
+  --color-accent-violet: hsl(263 70% 65%);
 }
 
 @layer base {
@@ -84,6 +99,32 @@
   .premium-card {
     @apply bg-white/[0.03] rounded-xl border border-white/[0.06] shadow-premium transition-all duration-300 hover:shadow-hover hover:bg-white/[0.05] hover:border-white/[0.10] hover:-translate-y-0.5;
   }
+  .glass-card {
+    @apply bg-white/[0.04] backdrop-blur-xl rounded-2xl border border-white/[0.06] transition-all duration-300;
+  }
+  .glass-hover {
+    @apply bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] transition-all duration-300 hover:bg-white/[0.07] hover:border-white/[0.12];
+  }
+  .glass-elevated {
+    @apply bg-white/[0.06] backdrop-blur-2xl border border-white/[0.08] shadow-premium;
+  }
+  .section-padding {
+    @apply py-24 lg:py-32 px-6 lg:px-8;
+  }
+  .page-max {
+    @apply max-w-7xl mx-auto;
+  }
+  .focus-ring {
+    @apply outline-none ring-2 ring-offset-2 ring-indigo-400/50 ring-offset-[#0a0a0f];
+  }
+  .text-hero {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.05;
+  }
+  .text-section {
+    font-size: clamp(1.75rem, 3vw, 3rem);
+    line-height: 1.2;
+  }
   .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.1) transparent;
@@ -108,4 +149,38 @@
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-float,
+  .animate-shimmer,
+  .animate-gradient {
+    animation: none;
+  }
 }

@@ -75,3 +75,74 @@ export const cardHover: Variants = {
     transition: { duration: 0.2, ease: 'easeOut' },
   },
 };
+
+// === Revamp presets ===
+
+export const heroReveal: Variants = {
+  hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const heroStagger: Variants = {
+  hidden: { opacity: 1 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+export const sectionReveal: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const cardEntrance: Variants = {
+  hidden: { opacity: 0, scale: 0.96, y: 20 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const cardStagger: Variants = {
+  hidden: { opacity: 1 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+export const smoothHover: Variants = {
+  rest: {
+    y: 0,
+    boxShadow: '0 0 0 rgba(99, 102, 241, 0)',
+    transition: { duration: 0.3, ease: 'easeOut' },
+  },
+  hover: {
+    y: -4,
+    boxShadow: '0 20px 40px -15px rgba(99, 102, 241, 0.15)',
+    transition: { duration: 0.3, ease: 'easeOut' },
+  },
+};
+
+export const numberCount = {
+  duration: 1.5,
+  ease: [0.22, 1, 0.36, 1] as const,
+};
