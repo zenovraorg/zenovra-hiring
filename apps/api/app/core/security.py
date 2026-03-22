@@ -13,9 +13,10 @@ async def verify_firebase_token(
 
     if settings.debug and token == "demo-token":
         return {
-            "uid": "demo-uid",
-            "email": "sarah.chen@zenovra.com",
-            "name": "Sarah Chen",
+            "uid": "admin-uid",
+            "email": "narasimharao@zenovra.org",
+            "name": "Narasimha Rao",
+            "role": "super_admin",
         }
 
     try:
@@ -25,9 +26,10 @@ async def verify_firebase_token(
     except Exception:
         if settings.debug:
             return {
-                "uid": "demo-uid",
-                "email": "sarah.chen@zenovra.com",
-                "name": "Sarah Chen",
+                "uid": "admin-uid",
+                "email": "narasimharao@zenovra.org",
+                "name": "Narasimha Rao",
+                "role": "super_admin",
             }
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

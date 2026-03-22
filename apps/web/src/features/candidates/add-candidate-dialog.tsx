@@ -103,28 +103,36 @@ export function AddCandidateDialog({ open, onClose }: AddCandidateDialogProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={() => {
-            const sourceMap: Record<string, string> = {
-              'LinkedIn': 'linkedin',
-              'Referral': 'referral',
-              'Careers Page': 'careers_page',
-              'Direct': 'direct',
-              'Agency': 'agency',
-            };
-            createCandidate.mutate({
-              first_name: firstName,
-              last_name: lastName,
-              email,
-              phone: phone || undefined,
-              linkedin_url: linkedinUrl || undefined,
-              current_company: currentCompany || undefined,
-              current_title: currentTitle || undefined,
-              experience_years: experienceYears ? Number(experienceYears) : undefined,
-              source: sourceMap[source] || 'direct',
-              skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
-            });
-            onClose();
-          }}>Add Candidate</Button>
+          <Button
+            disabled={createCandidate.isPending}
+            onClick={() => {
+              const sourceMap: Record<string, string> = {
+                'LinkedIn': 'linkedin',
+                'Referral': 'referral',
+                'Careers Page': 'careers_page',
+                'Direct': 'direct',
+                'Agency': 'agency',
+              };
+              createCandidate.mutate(
+                {
+                  first_name: firstName,
+                  last_name: lastName,
+                  email,
+                  phone: phone || undefined,
+                  linkedin_url: linkedinUrl || undefined,
+                  current_company: currentCompany || undefined,
+                  current_title: currentTitle || undefined,
+                  experience_years: experienceYears ? Number(experienceYears) : undefined,
+                  source: sourceMap[source] || 'direct',
+                  skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
+                },
+                {
+                  onSuccess: () => onClose(),
+                  onError: (err: any) => alert(`Failed to add candidate: ${err?.data?.detail || err?.message || 'Unknown error'}`),
+                }
+              );
+            }}
+          >{createCandidate.isPending ? 'Adding...' : 'Add Candidate'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
