@@ -16,7 +16,6 @@ import {
   Shield,
   ChevronLeft,
   ChevronRight,
-  Zap,
   Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -62,7 +61,7 @@ export function Sidebar() {
         {/* Logo Section */}
         <div className="flex h-20 items-center gap-3 px-6">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-            <Zap className="h-5 w-5 fill-current" />
+            <img src="/symbol.png" alt="Zenovra" className="h-5 w-5 object-contain" />
           </div>
           <AnimatePresence mode="wait">
             {!sidebarCollapsed && (

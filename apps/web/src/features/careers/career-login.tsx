@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, UserPlus } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -36,7 +36,7 @@ export function CareerLogin() {
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground mb-3">
-            <Zap className="h-6 w-6" />
+            <img src="/symbol.png" alt="Zenovra" className="h-6 w-6 object-contain" />
           </div>
           <span className="text-xl font-semibold">Zenovra Tech</span>
           <p className="text-sm text-muted-foreground mt-1">Candidate Portal</p>

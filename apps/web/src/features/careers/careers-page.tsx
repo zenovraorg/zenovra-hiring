@@ -8,8 +8,7 @@ import {
   Clock, 
   Building2, 
   ArrowRight, 
-  Zap, 
-  LogIn, 
+  LogIn,
   CheckCircle2, 
   Users, 
   ShieldCheck,
@@ -53,7 +52,7 @@ export function CareersPage() {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-              <Zap className="h-5 w-5 fill-current" />
+              <img src="/symbol.png" alt="Zenovra" className="h-5 w-5 object-contain" />
             </div>
             <span className="text-xl font-bold tracking-tight">Zenovra Tech</span>
           </div>
@@ -342,7 +341,7 @@ export function CareersPage() {
             >
               <div className="aspect-square rounded-[3rem] bg-white/10 backdrop-blur-3xl p-8 border border-white/20">
                 <div className="h-full w-full rounded-[2rem] bg-gradient-to-br from-white/20 to-transparent flex items-center justify-center">
-                  <Zap className="h-32 w-32 text-white animate-float" />
+                  <img src="/symbol.png" alt="Zenovra" className="h-32 w-32 object-contain animate-float" />
                 </div>
               </div>
             </motion.div>
@@ -362,7 +361,7 @@ export function CareersPage() {
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Zap className="h-4 w-4 fill-current" />
+                <img src="/symbol.png" alt="Zenovra" className="h-4 w-4 object-contain" />
               </div>
               <span className="text-lg font-bold tracking-tight">Zenovra Tech</span>
             </div>

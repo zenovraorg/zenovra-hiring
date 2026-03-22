@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Zap, FileText, FolderOpen, User, LogOut } from 'lucide-react';
+import { FileText, FolderOpen, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -34,7 +34,7 @@ export function PortalLayout() {
           <div className="flex items-center gap-8">
             <Link to="/portal" className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Zap className="h-4 w-4" />
+                <img src="/symbol.png" alt="Zenovra" className="h-4 w-4 object-contain" />
               </div>
               <span className="font-semibold hidden sm:inline">Zenovra Tech</span>
             </Link>

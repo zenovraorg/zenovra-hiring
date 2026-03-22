@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
-  ArrowLeft, Upload, CheckCircle2, Zap, FileText, X,
+  ArrowLeft, Upload, CheckCircle2, FileText, X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -118,7 +118,7 @@ Jamie Anderson`,
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/careers" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Zap className="h-4 w-4" />
+              <img src="/symbol.png" alt="Zenovra" className="h-4 w-4 object-contain" />
             </div>
             <span className="font-semibold">Zenovra Tech</span>
           </Link>

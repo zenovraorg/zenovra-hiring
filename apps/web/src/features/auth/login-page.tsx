@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,7 +35,7 @@ export function LoginPage() {
             className="flex items-center gap-3"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
-              <Zap className="h-5 w-5" />
+              <img src="/symbol.png" alt="Zenovra" className="h-5 w-5 object-contain" />
             </div>
             <span className="text-xl font-semibold">Zenovra Tech</span>
           </motion.div>
@@ -72,7 +72,7 @@ export function LoginPage() {
           {/* Mobile Logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Zap className="h-4 w-4" />
+              <img src="/symbol.png" alt="Zenovra" className="h-4 w-4 object-contain" />
             </div>
             <span className="text-lg font-semibold">Zenovra Tech</span>
           </div>
@@ -172,7 +172,7 @@ export function LoginPage() {
                 size="lg"
                 onClick={handleDemoLogin}
               >
-                <Zap className="mr-2 h-4 w-4 text-primary" />
+                <img src="/symbol.png" alt="Zenovra" className="mr-2 h-4 w-4 object-contain" />
                 Continue with Demo Account
               </Button>
             </motion.div>
