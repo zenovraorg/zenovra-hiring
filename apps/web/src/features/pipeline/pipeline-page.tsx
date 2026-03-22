@@ -150,7 +150,7 @@ export function PipelinePage() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between shrink-0"
       >
         <div className="space-y-1">
@@ -158,7 +158,7 @@ export function PipelinePage() {
             <Briefcase className="h-4 w-4" />
             <span>Active Pipeline</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white/90 flex items-center gap-3">
+          <h1 className="text-2xl font-bold font-display tracking-tight text-white/90 flex items-center gap-3">
             {selectedJob.title}
             <Badge variant="outline" className="rounded-full bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5">
               {selectedJob.status}
@@ -169,11 +169,11 @@ export function PipelinePage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center bg-white/[0.04] rounded-xl p-1 border border-white/[0.06]">
+          <div className="flex items-center bg-white/[0.025] rounded-xl p-1 border border-white/[0.06]">
             <button
               onClick={() => setView('board')}
               className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                view === 'board' ? 'bg-white/[0.10] text-white border border-white/[0.08]' : 'text-white/50 hover:text-white'
+                view === 'board' ? 'bg-white/[0.10] text-white border border-white/[0.08]' : 'text-white/40 hover:text-white'
               }`}
             >
               <Kanban className="h-3.5 w-3.5" />
@@ -182,7 +182,7 @@ export function PipelinePage() {
             <button
               onClick={() => setView('table')}
               className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                view === 'table' ? 'bg-white/[0.10] text-white border border-white/[0.08]' : 'text-white/50 hover:text-white'
+                view === 'table' ? 'bg-white/[0.10] text-white border border-white/[0.08]' : 'text-white/40 hover:text-white'
               }`}
             >
               <Table2 className="h-3.5 w-3.5" />
@@ -211,12 +211,10 @@ export function PipelinePage() {
                 ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-            <Button onClick={() => setAddDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20 h-10">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Candidate
-            </Button>
-          </motion.div>
+          <Button onClick={() => setAddDialogOpen(true)} className="rounded-2xl h-10">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Candidate
+          </Button>
         </div>
       </motion.div>
 
@@ -228,15 +226,15 @@ export function PipelinePage() {
             placeholder="Search candidates..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-10 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04]"
+            className="pl-9 h-10 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.025]"
           />
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="rounded-lg text-white/50 hover:text-white hover:bg-white/[0.05]">
+          <Button variant="ghost" size="sm" className="rounded-lg text-white/40 hover:text-white hover:bg-white/[0.05]">
             <Filter className="mr-2 h-4 w-4" />
             Filters
           </Button>
-          <Button variant="ghost" size="sm" className="rounded-lg text-white/50 hover:text-white hover:bg-white/[0.05]">
+          <Button variant="ghost" size="sm" className="rounded-lg text-white/40 hover:text-white hover:bg-white/[0.05]">
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
@@ -264,7 +262,7 @@ export function PipelinePage() {
                   key={stage.id}
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.5, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
                   className="flex flex-col w-[320px] shrink-0"
                 >
                   {/* Column Header */}
@@ -349,10 +347,8 @@ function CandidateCard({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: isDragging ? 0.4 : 1, scale: isDragging ? 0.95 : 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
-      whileTap={{ scale: 1.05 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className={`group bg-white/[0.03] rounded-xl border border-white/[0.06] cursor-grab active:cursor-grabbing transition-all duration-200 hover:bg-white/[0.05] hover:border-white/[0.10] ${
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className={`group bg-white/[0.025] rounded-2xl border border-white/[0.06] cursor-grab active:cursor-grabbing transition-all duration-200 hover:bg-white/[0.04] hover:border-white/[0.10] ${
         isDragging ? 'opacity-50' : ''
       }`}
     >
@@ -407,7 +403,7 @@ function CandidateCard({
 
       <div className="flex flex-wrap gap-1.5 mb-4">
         {(candidate.skills || []).slice(0, 2).map((skill) => (
-          <Badge key={skill} className="rounded-md bg-white/[0.06] text-white/50 text-[9px] font-bold border border-white/[0.08] px-1.5 py-0">
+          <Badge key={skill} className="rounded-md bg-white/[0.06] text-white/40 text-[9px] font-bold border border-white/[0.08] px-1.5 py-0">
             {skill}
           </Badge>
         ))}

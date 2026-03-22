@@ -4,33 +4,31 @@ import { Topbar } from './topbar';
 import { CommandPalette } from '@/components/shared/command-palette';
 import { motion, AnimatePresence } from 'motion/react';
 
-const smoothEase = [0.22, 1, 0.36, 1] as const;
-
 export function AppShell() {
   const location = useLocation();
 
   return (
-    <div className="relative flex h-screen w-full overflow-hidden bg-[#0a0a0f] selection:bg-indigo-500/20 selection:text-white">
-      {/* Background Decorative Elements */}
+    <div className="relative flex h-screen w-full overflow-hidden bg-background selection:bg-accent-indigo/20 selection:text-white">
+      {/* Ambient background gradients */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-indigo-500/[0.04] blur-[140px]" />
-        <div className="absolute top-[20%] -right-[10%] h-[30%] w-[30%] rounded-full bg-cyan-500/[0.03] blur-[120px]" />
-        <div className="absolute -bottom-[10%] left-[20%] h-[40%] w-[40%] rounded-full bg-purple-500/[0.03] blur-[140px]" />
+        <div className="absolute -top-[15%] -left-[10%] h-[50%] w-[45%] rounded-full bg-indigo-500/[0.03] blur-[160px]" />
+        <div className="absolute top-[30%] -right-[15%] h-[35%] w-[35%] rounded-full bg-violet-500/[0.025] blur-[140px]" />
+        <div className="absolute -bottom-[15%] left-[30%] h-[40%] w-[35%] rounded-full bg-cyan-500/[0.02] blur-[160px]" />
       </div>
 
       <Sidebar />
 
       <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
         <Topbar />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth scrollbar-none">
-          <div className="mx-auto h-full w-full max-w-[1600px] p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth custom-scrollbar">
+          <div className="mx-auto h-full w-full max-w-[1600px] p-5 lg:p-7">
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.25, ease: smoothEase }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                 className="h-full"
               >
                 <Outlet />

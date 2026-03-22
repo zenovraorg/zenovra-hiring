@@ -741,3 +741,49 @@ Defined in `types/index.ts` and `models/user.py`:
 5. **Assessments**: Page exists on frontend but no corresponding backend API
 6. **No WebSocket/SSE**: Notifications are poll-based via React Query, no real-time push
 7. **Pipeline stages are embedded**: Stored inside `job_requisitions`, not as separate collection
+
+---
+
+## 17. Recent Changes
+
+### Full UI Revamp (2026-03-22) -- REHAUL MODE
+
+**Scope**: Complete frontend visual redesign across all pages, components, and design tokens.
+
+**Design System Changes**:
+- **Typography**: Switched display font from Outfit to Plus Jakarta Sans for a more premium SaaS feel
+- **Color System**: Refined dark theme with deeper blacks (hsl 240 15% 3.5%), more subtle surface tiers (0.025/0.045/0.065 opacity steps), and violet accent additions
+- **Elevation**: Replaced heavy shadow system with subtle border-opacity transitions
+- **Radius**: Standardized to rounded-2xl (1rem) for cards, rounded-xl for inputs/buttons, rounded-lg for badges
+- **Spacing**: Tighter, more information-dense layout with reduced padding
+- **Animations**: Faster, more subtle -- 200ms transitions, spring physics for layout animations, reduced stagger delays
+
+**Component Changes**:
+- Button: Added `gradient` variant (indigo-to-violet), refined all variant colors, added cursor-pointer
+- Card: Simplified to minimal bg-white/[0.025] with 0.06 opacity borders
+- Badge: Rounded-lg instead of rounded-full, refined color variants
+- Input: Indigo focus ring, refined placeholder colors
+- Dialog: Rounded-2xl, refined overlay opacity
+- Tooltip: Light background (white/95%) for better readability
+- Sidebar: Reduced width (252px/72px), single layoutId for active state, gradient accent bar
+- Topbar: Reduced height (56px), more compact user menu
+- StatCard: Gradient icon backgrounds, removed hover scale animations
+- PageHeader: Smaller title size (text-xl), font-display class
+- CommandPalette: Refined spacing, better contrast
+
+**Pages Updated**: All 25+ pages updated with consistent design language:
+- Dashboard, Jobs, Job Detail, Create Job, Candidates, Candidate Detail
+- Pipeline, Interviews, Feedback, Assessments, Offers
+- Analytics, Notifications, Referrals, Admin
+- Login, Careers (public), Career Detail, Career Apply, Career Login
+- Candidate Portal (Dashboard, Profile, Documents)
+
+**Anti-patterns Removed**:
+- Removed whileHover scale animations on buttons (causes jank)
+- Removed whileHover y-offset on cards (CSS transitions only)
+- Removed excessive motion delays (capped at 0.3s)
+- Removed premium-card utility class (replaced with direct Tailwind classes)
+
+**No API/backend changes**. No route changes. No functionality changes.
+
+Last Audited: 2026-03-22

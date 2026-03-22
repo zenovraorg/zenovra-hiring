@@ -56,7 +56,7 @@ export function PortalDashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+        <h1 className="text-xl font-bold font-display tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground mt-1">Track your applications and upcoming interviews.</p>
       </motion.div>
 
@@ -70,11 +70,11 @@ export function PortalDashboard() {
         {stats.map((stat) => (
           <Card key={stat.label}>
             <CardContent className="p-5 flex items-center gap-4">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.04] ${stat.color}`}>
+              <div className={`flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.025] ${stat.color}`}>
                 <stat.icon className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{loading ? '—' : stat.value}</p>
+                <p className="text-xl font-bold tabular-nums">{loading ? '—' : stat.value}</p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
               </div>
             </CardContent>
@@ -97,7 +97,7 @@ export function PortalDashboard() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <Card key={i}><CardContent className="p-6 animate-pulse"><div className="h-16 bg-white/[0.04] rounded-lg" /></CardContent></Card>
+              <Card key={i}><CardContent className="p-6 animate-pulse"><div className="h-16 bg-white/[0.025] rounded-lg" /></CardContent></Card>
             ))}
           </div>
         ) : applications.length === 0 ? (

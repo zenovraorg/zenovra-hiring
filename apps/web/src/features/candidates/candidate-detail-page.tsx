@@ -101,7 +101,7 @@ export function CandidateDetailPage() {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">{fullName}</h1>
+              <h1 className="text-xl font-semibold font-display tracking-tight">{fullName}</h1>
               <p className="text-sm text-muted-foreground mt-0.5">{candidate.headline}</p>
             </div>
             <div className="flex items-center gap-2">

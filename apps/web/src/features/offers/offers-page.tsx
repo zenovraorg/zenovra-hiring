@@ -37,13 +37,12 @@ export function OffersPage() {
         title="Offers"
         description="Manage compensation offers and approvals"
         actions={
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <div>
             <Button onClick={() => setOfferDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Create Offer
             </Button>
-          </motion.div>
-        }
+          </div>        }
       />
 
       {/* Quick Stats */}
@@ -77,9 +76,7 @@ export function OffersPage() {
               key={offer.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.01, y: -2 }}
-              whileTap={{ scale: 0.99 }}
+              transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
             >
               <Card className={`hover:shadow-md transition-shadow cursor-pointer ${selectedId === offer.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedId(selectedId === offer.id ? null : offer.id)}>
                 <div className="p-5">

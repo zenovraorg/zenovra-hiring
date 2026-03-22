@@ -13,7 +13,7 @@ import { demoOrg, demoJobs } from '@/lib/demo-data';
 import { formatCurrency } from '@/lib/utils';
 import { useJobs } from '@/hooks/use-api';
 
-const smoothEase = [0.22, 1, 0.36, 1] as const;
+const smoothEase = [0.25, 0.1, 0.25, 1] as const;
 
 export function CareerJobDetail() {
   const { id } = useParams<{ id: string }>();
@@ -29,7 +29,7 @@ export function CareerJobDetail() {
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Position Not Found</h2>
           <p className="text-white/40 mb-4">This job listing may have been removed or is no longer available.</p>
@@ -67,7 +67,7 @@ export function CareerJobDetail() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-background text-white selection:bg-indigo-500/30">
       {/* Scroll progress bar */}
       <motion.div
         style={{ scaleX }}
@@ -75,7 +75,7 @@ export function CareerJobDetail() {
       />
 
       {/* Header */}
-      <nav className="sticky top-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-2xl">
+      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-2xl">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/careers" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 border border-white/10">
@@ -88,7 +88,7 @@ export function CareerJobDetail() {
               variant="ghost"
               size="sm"
               onClick={handleShare}
-              className="text-white/50 hover:text-white hover:bg-white/[0.06]"
+              className="text-white/40 hover:text-white hover:bg-white/[0.06]"
             >
               {copied ? <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-400" /> : <Share2 className="mr-1.5 h-3.5 w-3.5" />}
               {copied ? 'Copied' : 'Share'}
@@ -114,7 +114,7 @@ export function CareerJobDetail() {
           <div className="flex items-center gap-2 text-sm text-white/30 mb-6">
             <Link to="/careers" className="hover:text-white/60 transition-colors">Careers</Link>
             <span>/</span>
-            <span className="text-white/50">{job.department?.name}</span>
+            <span className="text-white/40">{job.department?.name}</span>
             <span>/</span>
             <span className="text-white/60">{job.title}</span>
           </div>
@@ -172,8 +172,8 @@ export function CareerJobDetail() {
               {/* About */}
               <div>
                 <h2 className="text-lg font-bold mb-4 text-white/90">About the Role</h2>
-                <p className="text-white/50 leading-relaxed">{job.description}</p>
-                <p className="text-white/50 leading-relaxed mt-3">
+                <p className="text-white/40 leading-relaxed">{job.description}</p>
+                <p className="text-white/40 leading-relaxed mt-3">
                   You'll be joining a world-class team that values collaboration, technical excellence, and user-centric design.
                   This is an opportunity to work on products that are used by thousands of companies to transform their hiring processes.
                 </p>
@@ -186,7 +186,7 @@ export function CareerJobDetail() {
                 <h2 className="text-lg font-bold mb-4 text-white/90">Requirements</h2>
                 <ul className="space-y-3">
                   {(job.requirements || []).map((req, i) => (
-                    <li key={i} className="flex items-start gap-3 text-white/50">
+                    <li key={i} className="flex items-start gap-3 text-white/40">
                       <CheckCircle2 className="h-4.5 w-4.5 text-indigo-400 mt-0.5 shrink-0" />
                       <span>{req}</span>
                     </li>
@@ -201,7 +201,7 @@ export function CareerJobDetail() {
                     <h2 className="text-lg font-bold mb-4 text-white/90">Nice to Have</h2>
                     <ul className="space-y-3">
                       {job.nice_to_haves.map((item, i) => (
-                        <li key={i} className="flex items-start gap-3 text-white/50">
+                        <li key={i} className="flex items-start gap-3 text-white/40">
                           <Star className="h-4 w-4 text-amber-400/60 mt-0.5 shrink-0" />
                           <span>{item}</span>
                         </li>

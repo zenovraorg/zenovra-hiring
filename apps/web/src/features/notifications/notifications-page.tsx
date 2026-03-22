@@ -76,9 +76,7 @@ export function NotificationsPage() {
               key={notification.id}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.01, x: 2 }}
-              whileTap={{ scale: 0.99 }}
+              transition={{ duration: 0.4, delay: index * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <Card
                 className={cn(

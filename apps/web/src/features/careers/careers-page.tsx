@@ -34,7 +34,7 @@ import {
   smoothHover,
 } from '@/lib/motion';
 
-const smoothEase = [0.22, 1, 0.36, 1] as const;
+const smoothEase = [0.25, 0.1, 0.25, 1] as const;
 
 // Animated counter hook
 function useAnimatedNumber(target: number, inView: boolean, duration = 1500) {
@@ -147,13 +147,13 @@ export function CareersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-background text-white selection:bg-indigo-500/30">
       {/* Navigation */}
       <motion.nav
         initial={{ y: 0 }}
         animate={{ y: navHidden ? -80 : 0 }}
         transition={{ duration: 0.3, ease: smoothEase }}
-        className="fixed top-0 z-50 w-full bg-[#0a0a0f]/80 backdrop-blur-2xl"
+        className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-2xl"
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
           <div className="flex items-center gap-3">
@@ -168,7 +168,7 @@ export function CareersPage() {
           <div className="flex items-center gap-4">
             <Link
               to="/careers/login"
-              className="text-sm font-medium text-white/50 hover:text-white transition-colors"
+              className="text-sm font-medium text-white/40 hover:text-white transition-colors"
               aria-label="Applicant Login"
             >
               Applicant Login
@@ -229,7 +229,7 @@ export function CareersPage() {
 
             <motion.p
               variants={heroReveal}
-              className="mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-white/50 mb-12"
+              className="mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-white/40 mb-12"
             >
               Join a team building enterprise software that shapes how companies hire.
               We value craft, curiosity, and impact.
@@ -245,7 +245,7 @@ export function CareersPage() {
               </Button>
               <Link
                 to="/careers/login"
-                className="h-13 rounded-2xl px-8 text-base font-semibold inline-flex items-center border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                className="h-13 rounded-2xl px-8 text-base font-semibold inline-flex items-center border border-white/[0.12] bg-white/[0.025] hover:bg-white/[0.08] transition-colors"
               >
                 Applicant Portal
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -336,13 +336,11 @@ export function CareersPage() {
               <h2 className="text-section font-display font-bold tracking-tight">Open Positions</h2>
               <div className="flex flex-wrap gap-2">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedDept(null)}
+                                                      onClick={() => setSelectedDept(null)}
                   className={`rounded-full px-5 py-2 text-sm font-semibold transition-all border ${
                     !selectedDept
                       ? 'bg-white text-[#0a0a0f] border-white/20 shadow-lg shadow-white/10'
-                      : 'bg-white/[0.04] text-white/50 border-white/[0.08] hover:bg-white/[0.08] hover:text-white/70'
+                      : 'bg-white/[0.025] text-white/40 border-white/[0.08] hover:bg-white/[0.08] hover:text-white/70'
                   }`}
                   aria-label="Show all roles"
                   aria-pressed={!selectedDept}
@@ -356,13 +354,11 @@ export function CareersPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={jobsSectionInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.4, delay: 0.2 + i * 0.06, ease: smoothEase }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedDept(dept === selectedDept ? null : dept!)}
+                                                            onClick={() => setSelectedDept(dept === selectedDept ? null : dept!)}
                     className={`rounded-full px-5 py-2 text-sm font-semibold transition-all border ${
                       selectedDept === dept
                         ? 'bg-white text-[#0a0a0f] border-white/20 shadow-lg shadow-white/10'
-                        : 'bg-white/[0.04] text-white/50 border-white/[0.08] hover:bg-white/[0.08] hover:text-white/70'
+                        : 'bg-white/[0.025] text-white/40 border-white/[0.08] hover:bg-white/[0.08] hover:text-white/70'
                     }`}
                     aria-label={`Filter by ${dept}`}
                     aria-pressed={selectedDept === dept}
@@ -377,7 +373,7 @@ export function CareersPage() {
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/30" />
               <Input
                 placeholder="Search by role or keyword..."
-                className="h-13 pl-12 rounded-2xl border-white/[0.08] bg-white/[0.04] text-white placeholder:text-white/25 focus-visible:ring-white/20 focus-visible:border-white/20"
+                className="h-13 pl-12 rounded-2xl border-white/[0.08] bg-white/[0.025] text-white placeholder:text-white/25 focus-visible:ring-white/20 focus-visible:border-white/20"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 aria-label="Search open positions"
@@ -467,7 +463,7 @@ export function CareersPage() {
 
             {filteredJobs.length === 0 && (
               <div className="py-24 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.08]">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/[0.025] border border-white/[0.08]">
                   <Search className="h-7 w-7 text-white/20" />
                 </div>
                 <h3 className="text-xl font-bold text-white/70">No positions found</h3>
@@ -641,15 +637,13 @@ export function CareersPage() {
               We're always looking for talented people. Send us your resume and we'll reach out when the right
               opportunity opens up.
             </p>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Button
+                          <Button
                 onClick={() => navigate('/careers/login')}
                 className="h-13 rounded-2xl px-10 text-base font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white hover:from-indigo-400 hover:to-violet-400 shadow-lg shadow-indigo-500/20 border-0"
               >
                 Submit Your Resume
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </motion.div>
           </motion.div>
         </div>
       </section>

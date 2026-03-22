@@ -2,7 +2,6 @@ import { motion } from 'motion/react';
 import { type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-
 interface EmptyStateProps {
   icon: LucideIcon;
   title: string;
@@ -19,13 +18,13 @@ export function EmptyState({ icon: Icon, title, description, actionLabel, onActi
       transition={{ duration: 0.25 }}
       className="flex flex-col items-center justify-center py-16 text-center"
     >
-      <div className="rounded-full bg-muted p-4 mb-4">
-        <Icon className="h-8 w-8 text-muted-foreground" />
+      <div className="rounded-2xl bg-white/[0.04] border border-white/[0.06] p-4 mb-4">
+        <Icon className="h-7 w-7 text-white/25" />
       </div>
-      <h3 className="text-lg font-semibold mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground max-w-sm mb-4">{description}</p>
+      <h3 className="text-base font-semibold font-display mb-1">{title}</h3>
+      <p className="text-sm text-white/40 max-w-sm mb-5">{description}</p>
       {actionLabel && onAction && (
-        <Button onClick={onAction} size="sm">
+        <Button onClick={onAction} size="sm" variant="outline">
           {actionLabel}
         </Button>
       )}

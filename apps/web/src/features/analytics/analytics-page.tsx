@@ -54,7 +54,7 @@ const offerAcceptance = [
   { month: 'Q4', accepted: 8, declined: 1 },
 ];
 
-const smoothEase = [0.22, 1, 0.36, 1] as const;
+const smoothEase = [0.25, 0.1, 0.25, 1] as const;
 
 export function AnalyticsPage() {
   const chartsRef = useRef(null);
@@ -200,7 +200,7 @@ export function AnalyticsPage() {
             <CardTitle className="text-base font-medium">Recruiter Performance</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="border border-white/[0.06] rounded-lg">
+            <div className="border border-white/[0.06] rounded-2xl">
               <div className="grid grid-cols-5 gap-4 px-4 py-2.5 text-xs font-medium text-white/40 bg-white/[0.03] rounded-t-lg">
                 <span>Recruiter</span>
                 <span className="text-center">Active Pipeline</span>
@@ -213,7 +213,7 @@ export function AnalyticsPage() {
                   key={recruiter.name}
                   initial={{ opacity: 0, x: -15 }}
                   animate={recruiterInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.15 + i * 0.08, ease: smoothEase }}
+                  transition={{ duration: 0.4, delay: 0.15 + i * 0.04, ease: smoothEase }}
                   whileHover={{ backgroundColor: 'rgba(99, 102, 241, 0.03)' }}
                   className="grid grid-cols-5 gap-4 px-4 py-3 items-center border-t border-white/[0.06] transition-colors"
                 >

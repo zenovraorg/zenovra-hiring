@@ -72,9 +72,7 @@ export function FeedbackPage() {
             key={fb.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ scale: 1.01, y: -2 }}
-            whileTap={{ scale: 0.99 }}
+            transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Card className="p-5 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer">
               <div className="flex items-start justify-between">

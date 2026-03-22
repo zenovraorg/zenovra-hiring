@@ -62,7 +62,7 @@ export function InterviewsPage() {
           <motion.h2
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-sm font-semibold text-muted-foreground uppercase tracking-wider"
           >
             Upcoming
@@ -76,15 +76,13 @@ export function InterviewsPage() {
                   key={interview.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ scale: 1.01, y: -2 }}
-                  whileTap={{ scale: 0.99 }}
+                  transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
                 >
                   <Card className={`p-4 bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.10] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4">
                         <div className="flex flex-col items-center justify-center rounded-lg bg-indigo-500/10 px-3 py-2 text-center min-w-[60px]">
-                          <span className="text-xs text-white/50">
+                          <span className="text-xs text-white/40">
                             {formatDate(interview.scheduled_at, { month: 'short' }).split(' ')[0]}
                           </span>
                           <span className="text-lg font-bold text-indigo-400">
@@ -163,7 +161,7 @@ export function InterviewsPage() {
           <motion.h2
             initial={{ opacity: 0, x: -20 }}
             animate={completedInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-sm font-semibold text-muted-foreground uppercase tracking-wider"
           >
             Completed
@@ -177,11 +175,9 @@ export function InterviewsPage() {
                   key={interview.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={completedInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ scale: 1.01, y: -2 }}
-                  whileTap={{ scale: 0.99 }}
+                  transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
                 >
-                  <Card className={`p-4 bg-white/[0.02] border-white/[0.06] opacity-75 hover:opacity-100 hover:bg-white/[0.04] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40 opacity-100' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
+                  <Card className={`p-4 bg-white/[0.02] border-white/[0.06] opacity-75 hover:opacity-100 hover:bg-white/[0.025] transition-all cursor-pointer ${selectedId === interview.id ? 'ring-2 ring-indigo-400/40 opacity-100' : ''}`} onClick={() => setSelectedId(selectedId === interview.id ? null : interview.id)}>
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4">
                         <div className="flex flex-col items-center justify-center rounded-lg bg-white/[0.06] px-3 py-2 text-center min-w-[60px]">

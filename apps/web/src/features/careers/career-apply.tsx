@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useJobs } from '@/hooks/use-api';
 import { demoJobs } from '@/lib/demo-data';
 
-const smoothEase = [0.22, 1, 0.36, 1] as const;
+const smoothEase = [0.25, 0.1, 0.25, 1] as const;
 
 const steps = [
   { num: 1, label: 'Personal Info' },
@@ -58,7 +58,7 @@ Jamie Anderson`,
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Position Not Found</h2>
           <p className="text-white/40 mb-4">This job listing may have been removed.</p>
@@ -110,7 +110,7 @@ Jamie Anderson`,
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -125,8 +125,8 @@ Jamie Anderson`,
           >
             <Sparkles className="h-10 w-10 text-emerald-400" />
           </motion.div>
-          <h2 className="text-3xl font-display font-bold mb-3">Application Submitted!</h2>
-          <p className="text-white/50 mb-2">
+          <h2 className="text-2xl font-display font-bold mb-3">Application Submitted!</h2>
+          <p className="text-white/40 mb-2">
             Your application for <span className="font-semibold text-white/80">{job.title}</span> has been successfully submitted.
           </p>
           <p className="text-sm text-white/30 mb-10">
@@ -136,7 +136,7 @@ Jamie Anderson`,
             <Button onClick={() => navigate('/portal')} className="h-12 rounded-xl bg-white text-[#0a0a0f] hover:bg-white/90 font-semibold">
               Go to My Applications
             </Button>
-            <Button variant="ghost" onClick={() => navigate('/careers')} className="h-12 rounded-xl text-white/50 hover:text-white hover:bg-white/[0.06]">
+            <Button variant="ghost" onClick={() => navigate('/careers')} className="h-12 rounded-xl text-white/40 hover:text-white hover:bg-white/[0.06]">
               Browse More Positions
             </Button>
           </div>
@@ -146,9 +146,9 @@ Jamie Anderson`,
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-background text-white selection:bg-indigo-500/30">
       {/* Header */}
-      <nav className="border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-2xl">
+      <nav className="border-b border-white/[0.06] bg-background/80 backdrop-blur-2xl">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/careers" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 border border-white/10">
@@ -178,7 +178,7 @@ Jamie Anderson`,
               <Badge className="rounded-full bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-[10px] font-semibold">
                 {job.department?.name}
               </Badge>
-              <Badge className="rounded-full bg-white/[0.06] text-white/50 border-white/[0.08] text-[10px] font-medium">
+              <Badge className="rounded-full bg-white/[0.06] text-white/40 border-white/[0.08] text-[10px] font-medium">
                 {job.location?.name}
               </Badge>
             </div>
@@ -234,15 +234,15 @@ Jamie Anderson`,
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label htmlFor="fullName" className="text-sm font-medium text-white/60">Full Name <span className="text-red-400">*</span></label>
-                      <Input id="fullName" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} required className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
+                      <Input id="fullName" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} required className="bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-sm font-medium text-white/60">Email <span className="text-red-400">*</span></label>
-                      <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
+                      <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="phone" className="text-sm font-medium text-white/60">Phone <span className="text-red-400">*</span></label>
-                      <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
+                      <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required className="bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="heardFrom" className="text-sm font-medium text-white/60">How did you hear about us?</label>
@@ -250,12 +250,12 @@ Jamie Anderson`,
                         id="heardFrom"
                         value={form.heardFrom}
                         onChange={(e) => setForm({ ...form, heardFrom: e.target.value })}
-                        className="flex h-9 w-full rounded-md border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+                        className="flex h-9 w-full rounded-md border border-white/[0.08] bg-white/[0.025] px-3 py-1 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
                       >
-                        <option value="LinkedIn" className="bg-[#0a0a0f]">LinkedIn</option>
-                        <option value="Careers Page" className="bg-[#0a0a0f]">Careers Page</option>
-                        <option value="Referral" className="bg-[#0a0a0f]">Referral</option>
-                        <option value="Other" className="bg-[#0a0a0f]">Other</option>
+                        <option value="LinkedIn" className="bg-background">LinkedIn</option>
+                        <option value="Careers Page" className="bg-background">Careers Page</option>
+                        <option value="Referral" className="bg-background">Referral</option>
+                        <option value="Other" className="bg-background">Other</option>
                       </select>
                     </div>
                   </div>
@@ -297,7 +297,7 @@ Jamie Anderson`,
                       ) : (
                         <>
                           <Upload className="h-8 w-8 text-white/20 mx-auto mb-2" />
-                          <p className="text-sm font-medium text-white/50 mb-1">Drop your resume here or click to browse</p>
+                          <p className="text-sm font-medium text-white/40 mb-1">Drop your resume here or click to browse</p>
                           <p className="text-xs text-white/25">PDF, DOC, or DOCX up to 10MB</p>
                         </>
                       )}
@@ -305,11 +305,11 @@ Jamie Anderson`,
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="linkedin" className="text-sm font-medium text-white/60">LinkedIn URL</label>
-                    <Input id="linkedin" value={form.linkedin} onChange={(e) => setForm({ ...form, linkedin: e.target.value })} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
+                    <Input id="linkedin" value={form.linkedin} onChange={(e) => setForm({ ...form, linkedin: e.target.value })} className="bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="portfolio" className="text-sm font-medium text-white/60">Portfolio URL <span className="text-white/25 font-normal">(optional)</span></label>
-                    <Input id="portfolio" value={form.portfolio} onChange={(e) => setForm({ ...form, portfolio: e.target.value })} placeholder="https://yourportfolio.com" className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
+                    <Input id="portfolio" value={form.portfolio} onChange={(e) => setForm({ ...form, portfolio: e.target.value })} placeholder="https://yourportfolio.com" className="bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20" />
                   </div>
                   <div className="flex justify-between pt-4">
                     <Button type="button" variant="ghost" onClick={() => setCurrentStep(1)} className="text-white/40 hover:text-white hover:bg-white/[0.06]">
@@ -333,7 +333,7 @@ Jamie Anderson`,
                       value={form.coverLetter}
                       onChange={(e) => setForm({ ...form, coverLetter: e.target.value })}
                       rows={10}
-                      className="flex w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 resize-y"
+                      className="flex w-full rounded-xl border border-white/[0.08] bg-white/[0.025] px-4 py-3 text-sm text-white placeholder:text-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 resize-y"
                     />
                   </div>
                   <div className="flex justify-between pt-4">

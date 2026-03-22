@@ -10,18 +10,18 @@ interface PageHeaderProps {
 export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="flex items-start justify-between"
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className="flex items-start justify-between gap-4"
     >
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-white/90">{title}</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-white/90 font-display">{title}</h1>
         {description && (
-          <p className="text-sm text-white/50 mt-1">{description}</p>
+          <p className="text-[13px] text-white/40 mt-0.5">{description}</p>
         )}
       </div>
-      {actions && <div className="flex items-center gap-2">{actions}</div>}
+      {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
     </motion.div>
   );
 }

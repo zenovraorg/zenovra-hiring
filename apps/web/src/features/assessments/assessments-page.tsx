@@ -30,13 +30,12 @@ export function AssessmentsPage() {
         title="Assessments"
         description="Track candidate assessments and challenges"
         actions={
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <div>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
               Create Assessment
             </Button>
-          </motion.div>
-        }
+          </div>        }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -47,7 +46,7 @@ export function AssessmentsPage() {
       </div>
 
       <div>
-        <div className="border border-white/[0.06] rounded-lg">
+        <div className="border border-white/[0.06] rounded-2xl">
           <div className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-2.5 text-xs font-medium text-white/40 bg-white/[0.03] rounded-t-lg">
             <span>Candidate</span>
             <span>Job</span>
@@ -63,7 +62,7 @@ export function AssessmentsPage() {
                 key={assessment.id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
                 whileHover={{ backgroundColor: 'rgba(99, 102, 241, 0.03)', x: 2 }}
                 className="grid grid-cols-[1fr_180px_140px_100px_100px_80px] gap-4 px-4 py-3 items-center border-t border-white/[0.06] hover:bg-white/[0.03] transition-colors cursor-pointer"
               >

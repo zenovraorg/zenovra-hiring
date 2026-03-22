@@ -48,7 +48,7 @@ export function LoginPage() {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="flex items-center gap-3"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/[0.08]">
@@ -60,7 +60,7 @@ export function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-xs font-medium text-white/60 mb-6 backdrop-blur-sm"
             >
               <Sparkles className="h-3 w-3 text-cyan-400" />
@@ -69,7 +69,7 @@ export function LoginPage() {
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
               className="text-4xl font-bold leading-tight mb-4 bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent"
             >
               The modern hiring platform built for scale
@@ -77,8 +77,8 @@ export function LoginPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="text-lg text-white/50 leading-relaxed"
+              transition={{ duration: 0.6, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              className="text-lg text-white/40 leading-relaxed"
             >
               Streamline your recruiting workflow, from sourcing to onboarding. Designed for modern teams that move fast.
             </motion.p>
@@ -86,7 +86,7 @@ export function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               className="flex flex-wrap gap-2 mt-8"
             >
               {['Pipeline Tracking', 'AI Matching', 'Team Collaboration', 'Analytics'].map((feature, i) => (
@@ -101,11 +101,11 @@ export function LoginPage() {
       </div>
 
       {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-[#0a0a0f]">
+      <div className="flex-1 flex items-center justify-center p-8 bg-background">
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           className="w-full max-w-sm"
         >
           {/* Mobile Logo */}
@@ -119,21 +119,21 @@ export function LoginPage() {
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-2xl font-semibold mb-1 text-white/90"
+            transition={{ duration: 0.4, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-xl font-semibold font-display mb-1 text-white/90"
           >Welcome back</motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="text-sm text-white/50 mb-6"
+            transition={{ duration: 0.4, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-sm text-white/40 mb-6"
           >Sign in to your account to continue</motion.p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
               className="space-y-2"
             >
               <label className="text-sm font-medium text-white/70">Email</label>
@@ -144,7 +144,7 @@ export function LoginPage() {
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04] text-white/90 placeholder:text-white/30 transition-all duration-200 hover:border-white/[0.15]"
+                  className="pl-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.025] text-white/90 placeholder:text-white/30 transition-all duration-200 hover:border-white/[0.15]"
                 />
               </div>
             </motion.div>
@@ -152,7 +152,7 @@ export function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, delay: 0.42, ease: [0.25, 0.1, 0.25, 1] }}
               className="space-y-2"
             >
               <div className="flex items-center justify-between">
@@ -166,7 +166,7 @@ export function LoginPage() {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9 pr-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04] text-white/90 placeholder:text-white/30 transition-all duration-200 hover:border-white/[0.15]"
+                  className="pl-9 pr-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.025] text-white/90 placeholder:text-white/30 transition-all duration-200 hover:border-white/[0.15]"
                 />
                 <button
                   type="button"
@@ -181,20 +181,18 @@ export function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button type="submit" className="w-full rounded-xl bg-white text-[#0a0a0f] hover:bg-white/90 shadow-lg transition-all duration-200" size="lg">
+                              <Button type="submit" className="w-full rounded-xl bg-white text-[#0a0a0f] hover:bg-white/90 shadow-lg transition-all duration-200" size="lg">
                   Sign In
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-              </motion.div>
             </motion.div>
           </form>
 
           <div className="relative my-6">
             <Separator />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0f] px-2 text-xs text-white/30">
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-white/30">
               or
             </span>
           </div>
@@ -202,19 +200,17 @@ export function LoginPage() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.4, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
+                          <Button
                 variant="outline"
-                className="w-full rounded-xl border-white/[0.08] bg-white/[0.04] text-white/70 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"
+                className="w-full rounded-xl border-white/[0.08] bg-white/[0.025] text-white/70 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"
                 size="lg"
                 onClick={handleDemoLogin}
               >
                 <img src="/symbol.png" alt="Zenovra" className="mr-2 h-4 w-4 object-contain" />
                 Continue with Demo Account
               </Button>
-            </motion.div>
           </motion.div>
 
           <p className="text-center text-xs text-white/30 mt-6">

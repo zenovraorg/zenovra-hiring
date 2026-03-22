@@ -57,26 +57,22 @@ export function CandidatesPage() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
       >
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-white/90">Candidate Pool</h1>
+          <h1 className="text-2xl font-bold font-display tracking-tight text-white/90">Candidate Pool</h1>
           <p className="text-muted-foreground">Manage your talent pipeline and track candidate progress across roles.</p>
         </div>
         <div className="flex items-center gap-3">
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-            <Button variant="outline" className="rounded-xl bg-white/[0.06] text-white/70 border-white/[0.08] hover:bg-white/[0.10]">
-              <Download className="mr-2 h-4 w-4" />
-              Export Pool
-            </Button>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-            <Button onClick={() => setAddDialogOpen(true)} className="rounded-xl shadow-lg shadow-primary/20">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Candidate
-            </Button>
-          </motion.div>
+          <Button variant="outline" className="rounded-2xl bg-white/[0.025] text-white/70 border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.10] transition-all">
+            <Download className="mr-2 h-4 w-4" />
+            Export Pool
+          </Button>
+          <Button onClick={() => setAddDialogOpen(true)} className="rounded-2xl">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Candidate
+          </Button>
         </div>
       </motion.div>
 
@@ -84,7 +80,7 @@ export function CandidatesPage() {
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, delay: 0.04, ease: [0.25, 0.1, 0.25, 1] }}
         className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
       >
         <div className="relative w-full md:w-96">
@@ -93,11 +89,11 @@ export function CandidatesPage() {
             placeholder="Search by name, email, skills..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 h-11 rounded-xl border-white/[0.08] focus-visible:ring-white/20 bg-white/[0.04]"
+            className="pl-9 h-11 rounded-2xl border-white/[0.06] focus-visible:ring-white/20 bg-white/[0.025]"
           />
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl h-11 bg-white/[0.04] border-white/[0.08]">
+          <Button variant="outline" className="rounded-2xl h-11 bg-white/[0.025] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.10]">
             <Filter className="mr-2 h-4 w-4" />
             Advanced Filters
           </Button>
@@ -113,8 +109,8 @@ export function CandidatesPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="premium-card overflow-hidden"
+        transition={{ duration: 0.5, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+        className="rounded-2xl border border-white/[0.06] bg-white/[0.025] overflow-hidden"
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -138,7 +134,7 @@ export function CandidatesPage() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3), ease: [0.25, 0.1, 0.25, 1] }}
                     className="group hover:bg-white/[0.03] transition-all duration-200 cursor-pointer"
                     onClick={() => navigate(`/candidates/${candidate.id}`)}
                   >
@@ -171,7 +167,7 @@ export function CandidatesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <Badge variant="secondary" className="rounded-full bg-white/[0.06] text-white/50 font-bold uppercase tracking-widest text-[9px] px-2 border-white/[0.08]">
+                      <Badge variant="secondary" className="rounded-full bg-white/[0.06] text-white/40 font-bold uppercase tracking-widest text-[9px] px-2 border-white/[0.08]">
                         {(candidate.source || 'unknown').replace('_', ' ')}
                       </Badge>
                     </td>
@@ -252,11 +248,11 @@ export function CandidatesPage() {
       </motion.div>
 
       {filtered.length === 0 && (
-        <div className="py-20 text-center premium-card">
+        <div className="py-20 text-center rounded-2xl border border-white/[0.06] bg-white/[0.025]">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/[0.06]">
             <Users className="h-8 w-8 text-muted-foreground" />
           </div>
-          <h3 className="text-xl font-bold">No candidates found</h3>
+          <h3 className="text-lg font-bold font-display">No candidates found</h3>
           <p className="text-muted-foreground">Try adjusting your search or filters to find what you're looking for.</p>
           <Button onClick={() => setAddDialogOpen(true)} className="mt-6 rounded-xl">
             Add New Candidate

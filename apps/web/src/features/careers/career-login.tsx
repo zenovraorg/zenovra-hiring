@@ -5,7 +5,7 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const smoothEase = [0.22, 1, 0.36, 1] as const;
+const smoothEase = [0.25, 0.1, 0.25, 1] as const;
 
 export function CareerLogin() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export function CareerLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-background text-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-b from-indigo-500/[0.08] via-violet-500/[0.04] to-transparent blur-[120px]" />
@@ -64,7 +64,7 @@ export function CareerLogin() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-9 bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20"
+                  className="pl-9 bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20"
                   required
                 />
               </div>
@@ -82,13 +82,13 @@ export function CareerLogin() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9 pr-9 bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20"
+                  className="pl-9 pr-9 bg-white/[0.025] border-white/[0.08] text-white placeholder:text-white/20 focus-visible:ring-white/20"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/40"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -104,7 +104,7 @@ export function CareerLogin() {
 
           <div className="relative my-6">
             <div className="h-[1px] bg-white/[0.06]" />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0f] px-3 text-xs text-white/25">
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs text-white/25">
               or
             </span>
           </div>
@@ -120,7 +120,7 @@ export function CareerLogin() {
             </Button>
 
             <Link to="/careers" className="block">
-              <Button variant="ghost" className="w-full h-10 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/[0.04]">
+              <Button variant="ghost" className="w-full h-10 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/[0.025]">
                 Continue as Guest
               </Button>
             </Link>

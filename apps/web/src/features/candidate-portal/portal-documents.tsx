@@ -62,7 +62,7 @@ export function PortalDocuments() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-2xl font-bold tracking-tight">My Documents</h1>
+        <h1 className="text-xl font-bold font-display tracking-tight">My Documents</h1>
         <p className="text-muted-foreground mt-1">Manage your resumes, cover letters, and other documents.</p>
       </motion.div>
 

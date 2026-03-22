@@ -123,7 +123,7 @@ export function CreateJobPage() {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Create Job Requisition</h1>
+          <h1 className="text-2xl font-bold font-display tracking-tight">Create Job Requisition</h1>
           <p className="text-muted-foreground">Define the role and start your hiring process</p>
         </div>
       </motion.div>
@@ -168,9 +168,9 @@ export function CreateJobPage() {
             exit={{ opacity: 0, x: -20 }}
             className="space-y-6"
           >
-            <Card className="premium-card">
+            <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025]">
               <CardHeader>
-                <CardTitle className="text-xl font-bold">Basic Information</CardTitle>
+                <CardTitle className="text-lg font-bold font-display">Basic Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
@@ -281,9 +281,9 @@ export function CreateJobPage() {
             exit={{ opacity: 0, x: -20 }}
             className="space-y-6"
           >
-            <Card className="premium-card">
+            <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025]">
               <CardHeader>
-                <CardTitle className="text-xl font-bold">Role Description</CardTitle>
+                <CardTitle className="text-lg font-bold font-display">Role Description</CardTitle>
               </CardHeader>
               <CardContent className="space-y-8">
                 <div className="space-y-2">
@@ -345,9 +345,9 @@ export function CreateJobPage() {
             exit={{ opacity: 0, x: -20 }}
             className="space-y-8"
           >
-            <Card className="premium-card">
+            <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025]">
               <CardHeader>
-                <CardTitle className="text-xl font-bold">Compensation & Perks</CardTitle>
+                <CardTitle className="text-lg font-bold font-display">Compensation & Perks</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -392,7 +392,7 @@ export function CreateJobPage() {
             </Card>
 
             {/* Final Review */}
-            <Card className="premium-card bg-primary/[0.02] border-primary/20">
+            <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] bg-primary/[0.02] border-primary/20">
               <CardHeader>
                 <CardTitle className="text-lg font-bold">Final Review</CardTitle>
               </CardHeader>

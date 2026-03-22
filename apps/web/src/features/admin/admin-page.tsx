@@ -52,7 +52,7 @@ export function AdminPage() {
                 key={section.label}
                 onClick={() => setActiveSection(section.label)}
                 className={`w-full flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive ? 'bg-white/[0.08] font-medium text-white' : 'text-white/50 hover:bg-white/[0.04] hover:text-white/70'
+                  isActive ? 'bg-white/[0.08] font-medium text-white' : 'text-white/40 hover:bg-white/[0.025] hover:text-white/70'
                 }`}
               >
                 <Icon className="h-4 w-4 shrink-0" />

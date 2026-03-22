@@ -57,7 +57,7 @@ export function PortalProfile() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1 className="text-2xl font-bold tracking-tight">My Profile</h1>
+        <h1 className="text-xl font-bold font-display tracking-tight">My Profile</h1>
         <p className="text-muted-foreground mt-1">Keep your profile up to date to stand out to recruiters.</p>
       </motion.div>
 

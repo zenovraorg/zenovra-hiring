@@ -122,7 +122,7 @@ export function JobDetailPage() {
                 </Badge>
               )}
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold font-display tracking-tight text-foreground leading-tight">
               {job.title}
             </h1>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-muted-foreground">
@@ -238,9 +238,9 @@ function OverviewTab({
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Main content */}
       <div className="lg:col-span-2 space-y-8">
-        <Card className="premium-card overflow-hidden">
+        <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] overflow-hidden">
           <CardHeader className="pb-4">
-            <CardTitle className="text-xl font-bold">Job Description</CardTitle>
+            <CardTitle className="text-base font-bold font-display font-display">Job Description</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -249,9 +249,9 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        <Card className="premium-card overflow-hidden">
+        <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] overflow-hidden">
           <CardHeader className="pb-4">
-            <CardTitle className="text-xl font-bold">Requirements</CardTitle>
+            <CardTitle className="text-base font-bold font-display font-display">Requirements</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -268,9 +268,9 @@ function OverviewTab({
         </Card>
 
         {job.nice_to_haves && job.nice_to_haves.length > 0 && (
-          <Card className="premium-card overflow-hidden">
+          <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] overflow-hidden">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold">Nice to Have</CardTitle>
+              <CardTitle className="text-base font-bold font-display font-display">Nice to Have</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -290,9 +290,9 @@ function OverviewTab({
 
       {/* Sidebar */}
       <div className="space-y-8">
-        <Card className="premium-card bg-primary/[0.02] border-primary/10">
+        <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] bg-primary/[0.02] border-primary/10">
           <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-bold flex items-center gap-2">
+            <CardTitle className="text-base font-bold font-display flex items-center gap-2">
               <div className="p-2 rounded-lg bg-primary/10">
                 <DollarSign className="h-4 w-4 text-primary" />
               </div>
@@ -330,9 +330,9 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        <Card className="premium-card">
+        <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025]">
           <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-bold">Hiring Team</CardTitle>
+            <CardTitle className="text-base font-bold font-display">Hiring Team</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {hiringManager && (
@@ -364,9 +364,9 @@ function OverviewTab({
           </CardContent>
         </Card>
 
-        <Card className="premium-card">
+        <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025]">
           <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-bold">Job Details</CardTitle>
+            <CardTitle className="text-base font-bold font-display">Job Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-muted/5">
@@ -422,7 +422,7 @@ function CandidatesTab({ applications }: { applications: Application[] }) {
             transition={{ duration: 0.4, delay: i * 0.05, ease: [0.23, 1, 0.32, 1] }}
           >
             <Card
-              className="premium-card group cursor-pointer hover:border-primary/30 transition-all"
+              className="rounded-2xl border border-white/[0.06] bg-white/[0.025] group cursor-pointer hover:border-primary/30 transition-all"
               onClick={() => navigate(`/candidates/${candidate.id}`)}
             >
               <CardContent className="flex items-center gap-4 py-5">
@@ -473,7 +473,7 @@ function PipelineTab({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: i * 0.05, ease: [0.23, 1, 0.32, 1] }}
         >
-          <Card className="premium-card overflow-hidden">
+          <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] overflow-hidden">
             <CardHeader className="pb-4 bg-muted/5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -554,7 +554,7 @@ function InterviewsTab({ interviews }: { interviews: Interview[] }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: i * 0.05, ease: [0.23, 1, 0.32, 1] }}
         >
-          <Card className="premium-card group hover:border-primary/30 transition-all">
+          <Card className="rounded-2xl border border-white/[0.06] bg-white/[0.025] group hover:border-primary/30 transition-all">
             <CardContent className="flex items-center gap-4 py-5">
               <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-primary/5 border border-primary/10 group-hover:bg-primary/10 transition-colors">
                 <CalendarDays className="h-6 w-6 text-primary" />
