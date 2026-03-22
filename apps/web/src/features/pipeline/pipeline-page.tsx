@@ -48,10 +48,12 @@ export function PipelinePage() {
 
   const moveApplication = useMoveApplication();
 
-  // Select first job when jobs load
+  // Select first job with candidates, or first open job
   useEffect(() => {
     if (jobs.length > 0 && !selectedJob) {
-      setSelectedJob(jobs[0]);
+      const withCandidates = jobs.find(j => (j.candidate_count || 0) > 0);
+      const openJob = jobs.find(j => j.status === 'open');
+      setSelectedJob(withCandidates || openJob || jobs[0]);
     }
   }, [jobs, selectedJob]);
 
