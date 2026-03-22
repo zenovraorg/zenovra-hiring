@@ -91,6 +91,8 @@ export function CreateJobPage() {
         equity: form.equity || undefined,
       },
       headcount: Number(form.headcount) || 1,
+      status: 'open',
+      is_published: true,
     });
     navigate('/jobs');
   };
