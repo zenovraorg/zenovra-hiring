@@ -95,10 +95,17 @@ After implementation:
    - Last Audited
    - Recent Changes
 3. Update `ROUTE_REFERENCE.md` ONLY if routes changed
+4. Update `llms.txt` / `llms-full.txt` (if they exist in `public/`) when:
+   - New public-facing pages or routes are added
+   - New public API endpoints are created
+   - Product info, company info, or contact details change
+   - New features that should be discoverable by AI apps are added
+   - **ONLY add public/marketing info — NEVER add internal APIs, credentials, admin routes, or sensitive data**
 
 ## RULES
 
 - `SYSTEM_DOCS.md` = source of truth
 - `ROUTE_REFERENCE.md` = reference
+- `llms.txt` / `llms-full.txt` = public AI-facing info (marketing only, no secrets)
 - Never guess APIs, tables, or routes
 - Only update sections you actually worked on
